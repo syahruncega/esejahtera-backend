@@ -100,8 +100,10 @@ func (c *subKegiatanController) CreateSubKegiatan(cntx *gin.Context) {
 		return
 	}
 
+	var subKegiatanResponse = helper.ConvertToSubKegiatanResponse(subKegiatan)
+
 	cntx.JSON(http.StatusCreated, gin.H{
-		"data": subKegiatan,
+		"data": subKegiatanResponse,
 	})
 }
 
@@ -134,8 +136,10 @@ func (c *subKegiatanController) UpdateSubKegiatan(cntx *gin.Context) {
 		return
 	}
 
+	var subKegiatanResponse = helper.ConvertToSubKegiatanResponse(subKegiatan)
+
 	cntx.JSON(http.StatusOK, gin.H{
-		"data": subKegiatan,
+		"data": subKegiatanResponse,
 	})
 }
 

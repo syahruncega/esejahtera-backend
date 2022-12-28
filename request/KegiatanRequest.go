@@ -3,7 +3,7 @@ package request
 type CreateKegiatanRequest struct {
 	NamaKegiatan             string `json:"namaKegiatan" binding:"required"`
 	IndikatorKinerjaKegiatan string `json:"indikatorKinerjaKegiatan" binding:"required"`
-	PaguKegiatan             int    `json:"paguKegiatan" binding:"required"`
+	PaguKegiatan             int    `json:"paguKegiatan"`
 	ProgramId                int    `json:"programId" binding:"required"`
 }
 

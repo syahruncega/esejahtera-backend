@@ -54,7 +54,7 @@ func (r *subKegiatanRepository) Create(subKegiatan model.Sub_Kegiatan) (model.Su
 }
 
 func (r *subKegiatanRepository) Update(subKegiatan model.Sub_Kegiatan) (model.Sub_Kegiatan, error) {
-	var err = r.db.Model(&subKegiatan).Updates(model.Sub_Kegiatan{
+	var err = r.db.Model(&subKegiatan).Select("NamaSubKegiatan", "IndikatorKinerjaSubKegiatan", "PaguSubKegiatan", "KegiatanId").Updates(model.Sub_Kegiatan{
 		NamaSubKegiatan:             subKegiatan.NamaSubKegiatan,
 		IndikatorKinerjaSubKegiatan: subKegiatan.IndikatorKinerjaSubKegiatan,
 		PaguSubKegiatan:             subKegiatan.PaguSubKegiatan,

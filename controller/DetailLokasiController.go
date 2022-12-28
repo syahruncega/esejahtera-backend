@@ -100,8 +100,10 @@ func (c *detailLokasiController) CreateDetailLokasi(cntx *gin.Context) {
 		return
 	}
 
+	var detailLokasiResponse = helper.ConvertToDetailLokasiResponse(detailLokasi)
+
 	cntx.JSON(http.StatusCreated, gin.H{
-		"data": detailLokasi,
+		"data": detailLokasiResponse,
 	})
 }
 
@@ -134,8 +136,10 @@ func (c *detailLokasiController) UpdateDetailLokasi(cntx *gin.Context) {
 		return
 	}
 
+	var detailLokasiResponse = helper.ConvertToDetailLokasiResponse(detailLokasi)
+
 	cntx.JSON(http.StatusOK, gin.H{
-		"data": detailLokasi,
+		"data": detailLokasiResponse,
 	})
 }
 

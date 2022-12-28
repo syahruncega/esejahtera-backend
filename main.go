@@ -116,7 +116,7 @@ func main() {
 	server.GET("/detaillokasi/:id", detailLokasiController.GetDetailLokasi)
 	server.GET("/detaillokasirelasi", detailLokasiController.GetDetailLokasiWithRelation)
 	server.POST("/detaillokasi", detailLokasiController.CreateDetailLokasi)
-	server.PATCH("/detaillokasi", detailLokasiController.UpdateDetailLokasi)
+	server.PATCH("/detaillokasi/:id", detailLokasiController.UpdateDetailLokasi)
 	server.DELETE("/detaillokasi/:id", detailLokasiController.DeleteDetailLokasi)
 
 	server.GET("/provinsi", provinsiController.GetProvinsis)

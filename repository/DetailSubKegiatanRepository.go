@@ -54,7 +54,7 @@ func (r *detailSubKegiatanRepository) Create(detailSubKegiatan model.Detail_Sub_
 }
 
 func (r *detailSubKegiatanRepository) Update(detailSubKegiatan model.Detail_Sub_Kegiatan) (model.Detail_Sub_Kegiatan, error) {
-	var err = r.db.Model(&detailSubKegiatan).Updates(model.Detail_Sub_Kegiatan{
+	var err = r.db.Model(&detailSubKegiatan).Select("FokusBelanja", "Indikator", "Target", "Satuan", "PaguFokusBelanja", "Keterangan").Updates(model.Detail_Sub_Kegiatan{
 		FokusBelanja:     detailSubKegiatan.FokusBelanja,
 		Indikator:        detailSubKegiatan.Indikator,
 		Target:           detailSubKegiatan.Target,

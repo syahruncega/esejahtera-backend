@@ -13,7 +13,7 @@ type Program struct {
 	Id                      int       `gorm:"column:id;primaryKey;not null;autoIncrement"`
 	NamaProgram             string    `gorm:"column:namaProgram;not null"`
 	IndikatorKinerjaProgram string    `gorm:"column:indikatorKinerjaProgram;not null"`
-	PaguProgram             int       `gorm:"column:paguProgram;not null"`
+	PaguProgram             int       `gorm:"column:paguProgram"`
 	InstansiId              int       `gorm:"column:instansiId;not null"`
 	CreatedAt               time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt               time.Time `gorm:"column:updatedAt;not null"`
@@ -24,7 +24,7 @@ type Kegiatan struct {
 	Id                       int       `gorm:"column:id;primaryKey;not null;autoIncrement"`
 	NamaKegiatan             string    `gorm:"column:namaKegiatan;not null"`
 	IndikatorKinerjaKegiatan string    `gorm:"column:indikatorKinerjaKegiatan;not null"`
-	PaguKegiatan             int       `gorm:"column:paguKegiatan;not null"`
+	PaguKegiatan             int       `gorm:"column:paguKegiatan"`
 	ProgramId                int       `gorm:"column:programId;not null"`
 	CreatedAt                time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt                time.Time `gorm:"column:updatedAt;not null"`
@@ -35,7 +35,7 @@ type Sub_Kegiatan struct {
 	Id                          int       `gorm:"column:id;primaryKey;not null;autoIncrement"`
 	NamaSubKegiatan             string    `gorm:"column:namaSubKegiatan;not null"`
 	IndikatorKinerjaSubKegiatan string    `gorm:"column:indikatorKinerjaSubKegiatan;not null"`
-	PaguSubKegiatan             int       `gorm:"column:paguSubKegiatan;not null"`
+	PaguSubKegiatan             int       `gorm:"column:paguSubKegiatan"`
 	KegiatanId                  int       `gorm:"column:kegiatanId;not null"`
 	CreatedAt                   time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt                   time.Time `gorm:"column:updatedAt;not null"`
@@ -46,9 +46,9 @@ type Detail_Sub_Kegiatan struct {
 	Id               int       `gorm:"column:id;primaryKey;not null;autoIncrement"`
 	FokusBelanja     string    `gorm:"column:fokusBelanja;not null"`
 	Indikator        string    `gorm:"column:indikator;not null"`
-	Target           float32   `gorm:"column:target;not null"`
+	Target           float32   `gorm:"column:target"`
 	Satuan           string    `gorm:"column:satuan;not null"`
-	PaguFokusBelanja int       `gorm:"column:paguFokusBelanja;not null"`
+	PaguFokusBelanja int       `gorm:"column:paguFokusBelanja"`
 	Keterangan       string    `gorm:"column:keterangan;not null"`
 	SubKegiatanId    int       `gorm:"column:subKegiatanId;not null"`
 	CreatedAt        time.Time `gorm:"column:createdAt;not null"`

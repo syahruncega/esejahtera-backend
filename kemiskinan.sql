@@ -32,13 +32,7 @@ CREATE TABLE `detail_lokasis` (
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `detail_sub_kegiatanId_idx` (`detailSubKegiatanId`),
-  KEY `kabupatenKotaId_idx` (`kabupatenKotaId`),
-  KEY `kecamatanId_idx` (`kecamatanId`),
-  KEY `kelurahanId_idx` (`kelurahanId`),
-  CONSTRAINT `detailSubKegiatanId` FOREIGN KEY (`detailSubKegiatanId`) REFERENCES `detail_sub_kegiatans` (`id`),
-  CONSTRAINT `kabupatenKotaId` FOREIGN KEY (`kabupatenKotaId`) REFERENCES `kabupaten_kota` (`id`),
-  CONSTRAINT `kecamatanIdInDetailLokasi` FOREIGN KEY (`kecamatanId`) REFERENCES `kecamatans` (`id`),
-  CONSTRAINT `kelurahanId` FOREIGN KEY (`kelurahanId`) REFERENCES `kelurahans` (`id`)
+  CONSTRAINT `detailSubKegiatanId` FOREIGN KEY (`detailSubKegiatanId`) REFERENCES `detail_sub_kegiatans` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -64,9 +58,9 @@ CREATE TABLE `detail_sub_kegiatans` (
   `subKegiatanId` int NOT NULL,
   `fokusBelanja` mediumtext NOT NULL,
   `indikator` longtext NOT NULL,
-  `target` float NOT NULL,
+  `target` float DEFAULT '0',
   `satuan` varchar(100) NOT NULL,
-  `paguFokusBelanja` bigint NOT NULL,
+  `paguFokusBelanja` bigint DEFAULT '0',
   `keterangan` mediumtext NOT NULL,
   `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -178,7 +172,7 @@ CREATE TABLE `kegiatans` (
   `programId` int NOT NULL,
   `namaKegiatan` mediumtext NOT NULL,
   `indikatorKinerjaKegiatan` longtext NOT NULL,
-  `paguKegiatan` bigint NOT NULL,
+  `paguKegiatan` bigint DEFAULT '0',
   `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -236,7 +230,7 @@ CREATE TABLE `programs` (
   `instansiId` int NOT NULL,
   `namaProgram` mediumtext NOT NULL,
   `indikatorKinerjaProgram` longtext NOT NULL,
-  `paguProgram` bigint NOT NULL,
+  `paguProgram` bigint DEFAULT '0',
   `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -291,7 +285,7 @@ CREATE TABLE `sub_kegiatans` (
   `kegiatanId` int NOT NULL,
   `namaSubKegiatan` mediumtext NOT NULL,
   `indikatorKinerjaSubKegiatan` longtext NOT NULL,
-  `paguSubKegiatan` bigint NOT NULL,
+  `paguSubKegiatan` bigint DEFAULT '0',
   `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -319,4 +313,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-26 23:59:40
+-- Dump completed on 2022-12-29  2:53:26

@@ -100,8 +100,10 @@ func (c *kegiatanController) CreateKegiatan(cntx *gin.Context) {
 		return
 	}
 
+	var kegiatanResponse = helper.ConvertToKegiatanResponse(kegiatan)
+
 	cntx.JSON(http.StatusCreated, gin.H{
-		"data": kegiatan,
+		"data": kegiatanResponse,
 	})
 }
 
@@ -134,8 +136,10 @@ func (c *kegiatanController) UpdateKegiatan(cntx *gin.Context) {
 		return
 	}
 
+	var kegiatanResponse = helper.ConvertToKegiatanResponse(kegiatan)
+
 	cntx.JSON(http.StatusOK, gin.H{
-		"data": kegiatan,
+		"data": kegiatanResponse,
 	})
 }
 

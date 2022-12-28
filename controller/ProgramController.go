@@ -100,8 +100,10 @@ func (c *programController) CreateProgram(cntx *gin.Context) {
 		return
 	}
 
+	var programResponse = helper.ConvertToProgramResponse(program)
+
 	cntx.JSON(http.StatusCreated, gin.H{
-		"data": program,
+		"data": programResponse,
 	})
 }
 
@@ -134,8 +136,10 @@ func (c *programController) UpdateProgram(cntx *gin.Context) {
 		return
 	}
 
+	var programResponse = helper.ConvertToProgramResponse(program)
+
 	cntx.JSON(http.StatusOK, gin.H{
-		"data": program,
+		"data": programResponse,
 	})
 }
 

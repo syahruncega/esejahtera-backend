@@ -56,11 +56,11 @@ func (r *programRepository) Create(program model.Program) (model.Program, error)
 }
 
 func (r *programRepository) Update(program model.Program) (model.Program, error) {
-	var err = r.db.Model(&program).Updates(model.Program{
-		InstansiId:              program.InstansiId,
+	var err = r.db.Model(&program).Select("NamaProgram", "IndikatorKinerjaProgram", "PaguProgram", "InstansiId").Updates(model.Program{
 		NamaProgram:             program.NamaProgram,
 		IndikatorKinerjaProgram: program.IndikatorKinerjaProgram,
 		PaguProgram:             program.PaguProgram,
+		InstansiId:              program.InstansiId,
 	}).Error
 
 	return program, err
