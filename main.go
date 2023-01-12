@@ -30,6 +30,10 @@ func main() {
 
 	config.ConnectDB(appConfig)
 
+	var bidangUrusanRepository = repository.NewBidangUrusanRepository(config.DB)
+	var bidangUrusanService = service.NewBidangUrusanService(bidangUrusanRepository)
+	var bidangUrusanController = controller.NewBidangUrusanController(bidangUrusanService)
+
 	var instansiRepository = repository.NewInstansiRepository(config.DB)
 	var instansiService = service.NewInstansiService(instansiRepository)
 	var instansiController = controller.NewInstansiController(instansiService)
@@ -77,6 +81,12 @@ func main() {
 		AllowMethods: []string{"POST", "PUT", "DELETE", "GET", "PATCH"},
 		AllowHeaders: []string{"Content-Type, access-control-allow-origin, access-control-allow-headers"},
 	}))
+
+	server.GET("/bidangurusan", bidangUrusanController.GetBidangUrusans)
+	server.GET("/bidangurusan/:id", bidangUrusanController.GetBidangUrusan)
+	server.POST("/bidangurusan", bidangUrusanController.CreateBidangUrusan)
+	server.PATCH("/bidangurusan/:id", bidangUrusanController.UpdateBidangUrusan)
+	server.DELETE("/bidangurusan/:id", bidangUrusanController.DeleteBidangUrusan)
 
 	server.GET("/instansi", instansiController.GetInstansis)
 	server.GET("/instansi/:id", instansiController.GetInstansi)

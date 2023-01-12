@@ -5,6 +5,13 @@ import (
 	"kemiskinan/responses"
 )
 
+func ConvertToBidangUrusanResponse(b model.BidangUrusan) responses.BidangUrusanResponse {
+	return responses.BidangUrusanResponse{
+		Id:               b.Id,
+		NamaBidangUrusan: b.NamaBidangUrusan,
+	}
+}
+
 func ConvertToInstansiResponse(i model.Instansi) responses.InstansiResponse {
 	return responses.InstansiResponse{
 		Id:           i.Id,
@@ -17,24 +24,36 @@ func ConvertToInstansiResponse(i model.Instansi) responses.InstansiResponse {
 func ConvertToProgramResponse(p model.Program) responses.ProgramResponse {
 	return responses.ProgramResponse{
 		Id:                      p.Id,
+		Sasaran:                 p.Sasaran,
+		IndikatorSasaran:        p.IndikatorSasaran,
+		Kebijakan:               p.Kebijakan,
 		NamaProgram:             p.NamaProgram,
 		IndikatorKinerjaProgram: p.IndikatorKinerjaProgram,
 		PaguProgram:             p.PaguProgram,
+		BidangUrusanId:          p.BidangUrusanId,
 		InstansiId:              p.InstansiId,
 		CreatedAt:               p.CreatedAt,
 		UpdatedAt:               p.UpdatedAt,
 	}
 }
 
-func ConvertToProgramWithInstansiResponse(p model.Program) responses.ProgramWithInstansiResponse {
-	return responses.ProgramWithInstansiResponse{
+func ConvertToProgramWithInstansiResponse(p model.Program) responses.ProgramWithInstansidanBidangUrusanResponse {
+	return responses.ProgramWithInstansidanBidangUrusanResponse{
 		Id:                      p.Id,
+		Sasaran:                 p.Sasaran,
+		IndikatorSasaran:        p.IndikatorSasaran,
+		Kebijakan:               p.Kebijakan,
 		NamaProgram:             p.NamaProgram,
 		IndikatorKinerjaProgram: p.IndikatorKinerjaProgram,
 		PaguProgram:             p.PaguProgram,
+		BidangUrusanId:          p.BidangUrusanId,
 		InstansiId:              p.InstansiId,
 		CreatedAt:               p.CreatedAt,
 		UpdatedAt:               p.UpdatedAt,
+		BidangUrusan: responses.BidangUrusanResponse{
+			Id:               p.BidangUrusan.Id,
+			NamaBidangUrusan: p.BidangUrusan.NamaBidangUrusan,
+		},
 		Instansi: responses.InstansiResponse{
 			Id:           p.Instansi.Id,
 			NamaInstansi: p.Instansi.NamaInstansi,

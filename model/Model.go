@@ -2,6 +2,11 @@ package model
 
 import "time"
 
+type BidangUrusan struct {
+	Id               int    `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	NamaBidangUrusan string `gorm:"column:namaBidangUrusan;not null"`
+}
+
 type Instansi struct {
 	Id           int       `gorm:"column:id;primaryKey;not null;autoIncrement"`
 	NamaInstansi string    `gorm:"column:namaInstansi;not null"`
@@ -11,12 +16,17 @@ type Instansi struct {
 
 type Program struct {
 	Id                      int       `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	Sasaran                 string    `gorm:"column:sasaran;not null"`
+	IndikatorSasaran        string    `gorm:"column:indikatorSasaran;not null"`
+	Kebijakan               string    `gorm:"column:kebijakan;not null"`
 	NamaProgram             string    `gorm:"column:namaProgram;not null"`
 	IndikatorKinerjaProgram string    `gorm:"column:indikatorKinerjaProgram;not null"`
 	PaguProgram             int       `gorm:"column:paguProgram"`
+	BidangUrusanId          int       `gorm:"column:bidangUrusanId; not null"`
 	InstansiId              int       `gorm:"column:instansiId;not null"`
 	CreatedAt               time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt               time.Time `gorm:"column:updatedAt;not null"`
+	BidangUrusan            BidangUrusan
 	Instansi                Instansi
 }
 

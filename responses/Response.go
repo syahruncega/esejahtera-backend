@@ -2,6 +2,11 @@ package responses
 
 import "time"
 
+type BidangUrusanResponse struct {
+	Id               int    `json:"id"`
+	NamaBidangUrusan string `json:"namaBidangUrusan"`
+}
+
 type InstansiResponse struct {
 	Id           int       `json:"id"`
 	NamaInstansi string    `json:"namaInstansi"`
@@ -11,23 +16,32 @@ type InstansiResponse struct {
 
 type ProgramResponse struct {
 	Id                      int       `json:"id"`
+	Sasaran                 string    `json:"sasaran"`
+	IndikatorSasaran        string    `json:"indikatorSasaran"`
+	Kebijakan               string    `json:"kebijakan"`
 	NamaProgram             string    `json:"namaProgram"`
 	IndikatorKinerjaProgram string    `json:"indikatorKinerjaProgram"`
 	PaguProgram             int       `json:"paguProgram"`
+	BidangUrusanId          int       `json:"bidangUrusanId"`
 	InstansiId              int       `json:"instansiId"`
 	CreatedAt               time.Time `json:"createdAt"`
 	UpdatedAt               time.Time `json:"updatedAt"`
 }
 
-type ProgramWithInstansiResponse struct {
-	Id                      int              `json:"id"`
-	NamaProgram             string           `json:"namaProgram"`
-	IndikatorKinerjaProgram string           `json:"indikatorKinerjaProgram"`
-	PaguProgram             int              `json:"paguProgram"`
-	InstansiId              int              `json:"instansiId"`
-	CreatedAt               time.Time        `json:"createdAt"`
-	UpdatedAt               time.Time        `json:"updatedAt"`
-	Instansi                InstansiResponse `json:"instansi"`
+type ProgramWithInstansidanBidangUrusanResponse struct {
+	Id                      int                  `json:"id"`
+	Sasaran                 string               `json:"sasaran"`
+	IndikatorSasaran        string               `json:"indikatorSasaran"`
+	Kebijakan               string               `json:"kebijakan"`
+	NamaProgram             string               `json:"namaProgram"`
+	IndikatorKinerjaProgram string               `json:"indikatorKinerjaProgram"`
+	PaguProgram             int                  `json:"paguProgram"`
+	BidangUrusanId          int                  `json:"bidangUrusanId"`
+	InstansiId              int                  `json:"instansiId"`
+	CreatedAt               time.Time            `json:"createdAt"`
+	UpdatedAt               time.Time            `json:"updatedAt"`
+	BidangUrusan            BidangUrusanResponse `json:"bidangUrusan"`
+	Instansi                InstansiResponse     `json:"instansi"`
 }
 
 type KegiatanResponse struct {

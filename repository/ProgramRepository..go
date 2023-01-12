@@ -44,7 +44,7 @@ func (r *programRepository) FindAllRelation() ([]model.Program, error) {
 
 	// var err = r.db.Model(&program).Select("programs.*, instansis.*").Joins("left join instansis on programs.instansiId = instansis.id").Scan(&programRelations).Error
 
-	var err = r.db.Model(&program).Preload("Instansi").Find(&program).Error
+	var err = r.db.Model(&program).Preload("BidangUrusan").Preload("Instansi").Find(&program).Error
 
 	return program, err
 }
@@ -57,9 +57,13 @@ func (r *programRepository) Create(program model.Program) (model.Program, error)
 
 func (r *programRepository) Update(program model.Program) (model.Program, error) {
 	var err = r.db.Model(&program).Select("NamaProgram", "IndikatorKinerjaProgram", "PaguProgram", "InstansiId").Updates(model.Program{
+		Sasaran:                 program.Sasaran,
+		IndikatorSasaran:        program.IndikatorSasaran,
+		Kebijakan:               program.Kebijakan,
 		NamaProgram:             program.NamaProgram,
 		IndikatorKinerjaProgram: program.IndikatorKinerjaProgram,
 		PaguProgram:             program.PaguProgram,
+		BidangUrusanId:          program.BidangUrusanId,
 		InstansiId:              program.InstansiId,
 	}).Error
 
