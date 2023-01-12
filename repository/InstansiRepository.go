@@ -9,6 +9,7 @@ import (
 type InstansiRepository interface {
 	FindAll() ([]model.Instansi, error)
 	FindById(id int) (model.Instansi, error)
+	FindAllRelation() ([]model.Instansi, error)
 	Create(instansi model.Instansi) (model.Instansi, error)
 	Update(instansi model.Instansi) (model.Instansi, error)
 	Delete(instansi model.Instansi) (model.Instansi, error)
@@ -38,6 +39,14 @@ func (r *instansiRepository) FindById(id int) (model.Instansi, error) {
 	return instansi, err
 }
 
+func (r *instansiRepository) FindAllRelation() ([]model.Instansi, error) {
+	var instansi []model.Instansi
+
+	var err = r.db.Model(&instansi).Preload("BidangUrusan").Find(&instansi).Error
+
+	return instansi, err
+}
+
 func (r *instansiRepository) Create(instansi model.Instansi) (model.Instansi, error) {
 	var err = r.db.Create(&instansi).Error
 
@@ -46,7 +55,8 @@ func (r *instansiRepository) Create(instansi model.Instansi) (model.Instansi, er
 
 func (r *instansiRepository) Update(instansi model.Instansi) (model.Instansi, error) {
 	var err = r.db.Model(&instansi).Updates(model.Instansi{
-		NamaInstansi: instansi.NamaInstansi,
+		NamaInstansi:   instansi.NamaInstansi,
+		BidangUrusanId: instansi.BidangUrusanId,
 	}).Error
 
 	return instansi, err

@@ -43,7 +43,6 @@ func (s *programService) FindAllRelation() ([]model.Program, error) {
 
 func (s *programService) Create(programRequest request.CreateProgramRequest) (model.Program, error) {
 	var program = model.Program{
-		BidangUrusanId:          programRequest.BidangUrusanId,
 		InstansiId:              programRequest.InstansiId,
 		Sasaran:                 programRequest.Sasaran,
 		IndikatorSasaran:        programRequest.IndikatorSasaran,
@@ -61,7 +60,6 @@ func (s *programService) Create(programRequest request.CreateProgramRequest) (mo
 func (s *programService) Update(id int, programRequest request.UpdateProgramRequest) (model.Program, error) {
 	var program, err = s.programRepository.FindById(id)
 
-	program.BidangUrusanId = programRequest.BidangUrusanId
 	program.InstansiId = programRequest.InstansiId
 	program.Sasaran = programRequest.Sasaran
 	program.IndikatorSasaran = programRequest.IndikatorSasaran

@@ -9,15 +9,34 @@ func ConvertToBidangUrusanResponse(b model.BidangUrusan) responses.BidangUrusanR
 	return responses.BidangUrusanResponse{
 		Id:               b.Id,
 		NamaBidangUrusan: b.NamaBidangUrusan,
+		CreatedAt:        b.CreatedAt,
+		UpdatedAt:        b.UpdatedAt,
 	}
 }
 
 func ConvertToInstansiResponse(i model.Instansi) responses.InstansiResponse {
 	return responses.InstansiResponse{
-		Id:           i.Id,
-		NamaInstansi: i.NamaInstansi,
-		CreatedAt:    i.CreatedAt,
-		UpdatedAt:    i.UpdatedAt,
+		Id:             i.Id,
+		BidangUrusanId: i.BidangUrusanId,
+		NamaInstansi:   i.NamaInstansi,
+		CreatedAt:      i.CreatedAt,
+		UpdatedAt:      i.UpdatedAt,
+	}
+}
+
+func ConvertToInstansiWithBidangUrusanResponse(i model.Instansi) responses.InstansiWithBidangUrusanResponse {
+	return responses.InstansiWithBidangUrusanResponse{
+		Id:             i.Id,
+		NamaInstansi:   i.NamaInstansi,
+		CreatedAt:      i.CreatedAt,
+		UpdatedAt:      i.UpdatedAt,
+		BidangUrusanId: i.BidangUrusanId,
+		BidangUrusan: responses.BidangUrusanResponse{
+			Id:               i.BidangUrusan.Id,
+			NamaBidangUrusan: i.BidangUrusan.NamaBidangUrusan,
+			CreatedAt:        i.BidangUrusan.CreatedAt,
+			UpdatedAt:        i.BidangUrusan.UpdatedAt,
+		},
 	}
 }
 
@@ -30,15 +49,14 @@ func ConvertToProgramResponse(p model.Program) responses.ProgramResponse {
 		NamaProgram:             p.NamaProgram,
 		IndikatorKinerjaProgram: p.IndikatorKinerjaProgram,
 		PaguProgram:             p.PaguProgram,
-		BidangUrusanId:          p.BidangUrusanId,
 		InstansiId:              p.InstansiId,
 		CreatedAt:               p.CreatedAt,
 		UpdatedAt:               p.UpdatedAt,
 	}
 }
 
-func ConvertToProgramWithInstansiResponse(p model.Program) responses.ProgramWithInstansidanBidangUrusanResponse {
-	return responses.ProgramWithInstansidanBidangUrusanResponse{
+func ConvertToProgramWithInstansiResponse(p model.Program) responses.ProgramWithInstansiResponse {
+	return responses.ProgramWithInstansiResponse{
 		Id:                      p.Id,
 		Sasaran:                 p.Sasaran,
 		IndikatorSasaran:        p.IndikatorSasaran,
@@ -46,14 +64,9 @@ func ConvertToProgramWithInstansiResponse(p model.Program) responses.ProgramWith
 		NamaProgram:             p.NamaProgram,
 		IndikatorKinerjaProgram: p.IndikatorKinerjaProgram,
 		PaguProgram:             p.PaguProgram,
-		BidangUrusanId:          p.BidangUrusanId,
 		InstansiId:              p.InstansiId,
 		CreatedAt:               p.CreatedAt,
 		UpdatedAt:               p.UpdatedAt,
-		BidangUrusan: responses.BidangUrusanResponse{
-			Id:               p.BidangUrusan.Id,
-			NamaBidangUrusan: p.BidangUrusan.NamaBidangUrusan,
-		},
 		Instansi: responses.InstansiResponse{
 			Id:           p.Instansi.Id,
 			NamaInstansi: p.Instansi.NamaInstansi,
@@ -199,6 +212,7 @@ func ConvertToDetailLokasiWithRelationResponse(d model.Detail_Lokasi) responses.
 			Keterangan:       d.DetailSubKegiatan.Keterangan,
 			CreatedAt:        d.DetailSubKegiatan.CreatedAt,
 			UpdatedAt:        d.DetailSubKegiatan.UpdatedAt,
+			SubKegiatanId:    d.DetailSubKegiatan.SubKegiatanId,
 		},
 		KabupatenKota: responses.Kabupaten_KotaResponse{
 			Id:         d.KabupatenKota.Id,

@@ -64,7 +64,7 @@ func (c *programController) GetProgramWithRelation(cntx *gin.Context) {
 		})
 	}
 
-	var programRelationsResponse []responses.ProgramWithInstansidanBidangUrusanResponse
+	var programRelationsResponse []responses.ProgramWithInstansiResponse
 
 	for _, programRelation := range programRelations {
 		var programRelationResponse = helper.ConvertToProgramWithInstansiResponse(programRelation)

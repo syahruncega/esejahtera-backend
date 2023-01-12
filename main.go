@@ -90,6 +90,7 @@ func main() {
 
 	server.GET("/instansi", instansiController.GetInstansis)
 	server.GET("/instansi/:id", instansiController.GetInstansi)
+	server.GET("/instansirelasi", instansiController.GetInstansiWithRelation)
 	server.POST("/instansi", instansiController.CreateInstansi)
 	server.PATCH("/instansi/:id", instansiController.UpdateInstansi)
 	server.DELETE("/instansi/:id", instansiController.DeleteInstansi)
