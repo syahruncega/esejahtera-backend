@@ -132,7 +132,7 @@ func (c *bidangUrusanController) DeleteBidangUrusan(cntx *gin.Context) {
 	_, err := c.bidangUrusanService.Delete(id)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
+			"error": "Data gagal dihapus",
 		})
 		return
 	}

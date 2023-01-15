@@ -168,3 +168,39 @@ type KelurahanResponse struct {
 	KecamatanId string `json:"kecamatanId"`
 	Nama        string `json:"nama"`
 }
+
+type KeluargaResponse struct {
+	Id                     int    `json:"id"`
+	IdKeluarga             string `json:"idKeluarga"`
+	ProvinsiId             string `json:"provinsiId"`
+	Provinsi               ProvinsiResponse
+	KabupatenKotaId        string `json:"kabupatenKotaId"`
+	KabupatenKota          Kabupaten_KotaResponse
+	KecamatanId            string `json:"kecamatanId"`
+	Kecamatan              KecamatanResponse
+	KelurahanId            string `json:"kelurahanId"`
+	Kelurahan              KelurahanResponse
+	DesilKesejahteraan     string `json:"desilKesejahteraan"`
+	Alamat                 string `json:"alamat"`
+	KepalaKeluarga         string `json:"kepalaKeluarga"`
+	Nik                    string `json:"nik"`
+	PadanDukcapil          string `json:"padanDukcapil"`
+	JenisKelamin           string `json:"jenisKelamin"`
+	TanggalLahir           string `json:"tanggalLahir"`
+	Pekerjaan              string `json:"pekerjaan"`
+	Pendidikan             string `json:"pendidikan"`
+	KepemilikanRumah       string `json:"kepemilikanRumah"`
+	Simpanan               string `json:"simpanan"`
+	JenisAtap              string `json:"jenisAtap"`
+	JenisDinding           string `json:"jenisDinding"`
+	JenisLantai            string `json:"jenisLantai"`
+	SumberPenerangan       string `json:"sumberPenerangan"`
+	BahanBakarMemasak      string `json:"bahanBakarMemasak"`
+	SumberAirMinum         string `json:"sumberAirMinum"`
+	FasilitasBuangAirBesar string `json:"fasilitasBuangAirBesar"`
+	PenerimaBPNT           string `json:"penerimaBPNT"`
+	PenerimaBPUM           string `json:"penerimaBPUM"`
+	PenerimaBST            string `json:"penerimaBST"`
+	PenerimaPKH            string `json:"penerimaPKH"`
+	PenerimaSembako        string `json:"penerimaSembako"`
+}

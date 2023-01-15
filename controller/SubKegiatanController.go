@@ -150,7 +150,7 @@ func (c *subKegiatanController) DeleteSubKegiatan(cntx *gin.Context) {
 	_, err := c.subKegiatanService.Delete(id)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
+			"error": "Data gagal dihapus",
 		})
 		return
 	}

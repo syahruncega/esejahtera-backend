@@ -105,13 +105,17 @@ type Kelurahan struct {
 	Nama        string `gorm:"column:nama;not null"`
 }
 
-type Keluarga struct {
+type KeluargaSigi struct {
 	Id                     int    `gorm:"column:id;not null"`
 	IdKeluarga             string `gorm:"column:idKeluarga"`
 	ProvinsiId             string `gorm:"column:provinsiId"`
+	Provinsi               Provinsi
 	KabupatenKotaId        string `gorm:"column:kabupatenKotaId"`
+	KabupatenKota          Kabupaten_Kota
 	KecamatanId            string `gorm:"column:kecamatanId"`
+	Kecamatan              Kecamatan
 	KelurahanId            string `gorm:"column:kelurahanId"`
+	Kelurahan              Kelurahan
 	DesilKesejahteraan     string `gorm:"column:desilKesejahteraan"`
 	Alamat                 string `gorm:"column:alamat"`
 	KepalaKeluarga         string `gorm:"column:kepalaKeluarga"`
@@ -135,7 +139,40 @@ type Keluarga struct {
 	PenerimaBST            string `gorm:"column:penerimaBST"`
 	PenerimaPKH            string `gorm:"column:penerimaPKH"`
 	PenerimaSembako        string `gorm:"column:penerimaSembako"`
+}
+
+type KeluargaDonggala struct {
+	Id                     int    `gorm:"column:id;not null"`
+	IdKeluarga             string `gorm:"column:idKeluarga"`
+	ProvinsiId             string `gorm:"column:provinsiId"`
+	Provinsi               Provinsi
+	KabupatenKotaId        string `gorm:"column:kabupatenKotaId"`
 	KabupatenKota          Kabupaten_Kota
+	KecamatanId            string `gorm:"column:kecamatanId"`
 	Kecamatan              Kecamatan
+	KelurahanId            string `gorm:"column:kelurahanId"`
 	Kelurahan              Kelurahan
+	DesilKesejahteraan     string `gorm:"column:desilKesejahteraan"`
+	Alamat                 string `gorm:"column:alamat"`
+	KepalaKeluarga         string `gorm:"column:kepalaKeluarga"`
+	Nik                    string `gorm:"column:nik"`
+	PadanDukcapil          string `gorm:"column:padanDukcapil"`
+	JenisKelamin           string `gorm:"column:jenisKelamin"`
+	TanggalLahir           string `gorm:"column:tanggalLahir"`
+	Pekerjaan              string `gorm:"column:pekerjaan"`
+	Pendidikan             string `gorm:"column:pendidikan"`
+	KepemilikanRumah       string `gorm:"column:kepemilikanRumah"`
+	Simpanan               string `gorm:"column:simpanan"`
+	JenisAtap              string `gorm:"column:jenisAtap"`
+	JenisDinding           string `gorm:"column:jenisDinding"`
+	JenisLantai            string `gorm:"column:jenisLantai"`
+	SumberPenerangan       string `gorm:"column:sumberPenerangan"`
+	BahanBakarMemasak      string `gorm:"column:bahanBakarMemasak"`
+	SumberAirMinum         string `gorm:"column:sumberAirMinum"`
+	FasilitasBuangAirBesar string `gorm:"column:fasilitasBuangAirBesar"`
+	PenerimaBPNT           string `gorm:"column:penerimaBPNT"`
+	PenerimaBPUM           string `gorm:"column:penerimaBPUM"`
+	PenerimaBST            string `gorm:"column:penerimaBST"`
+	PenerimaPKH            string `gorm:"column:penerimaPKH"`
+	PenerimaSembako        string `gorm:"column:penerimaSembako"`
 }

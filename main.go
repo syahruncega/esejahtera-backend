@@ -74,6 +74,14 @@ func main() {
 	var kelurahanService = service.NewKelurahanService(kelurahanRepository)
 	var kelurahanController = controller.NewKelurahanController(kelurahanService)
 
+	var keluargaSigiRepository = repository.NewKeluargaSigiRepository(config.DB)
+	var keluargaSigiService = service.NewKeluargaSigiService(keluargaSigiRepository)
+	var keluargaSigiController = controller.NewKeluargaSigiController(keluargaSigiService)
+
+	var keluargaDonggalaRepository = repository.NewKeluargaDonggalaRepository(config.DB)
+	var keluargaDonggalaService = service.NewKeluargaDonggalaService(keluargaDonggalaRepository)
+	var keluargaDonggalaController = controller.NewKeluargaDonggalaController(keluargaDonggalaService)
+
 	var server = gin.Default()
 
 	server.Use(cors.New(cors.Config{
@@ -141,6 +149,14 @@ func main() {
 
 	server.GET("/kelurahan", kelurahanController.GetKelurahans)
 	server.GET("/kelurahan/:id", kelurahanController.GetKelurahan)
+
+	server.GET("/keluarga/sigi", keluargaSigiController.GetKeluargas)
+	server.GET("/keluarga/sigi/:id", keluargaSigiController.GetKeluargaById)
+	server.GET("/keluarga/sigi/idkeluarga/:idkeluarga", keluargaSigiController.GetKeluargaByIdKeluarga)
+
+	server.GET("/keluarga/donggala", keluargaDonggalaController.GetKeluargas)
+	server.GET("/keluarga/donggala/:id", keluargaDonggalaController.GetKeluargaById)
+	server.GET("/keluarga/donggala/idkeluarga/:idkeluarga", keluargaDonggalaController.GetKeluargaByIdKeluarga)
 
 	server.Run(":" + appConfig.AppPort)
 }

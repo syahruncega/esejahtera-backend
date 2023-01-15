@@ -150,7 +150,7 @@ func (c *programController) DeleteProgram(cntx *gin.Context) {
 	_, err := c.programService.Delete(id)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
+			"error": "Data gagal dihapus",
 		})
 		return
 	}

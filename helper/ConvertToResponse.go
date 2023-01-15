@@ -262,3 +262,117 @@ func ConvertToKelurahanResponse(k model.Kelurahan) responses.KelurahanResponse {
 		Nama:        k.Nama,
 	}
 }
+
+func ConvertToKeluargaSigiResponse(k model.KeluargaSigi) responses.KeluargaResponse {
+	return responses.KeluargaResponse{
+		Id:         k.Id,
+		IdKeluarga: k.IdKeluarga,
+		ProvinsiId: k.ProvinsiId,
+		Provinsi: responses.ProvinsiResponse{
+			Id:   k.Provinsi.Id,
+			Nama: k.Provinsi.Nama,
+		},
+
+		KabupatenKotaId: k.KabupatenKotaId,
+		KabupatenKota: responses.Kabupaten_KotaResponse{
+			Id:         k.KabupatenKota.Id,
+			ProvinsiId: k.KabupatenKota.ProvinsiId,
+			Nama:       k.KabupatenKota.Nama,
+		},
+
+		KecamatanId: k.KecamatanId,
+		Kecamatan: responses.KecamatanResponse{
+			Id:              k.Kecamatan.Id,
+			KabupatenKotaId: k.Kecamatan.KabupatenKotaId,
+			Nama:            k.Kecamatan.Nama,
+		},
+
+		KelurahanId: k.KelurahanId,
+		Kelurahan: responses.KelurahanResponse{
+			Id:          k.Kelurahan.Id,
+			KecamatanId: k.Kelurahan.KecamatanId,
+			Nama:        k.Kelurahan.Nama,
+		},
+
+		DesilKesejahteraan:     k.DesilKesejahteraan,
+		Alamat:                 k.Alamat,
+		KepalaKeluarga:         k.KepalaKeluarga,
+		Nik:                    k.Nik,
+		PadanDukcapil:          k.PadanDukcapil,
+		JenisKelamin:           k.JenisKelamin,
+		TanggalLahir:           k.TanggalLahir,
+		Pekerjaan:              k.Pekerjaan,
+		Pendidikan:             k.Pendidikan,
+		KepemilikanRumah:       k.KepemilikanRumah,
+		Simpanan:               k.Simpanan,
+		JenisAtap:              k.JenisAtap,
+		JenisDinding:           k.JenisDinding,
+		JenisLantai:            k.JenisLantai,
+		SumberPenerangan:       k.SumberPenerangan,
+		BahanBakarMemasak:      k.BahanBakarMemasak,
+		SumberAirMinum:         k.SumberAirMinum,
+		FasilitasBuangAirBesar: k.FasilitasBuangAirBesar,
+		PenerimaBPNT:           k.PenerimaBPNT,
+		PenerimaBPUM:           k.PenerimaBPUM,
+		PenerimaBST:            k.PenerimaBST,
+		PenerimaPKH:            k.PenerimaPKH,
+		PenerimaSembako:        k.PenerimaSembako,
+	}
+}
+
+func ConvertToKeluargaDonggalaResponse(k model.KeluargaDonggala) responses.KeluargaResponse {
+	return responses.KeluargaResponse{
+		Id:         k.Id,
+		IdKeluarga: k.IdKeluarga,
+		ProvinsiId: k.ProvinsiId,
+		Provinsi: responses.ProvinsiResponse{
+			Id:   k.Provinsi.Id,
+			Nama: k.Provinsi.Nama,
+		},
+
+		KabupatenKotaId: k.KabupatenKotaId,
+		KabupatenKota: responses.Kabupaten_KotaResponse{
+			Id:         k.KabupatenKota.Id,
+			ProvinsiId: k.KabupatenKota.ProvinsiId,
+			Nama:       k.KabupatenKota.Nama,
+		},
+
+		KecamatanId: k.KecamatanId,
+		Kecamatan: responses.KecamatanResponse{
+			Id:              k.Kecamatan.Id,
+			KabupatenKotaId: k.Kecamatan.KabupatenKotaId,
+			Nama:            k.Kecamatan.Nama,
+		},
+
+		KelurahanId: k.KelurahanId,
+		Kelurahan: responses.KelurahanResponse{
+			Id:          k.Kelurahan.Id,
+			KecamatanId: k.Kelurahan.KecamatanId,
+			Nama:        k.Kelurahan.Nama,
+		},
+
+		DesilKesejahteraan:     k.DesilKesejahteraan,
+		Alamat:                 k.Alamat,
+		KepalaKeluarga:         k.KepalaKeluarga,
+		Nik:                    k.Nik,
+		PadanDukcapil:          k.PadanDukcapil,
+		JenisKelamin:           k.JenisKelamin,
+		TanggalLahir:           k.TanggalLahir,
+		Pekerjaan:              k.Pekerjaan,
+		Pendidikan:             k.Pendidikan,
+		KepemilikanRumah:       k.KepemilikanRumah,
+		Simpanan:               k.Simpanan,
+		JenisAtap:              k.JenisAtap,
+		JenisDinding:           k.JenisDinding,
+		JenisLantai:            k.JenisLantai,
+		SumberPenerangan:       k.SumberPenerangan,
+		BahanBakarMemasak:      k.BahanBakarMemasak,
+		SumberAirMinum:         k.SumberAirMinum,
+		FasilitasBuangAirBesar: k.FasilitasBuangAirBesar,
+		PenerimaBPNT:           k.PenerimaBPNT,
+		PenerimaBPUM:           k.PenerimaBPUM,
+		PenerimaBST:            k.PenerimaBST,
+		PenerimaPKH:            k.PenerimaPKH,
+		PenerimaSembako:        k.PenerimaSembako,
+	}
+}
