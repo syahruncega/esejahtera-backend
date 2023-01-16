@@ -204,3 +204,7 @@ type KeluargaResponse struct {
 	PenerimaPKH            string `json:"penerimaPKH"`
 	PenerimaSembako        string `json:"penerimaSembako"`
 }
+
+type JumlahResponse struct {
+	Jumlah int64 `json:"jumlah"`
+}

@@ -10,38 +10,40 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type keluargaSigiController struct {
-	keluargaSigiService service.KeluargaSigiService
+type keluargaController struct {
+	keluargaService service.KeluargaService
 }
 
-func NewKeluargaSigiController(keluargaSigiService service.KeluargaSigiService) *keluargaSigiController {
-	return &keluargaSigiController{keluargaSigiService}
+func NewKeluargaController(keluargaService service.KeluargaService) *keluargaController {
+	return &keluargaController{keluargaService}
 }
 
-func (c *keluargaSigiController) GetKeluargas(cntx *gin.Context) {
+func (c *keluargaController) GetKeluargas(cntx *gin.Context) {
+	var kabupatenKotaId = cntx.Param("kabupatenkotaid")
 
-	var keluargaSigis, err = c.keluargaSigiService.FindAll()
+	var keluargas, err = c.keluargaService.FindAll(kabupatenKotaId)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),
 		})
 	}
 
-	var keluargaSigisResponse []responses.KeluargaResponse
+	var keluargasResponse []responses.KeluargaResponse
 
-	for _, keluargaSigi := range keluargaSigis {
-		var keluargaResponse = helper.ConvertToKeluargaSigiResponse(keluargaSigi)
-		keluargaSigisResponse = append(keluargaSigisResponse, keluargaResponse)
+	for _, keluarga := range keluargas {
+		var keluargaResponse = helper.ConvertToKeluargaResponse(keluarga)
+		keluargasResponse = append(keluargasResponse, keluargaResponse)
 	}
 
-	cntx.JSON(http.StatusOK, keluargaSigisResponse)
+	cntx.JSON(http.StatusOK, keluargasResponse)
 }
 
-func (c *keluargaSigiController) GetKeluargaById(cntx *gin.Context) {
+func (c *keluargaController) GetKeluargaById(cntx *gin.Context) {
+	var kabupatenKotaId = cntx.Param("kabupatenkotaid")
 	var idString = cntx.Param("id")
 	var id, _ = strconv.Atoi(idString)
 
-	var keluargaSigi, err = c.keluargaSigiService.FindById(id)
+	var keluarga, err = c.keluargaService.FindById(kabupatenKotaId, id)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": "Data tidak ditemukan",
@@ -49,15 +51,16 @@ func (c *keluargaSigiController) GetKeluargaById(cntx *gin.Context) {
 		return
 	}
 
-	var keluargaSigiResponse = helper.ConvertToKeluargaSigiResponse(keluargaSigi)
+	var keluargaResponse = helper.ConvertToKeluargaResponse(keluarga)
 
-	cntx.JSON(http.StatusOK, keluargaSigiResponse)
+	cntx.JSON(http.StatusOK, keluargaResponse)
 }
 
-func (c *keluargaSigiController) GetKeluargaByIdKeluarga(cntx *gin.Context) {
+func (c *keluargaController) GetKeluargaByIdKeluarga(cntx *gin.Context) {
+	var kabupatenKotaId = cntx.Param("kabupatenKotaId")
 	var idKeluarga = cntx.Param("idkeluarga")
 
-	var keluargaSigi, err = c.keluargaSigiService.FindByIdKeluarga(idKeluarga)
+	var keluarga, err = c.keluargaService.FindByIdKeluarga(kabupatenKotaId, idKeluarga)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": "Data tidak ditemukan",
@@ -65,8 +68,26 @@ func (c *keluargaSigiController) GetKeluargaByIdKeluarga(cntx *gin.Context) {
 		return
 	}
 
-	var keluargaSigiResponse = helper.ConvertToKeluargaSigiResponse(keluargaSigi)
+	var keluargaResponse = helper.ConvertToKeluargaResponse(keluarga)
 
-	cntx.JSON(http.StatusOK, keluargaSigiResponse)
+	cntx.JSON(http.StatusOK, keluargaResponse)
+}
+
+func (c *keluargaController) GetPenerimaByKelurahan(cntx *gin.Context) {
+	var kabupatenKotaId = cntx.Param("kabupatenkotaid")
+	var penerimaParameter = cntx.Param("penerimaparameter")
+	var nilai = cntx.Param("nilai")
+
+	var jumlah, err = c.keluargaService.FindPenerimaByKelurahan(kabupatenKotaId, penerimaParameter, nilai)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	var jumlahResponse = helper.ConvertToJumlahResponse(jumlah)
+
+	cntx.JSON(http.StatusOK, jumlahResponse)
 
 }
