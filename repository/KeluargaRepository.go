@@ -7,7 +7,7 @@ import (
 )
 
 type KeluargaRepository interface {
-	FindAll(kabupatenKotaIds string) ([]model.Keluarga, error)
+	FindAll(kabupatenKotaId string) ([]model.Keluarga, error)
 	FindById(kabupatenKotaId string, id int) (model.Keluarga, error)
 	FindByIdKeluarga(kabupatenKotaId string, idKeluarga string) (model.Keluarga, error)
 	FindPenerimaByKelurahan(kelurahanId string, penerimaParameter string, nilai string) (jumlah int64, err error)
