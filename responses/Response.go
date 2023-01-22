@@ -170,41 +170,185 @@ type KelurahanResponse struct {
 }
 
 type KeluargaResponse struct {
-	Id                     int    `json:"id"`
-	IdKeluarga             string `json:"idKeluarga"`
-	ProvinsiId             string `json:"provinsiId"`
-	Provinsi               ProvinsiResponse
-	KabupatenKotaId        string `json:"kabupatenKotaId"`
-	KabupatenKota          Kabupaten_KotaResponse
-	KecamatanId            string `json:"kecamatanId"`
-	Kecamatan              KecamatanResponse
-	KelurahanId            string `json:"kelurahanId"`
-	Kelurahan              KelurahanResponse
-	DesilKesejahteraan     string `json:"desilKesejahteraan"`
-	Alamat                 string `json:"alamat"`
-	KepalaKeluarga         string `json:"kepalaKeluarga"`
-	Nik                    string `json:"nik"`
-	PadanDukcapil          string `json:"padanDukcapil"`
-	JenisKelamin           string `json:"jenisKelamin"`
-	TanggalLahir           string `json:"tanggalLahir"`
-	Pekerjaan              string `json:"pekerjaan"`
-	Pendidikan             string `json:"pendidikan"`
-	KepemilikanRumah       string `json:"kepemilikanRumah"`
-	Simpanan               string `json:"simpanan"`
-	JenisAtap              string `json:"jenisAtap"`
-	JenisDinding           string `json:"jenisDinding"`
-	JenisLantai            string `json:"jenisLantai"`
-	SumberPenerangan       string `json:"sumberPenerangan"`
-	BahanBakarMemasak      string `json:"bahanBakarMemasak"`
-	SumberAirMinum         string `json:"sumberAirMinum"`
-	FasilitasBuangAirBesar string `json:"fasilitasBuangAirBesar"`
-	PenerimaBPNT           string `json:"penerimaBPNT"`
-	PenerimaBPUM           string `json:"penerimaBPUM"`
-	PenerimaBST            string `json:"penerimaBST"`
-	PenerimaPKH            string `json:"penerimaPKH"`
-	PenerimaSembako        string `json:"penerimaSembako"`
+	Id                     int                    `json:"id"`
+	IdKeluarga             string                 `json:"idKeluarga"`
+	ProvinsiId             string                 `json:"provinsiId"`
+	Provinsi               ProvinsiResponse       `json:"provinsi"`
+	KabupatenKotaId        string                 `json:"kabupatenKotaId"`
+	KabupatenKota          Kabupaten_KotaResponse `json:"kabupatenKota"`
+	KecamatanId            string                 `json:"kecamatanId"`
+	Kecamatan              KecamatanResponse      `json:"kecamatan"`
+	KelurahanId            string                 `json:"kelurahanId"`
+	Kelurahan              KelurahanResponse      `json:"kelurahan"`
+	DesilKesejahteraan     string                 `json:"desilKesejahteraan"`
+	Alamat                 string                 `json:"alamat"`
+	KepalaKeluarga         string                 `json:"kepalaKeluarga"`
+	Nik                    string                 `json:"nik"`
+	PadanDukcapil          string                 `json:"padanDukcapil"`
+	JenisKelamin           string                 `json:"jenisKelamin"`
+	TanggalLahir           string                 `json:"tanggalLahir"`
+	Pekerjaan              string                 `json:"pekerjaan"`
+	Pendidikan             string                 `json:"pendidikan"`
+	KepemilikanRumah       string                 `json:"kepemilikanRumah"`
+	Simpanan               string                 `json:"simpanan"`
+	JenisAtap              string                 `json:"jenisAtap"`
+	JenisDinding           string                 `json:"jenisDinding"`
+	JenisLantai            string                 `json:"jenisLantai"`
+	SumberPenerangan       string                 `json:"sumberPenerangan"`
+	BahanBakarMemasak      string                 `json:"bahanBakarMemasak"`
+	SumberAirMinum         string                 `json:"sumberAirMinum"`
+	FasilitasBuangAirBesar string                 `json:"fasilitasBuangAirBesar"`
+	PenerimaBPNT           string                 `json:"penerimaBPNT"`
+	PenerimaBPUM           string                 `json:"penerimaBPUM"`
+	PenerimaBST            string                 `json:"penerimaBST"`
+	PenerimaPKH            string                 `json:"penerimaPKH"`
+	PenerimaSembako        string                 `json:"penerimaSembako"`
+	StatusVerifikasi       int                    `json:"statusVerifikasi"`
+}
+
+type MonevResponse struct {
+	Id              int                    `json:"id"`
+	NamaPenerima    string                 `json:"namaPenerima"`
+	KabupatenKotaId string                 `json:"kabupatenKotaId"`
+	KabupatenKota   Kabupaten_KotaResponse `json:"kabupatenKota"`
+	KecamatanId     string                 `json:"kecamatanId"`
+	Kecamatan       KecamatanResponse      `json:"kecamatan"`
+	KelurahanId     string                 `json:"kelurahanId"`
+	Kelurahan       KelurahanResponse      `json:"kelurahan"`
+	JenisBantuan    string                 `json:"jenisBantuan"`
+	VolumeBantuan   float32                `json:"volumeBantuan"`
+	SatuanVolume    string                 `json:"satuanVolume"`
 }
 
 type JumlahResponse struct {
 	Jumlah int64 `json:"jumlah"`
+}
+
+type UserResponse struct {
+	Id        int       `json:"id"`
+	Username  string    `json:"username"`
+	Password  string    `json:"password"`
+	Email     string    `json:"email"`
+	NoHp      string    `json:"noHp"`
+	Role      string    `json:"role"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
+}
+
+type AdminResponse struct {
+	Id          int       `json:"id"`
+	UserId      int       `json:"userId"`
+	NamaLengkap string    `json:"namaLengkap"`
+	CreatedAt   time.Time `json:"createdAt"`
+	UpdatedAt   time.Time `json:"updatedAt"`
+}
+
+type AdminWithRelationResponse struct {
+	Id          int          `json:"id"`
+	UserId      int          `json:"userId"`
+	User        UserResponse `json:"user"`
+	NamaLengkap string       `json:"namaLengkap"`
+	CreatedAt   time.Time    `json:"createdAt"`
+	UpdatedAt   time.Time    `json:"updatedAt"`
+}
+
+type AnalisResponse struct {
+	Id          int       `json:"id"`
+	UserId      int       `json:"userId"`
+	NamaLengkap string    `json:"namaLengkap"`
+	Universitas string    `json:"universitas"`
+	CreatedAt   time.Time `json:"createdAt"`
+	UpdatedAt   time.Time `json:"updatedAt"`
+}
+
+type AnalisWithRelationResponse struct {
+	Id          int          `json:"id"`
+	UserId      int          `json:"userId"`
+	User        UserResponse `json:"user"`
+	NamaLengkap string       `json:"namaLengkap"`
+	Universitas string       `json:"universitas"`
+	CreatedAt   time.Time    `json:"createdAt"`
+	UpdatedAt   time.Time    `json:"updatedAt"`
+}
+
+type PusbangResponse struct {
+	Id          int       `json:"id"`
+	UserId      int       `json:"userId"`
+	NamaLengkap string    `json:"namaLengkap"`
+	Universitas string    `json:"universitas"`
+	CreatedAt   time.Time `json:"createdAt"`
+	UpdatedAt   time.Time `json:"updatedAt"`
+}
+
+type PusbangWithRelationResponse struct {
+	Id          int          `json:"id"`
+	UserId      int          `json:"userId"`
+	User        UserResponse `json:"user"`
+	NamaLengkap string       `json:"namaLengkap"`
+	Universitas string       `json:"universitas"`
+	CreatedAt   time.Time    `json:"createdAt"`
+	UpdatedAt   time.Time    `json:"updatedAt"`
+}
+
+type DosenResponse struct {
+	Id          int       `json:"id"`
+	UserId      int       `json:"userId"`
+	NamaLengkap string    `json:"namaLengkap"`
+	Universitas string    `json:"universitas"`
+	CreatedAt   time.Time `json:"createdAt"`
+	UpdatedAt   time.Time `json:"updatedAt"`
+}
+
+type DosenWithRelationResponse struct {
+	Id          int          `json:"id"`
+	UserId      int          `json:"userId"`
+	User        UserResponse `json:"user"`
+	NamaLengkap string       `json:"namaLengkap"`
+	Universitas string       `json:"universitas"`
+	CreatedAt   time.Time    `json:"createdAt"`
+	UpdatedAt   time.Time    `json:"updatedAt"`
+}
+
+type MahasiswaResponse struct {
+	Id           int       `json:"id"`
+	UserId       int       `json:"userId"`
+	NamaLengkap  string    `json:"namaLengkap"`
+	Universitas  string    `json:"universitas"`
+	JenisKelamin string    `json:"jenisKelamin"`
+	TanggalLahir string    `json:"tanggalLahir"`
+	KelurahanId  string    `json:"KelurahanId"`
+	CreatedAt    time.Time `json:"createdAt"`
+	UpdatedAt    time.Time `json:"updatedAt"`
+}
+
+type MahasiswaWithRelationResponse struct {
+	Id           int          `json:"id"`
+	UserId       int          `json:"userId"`
+	User         UserResponse `json:"user"`
+	NamaLengkap  string       `json:"namaLengkap"`
+	Universitas  string       `json:"universitas"`
+	JenisKelamin string       `json:"jenisKelamin"`
+	TanggalLahir string       `json:"tanggalLahir"`
+	KelurahanId  string       `json:"kelurahanId"`
+	Kelurahan    KelurahanResponse
+	CreatedAt    time.Time `json:"createdAt"`
+	UpdatedAt    time.Time `json:"updatedAt"`
+}
+
+type LokasiDosenResponse struct {
+	Id          int       `json:"id"`
+	DosenId     int       `json:"dosenId"`
+	KelurahanId string    `json:"kelurahanId"`
+	CreatedAt   time.Time `json:"createdAt"`
+	UpdatedAt   time.Time `json:"updatedAt"`
+}
+
+type LokasiDosenWithRelationResponse struct {
+	Id          int               `json:"id"`
+	DosenId     int               `json:"dosenId"`
+	Dosen       DosenResponse     `json:"dosen"`
+	KelurahanId string            `json:"kelurahanId"`
+	Kelurahan   KelurahanResponse `json:"kelurahan"`
+	CreatedAt   time.Time         `json:"createdAt"`
+	UpdatedAt   time.Time         `json:"updatedAt"`
 }

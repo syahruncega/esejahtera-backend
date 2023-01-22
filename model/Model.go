@@ -139,4 +139,94 @@ type Keluarga struct {
 	PenerimaBST            string `gorm:"column:penerimaBST"`
 	PenerimaPKH            string `gorm:"column:penerimaPKH"`
 	PenerimaSembako        string `gorm:"column:penerimaSembako"`
+	StatusVerifikasi       int    `gorm:"column:statusVerifikasi"`
+}
+
+type Monev struct {
+	Id              int    `gorm:"column:id;primaryKey;not null"`
+	NamaPenerima    string `gorm:"column:namaPenerima"`
+	KabupatenKotaId string `gorm:"column:kabupatenKotaId"`
+	KabupatenKota   Kabupaten_Kota
+	KecamatanId     string `gorm:"column:kecamatanId"`
+	Kecamatan       Kecamatan
+	KelurahanId     string `gorm:"column:kelurahanId"`
+	Kelurahan       Kelurahan
+	JenisBantuan    string  `gorm:"column:jenisBantuan"`
+	VolumeBantuan   float32 `gorm:"column:volumeBantuan"`
+	SatuanVolume    string  `gorm:"column:satuanVolume"`
+}
+
+type User struct {
+	Id        int       `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	Username  string    `gorm:"column:username;not null"`
+	Password  string    `gorm:"column:password;not null"`
+	Email     string    `gorm:"column:email; not null"`
+	NoHp      string    `gorm:"column:noHp; not null"`
+	Role      string    `gorm:"column:role;not null"`
+	CreatedAt time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt time.Time `gorm:"column:updatedAt;not null"`
+}
+
+type Admin struct {
+	Id          int `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	UserId      int `gorm:"column:userId;not null"`
+	User        User
+	NamaLengkap string    `gorm:"column:namaLengkap"`
+	CreatedAt   time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt   time.Time `gorm:"column:updatedAt;not null"`
+}
+
+type Analis struct {
+	Id          int `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	UserId      int `gorm:"column:userId;not null"`
+	User        User
+	NamaLengkap string    `gorm:"column:namaLengkap"`
+	Universitas string    `gorm:"column:universitas"`
+	LokasiKkn   string    `gorm:"column:lokasiKkn"`
+	CreatedAt   time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt   time.Time `gorm:"column:updatedAt;not null"`
+}
+
+type Pusbang struct {
+	Id          int `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	UserId      int `gorm:"column:userId;not null"`
+	User        User
+	NamaLengkap string    `gorm:"column:namaLengkap"`
+	Universitas string    `gorm:"column:universitas"`
+	CreatedAt   time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt   time.Time `gorm:"column:updatedAt;not null"`
+}
+
+type Dosen struct {
+	Id          int `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	UserId      int `gorm:"column:userId;not null"`
+	User        User
+	NamaLengkap string    `gorm:"column:namaLengkap"`
+	Universitas string    `gorm:"column:universitas"`
+	CreatedAt   time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt   time.Time `gorm:"column:updatedAt;not null"`
+}
+
+type Mahasiswa struct {
+	Id           int `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	UserId       int `gorm:"column:userId;not null"`
+	User         User
+	NamaLengkap  string `gorm:"column:namaLengkap"`
+	Universitas  string `gorm:"column:universitas"`
+	JenisKelamin string `gorm:"column:jenisKelamin"`
+	TanggalLahir string `gorm:"column:tanggalLahir"`
+	KelurahanId  string `gorm:"column:kelurahanId"`
+	Kelurahan    Kelurahan
+	CreatedAt    time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt    time.Time `gorm:"column:updatedAt;not null"`
+}
+
+type Lokasi_Dosen struct {
+	Id          int `gorm:"column:id;primaryKey;not null; autoIncrement"`
+	DosenId     int `gorm:"column:dosenId;not null"`
+	Dosen       Dosen
+	KelurahanId string `gorm:"column:kelurahanId;not null"`
+	Kelurahan   Kelurahan
+	CreatedAt   time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt   time.Time `gorm:"column:updatedAt;not null"`
 }

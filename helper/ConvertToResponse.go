@@ -317,11 +317,255 @@ func ConvertToKeluargaResponse(k model.Keluarga) responses.KeluargaResponse {
 		PenerimaBST:            k.PenerimaBST,
 		PenerimaPKH:            k.PenerimaPKH,
 		PenerimaSembako:        k.PenerimaSembako,
+		StatusVerifikasi:       k.StatusVerifikasi,
+	}
+}
+
+func ConvertToMonevResponse(m model.Monev) responses.MonevResponse {
+	return responses.MonevResponse{
+		Id:              m.Id,
+		NamaPenerima:    m.NamaPenerima,
+		KabupatenKotaId: m.KabupatenKotaId,
+		KabupatenKota: responses.Kabupaten_KotaResponse{
+			Id:         m.KabupatenKota.Id,
+			ProvinsiId: m.KabupatenKota.ProvinsiId,
+			Nama:       m.KabupatenKota.Nama,
+		},
+		KecamatanId: m.KecamatanId,
+		Kecamatan: responses.KecamatanResponse{
+			Id:              m.Kecamatan.Id,
+			KabupatenKotaId: m.Kecamatan.KabupatenKotaId,
+			Nama:            m.Kecamatan.Nama,
+		},
+		KelurahanId: m.KelurahanId,
+		Kelurahan: responses.KelurahanResponse{
+			Id:          m.Kelurahan.Id,
+			KecamatanId: m.Kelurahan.KecamatanId,
+			Nama:        m.Kelurahan.Nama,
+		},
+		JenisBantuan:  m.JenisBantuan,
+		VolumeBantuan: m.VolumeBantuan,
+		SatuanVolume:  m.SatuanVolume,
 	}
 }
 
 func ConvertToJumlahResponse(jumlah int64) responses.JumlahResponse {
 	return responses.JumlahResponse{
 		Jumlah: jumlah,
+	}
+}
+
+func ConvertToUserResponse(u model.User) responses.UserResponse {
+	return responses.UserResponse{
+		Id:        u.Id,
+		Username:  u.Username,
+		Password:  u.Password,
+		Email:     u.Email,
+		NoHp:      u.NoHp,
+		Role:      u.Role,
+		CreatedAt: u.CreatedAt,
+		UpdatedAt: u.UpdatedAt,
+	}
+}
+
+func ConvertToAdminResponse(a model.Admin) responses.AdminResponse {
+	return responses.AdminResponse{
+		Id:          a.Id,
+		UserId:      a.UserId,
+		NamaLengkap: a.NamaLengkap,
+		CreatedAt:   a.CreatedAt,
+		UpdatedAt:   a.UpdatedAt,
+	}
+}
+
+func ConvertToAdminWithRelationResponse(a model.Admin) responses.AdminWithRelationResponse {
+	return responses.AdminWithRelationResponse{
+		Id:     a.Id,
+		UserId: a.UserId,
+		User: responses.UserResponse{
+			Id:        a.User.Id,
+			Username:  a.User.Username,
+			Password:  a.User.Password,
+			Email:     a.User.Email,
+			NoHp:      a.User.NoHp,
+			Role:      a.User.Role,
+			CreatedAt: a.User.CreatedAt,
+			UpdatedAt: a.User.UpdatedAt,
+		},
+		NamaLengkap: a.NamaLengkap,
+		CreatedAt:   a.CreatedAt,
+		UpdatedAt:   a.UpdatedAt,
+	}
+}
+
+func ConvertToAnalisResponse(a model.Analis) responses.AnalisResponse {
+	return responses.AnalisResponse{
+		Id:          a.Id,
+		UserId:      a.UserId,
+		NamaLengkap: a.NamaLengkap,
+		Universitas: a.Universitas,
+		CreatedAt:   a.CreatedAt,
+		UpdatedAt:   a.UpdatedAt,
+	}
+}
+
+func ConvertToAnalisWithRelationResponse(a model.Analis) responses.AnalisWithRelationResponse {
+	return responses.AnalisWithRelationResponse{
+		Id:     a.Id,
+		UserId: a.UserId,
+		User: responses.UserResponse{
+			Id:        a.User.Id,
+			Username:  a.User.Username,
+			Password:  a.User.Password,
+			Email:     a.User.Email,
+			NoHp:      a.User.NoHp,
+			Role:      a.User.Role,
+			CreatedAt: a.User.CreatedAt,
+			UpdatedAt: a.User.UpdatedAt,
+		},
+		NamaLengkap: a.NamaLengkap,
+		Universitas: a.Universitas,
+		CreatedAt:   a.CreatedAt,
+		UpdatedAt:   a.UpdatedAt,
+	}
+}
+
+func ConvertToPusbangResponse(p model.Pusbang) responses.PusbangResponse {
+	return responses.PusbangResponse{
+		Id:          p.Id,
+		UserId:      p.UserId,
+		NamaLengkap: p.NamaLengkap,
+		Universitas: p.Universitas,
+		CreatedAt:   p.CreatedAt,
+		UpdatedAt:   p.UpdatedAt,
+	}
+}
+
+func ConvertToPusbangWithRelationResponse(p model.Pusbang) responses.PusbangWithRelationResponse {
+	return responses.PusbangWithRelationResponse{
+		Id:     p.Id,
+		UserId: p.UserId,
+		User: responses.UserResponse{
+			Id:        p.User.Id,
+			Username:  p.User.Username,
+			Password:  p.User.Password,
+			Email:     p.User.Email,
+			NoHp:      p.User.NoHp,
+			Role:      p.User.Role,
+			CreatedAt: p.User.CreatedAt,
+			UpdatedAt: p.User.UpdatedAt,
+		},
+		NamaLengkap: p.NamaLengkap,
+		Universitas: p.Universitas,
+		CreatedAt:   p.CreatedAt,
+		UpdatedAt:   p.UpdatedAt,
+	}
+}
+
+func ConvertToDosenResponse(d model.Dosen) responses.DosenResponse {
+	return responses.DosenResponse{
+		Id:          d.Id,
+		UserId:      d.UserId,
+		NamaLengkap: d.NamaLengkap,
+		Universitas: d.Universitas,
+		CreatedAt:   d.CreatedAt,
+		UpdatedAt:   d.UpdatedAt,
+	}
+}
+
+func ConvertToDosenWithRelationResponse(d model.Dosen) responses.DosenWithRelationResponse {
+	return responses.DosenWithRelationResponse{
+		Id:     d.Id,
+		UserId: d.UserId,
+		User: responses.UserResponse{
+			Id:        d.User.Id,
+			Username:  d.User.Username,
+			Password:  d.User.Password,
+			Email:     d.User.Email,
+			NoHp:      d.User.NoHp,
+			Role:      d.User.Role,
+			CreatedAt: d.User.CreatedAt,
+			UpdatedAt: d.User.UpdatedAt,
+		},
+		NamaLengkap: d.NamaLengkap,
+		Universitas: d.Universitas,
+		CreatedAt:   d.CreatedAt,
+		UpdatedAt:   d.UpdatedAt,
+	}
+}
+
+func ConvertToMahasiswaResponse(m model.Mahasiswa) responses.MahasiswaResponse {
+	return responses.MahasiswaResponse{
+		Id:           m.Id,
+		UserId:       m.UserId,
+		NamaLengkap:  m.NamaLengkap,
+		Universitas:  m.Universitas,
+		JenisKelamin: m.JenisKelamin,
+		TanggalLahir: m.TanggalLahir,
+		KelurahanId:  m.KelurahanId,
+		CreatedAt:    m.CreatedAt,
+		UpdatedAt:    m.UpdatedAt,
+	}
+}
+
+func ConvertToMahasiswaWithRelationResponse(m model.Mahasiswa) responses.MahasiswaWithRelationResponse {
+	return responses.MahasiswaWithRelationResponse{
+		Id:     m.Id,
+		UserId: m.UserId,
+		User: responses.UserResponse{
+			Id:        m.User.Id,
+			Username:  m.User.Username,
+			Password:  m.User.Password,
+			Email:     m.User.Email,
+			NoHp:      m.User.NoHp,
+			Role:      m.User.Role,
+			CreatedAt: m.User.CreatedAt,
+			UpdatedAt: m.User.UpdatedAt,
+		},
+		NamaLengkap:  m.NamaLengkap,
+		Universitas:  m.Universitas,
+		JenisKelamin: m.JenisKelamin,
+		TanggalLahir: m.TanggalLahir,
+		KelurahanId:  m.KelurahanId,
+		Kelurahan: responses.KelurahanResponse{
+			Id:          m.Kelurahan.Id,
+			KecamatanId: m.Kelurahan.KecamatanId,
+			Nama:        m.Kelurahan.Nama,
+		},
+		CreatedAt: m.CreatedAt,
+		UpdatedAt: m.UpdatedAt,
+	}
+}
+
+func ConvertToLokasiDosenResponse(l model.Lokasi_Dosen) responses.LokasiDosenResponse {
+	return responses.LokasiDosenResponse{
+		Id:          l.Id,
+		DosenId:     l.DosenId,
+		KelurahanId: l.KelurahanId,
+		CreatedAt:   l.CreatedAt,
+		UpdatedAt:   l.UpdatedAt,
+	}
+}
+
+func ConvertToLokasiDosenWithRelationResponse(l model.Lokasi_Dosen) responses.LokasiDosenWithRelationResponse {
+	return responses.LokasiDosenWithRelationResponse{
+		Id:      l.Id,
+		DosenId: l.DosenId,
+		Dosen: responses.DosenResponse{
+			Id:          l.Dosen.Id,
+			UserId:      l.Dosen.UserId,
+			NamaLengkap: l.Dosen.NamaLengkap,
+			Universitas: l.Dosen.Universitas,
+			CreatedAt:   l.Dosen.CreatedAt,
+			UpdatedAt:   l.Dosen.UpdatedAt,
+		},
+		KelurahanId: l.KelurahanId,
+		Kelurahan: responses.KelurahanResponse{
+			Id:          l.Kelurahan.Id,
+			KecamatanId: l.Kelurahan.KecamatanId,
+			Nama:        l.Kelurahan.Nama,
+		},
+		CreatedAt: l.CreatedAt,
+		UpdatedAt: l.UpdatedAt,
 	}
 }

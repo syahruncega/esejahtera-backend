@@ -8,8 +8,13 @@ import (
 type KeluargaService interface {
 	FindAll(kabupatenKotaId string) ([]model.Keluarga, error)
 	FindById(kabupatenKotaId string, id int) (model.Keluarga, error)
-	FindByIdKeluarga(kabupatenKotaId string, idKeluarga string) (model.Keluarga, error)
-	FindPenerimaByKelurahan(kabupatenKotaId string, penerimaParameter string, nilai string) (jumlah int64, err error)
+	FindByIdKeluargaByKabupatenKota(kabupatenKotaId string, idKeluarga string) (model.Keluarga, error)
+	CountPenerimaByKabupatenKota(kabupatenKotaId string, penerimaParameter string, nilai string) (jumlah int64, err error)
+	CountPenerimaByKecamatan(kecamatanId string, penerimaParameter string, nilai string) (jumlah int64, err error)
+	CountPenerimaByKelurahan(kelurahanId string, penerimaParameter string, nilai string) (jumlah int64, err error)
+	CountDesilByKabupatenKota(kabupatenKotaId string, nilaiDesil string) (jumlah int64, err error)
+	CountDesilByKecamatan(kecamatanId string, nilaiDesil string) (jumlah int64, err error)
+	CountDesilByKelurahan(kelurahanId string, nilaiDesil string) (jumlah int64, err error)
 }
 
 type keluargaService struct {
@@ -32,14 +37,44 @@ func (s *keluargaService) FindById(kabupatenKotaId string, id int) (model.Keluar
 	return keluarga, err
 }
 
-func (s *keluargaService) FindByIdKeluarga(kabupatenKotaId string, idKeluarga string) (model.Keluarga, error) {
-	var keluarga, err = s.keluargaRepository.FindByIdKeluarga(kabupatenKotaId, idKeluarga)
+func (s *keluargaService) FindByIdKeluargaByKabupatenKota(kabupatenKotaId string, idKeluarga string) (model.Keluarga, error) {
+	var keluarga, err = s.keluargaRepository.FindByIdKeluargaByKabupatenKota(kabupatenKotaId, idKeluarga)
 
 	return keluarga, err
 }
 
-func (s *keluargaService) FindPenerimaByKelurahan(kabupatenKotaId string, penerimaParameter string, nilai string) (jumlah int64, err error) {
-	var count, errr = s.keluargaRepository.FindPenerimaByKelurahan(kabupatenKotaId, penerimaParameter, nilai)
+func (s *keluargaService) CountPenerimaByKabupatenKota(kabupatenKotaId string, penerimaParameter string, nilai string) (jumlah int64, err error) {
+	var count, errr = s.keluargaRepository.CountPenerimaByKabupatenKota(kabupatenKotaId, penerimaParameter, nilai)
+
+	return count, errr
+}
+
+func (s *keluargaService) CountPenerimaByKecamatan(kecamatanId string, penerimaParameter string, nilai string) (jumlah int64, err error) {
+	var count, errr = s.keluargaRepository.CountPenerimaByKecamatan(kecamatanId, penerimaParameter, nilai)
+
+	return count, errr
+}
+
+func (s *keluargaService) CountPenerimaByKelurahan(kelurahanId string, penerimaParameter string, nilai string) (jumlah int64, err error) {
+	var count, errr = s.keluargaRepository.CountPenerimaByKelurahan(kelurahanId, penerimaParameter, nilai)
+
+	return count, errr
+}
+
+func (s *keluargaService) CountDesilByKabupatenKota(kabupatenKotaId string, nilaiDesil string) (jumlah int64, err error) {
+	var count, errr = s.keluargaRepository.CountDesilByKabupatenKota(kabupatenKotaId, nilaiDesil)
+
+	return count, errr
+}
+
+func (s *keluargaService) CountDesilByKecamatan(kecamatanId string, nilaiDesil string) (jumlah int64, err error) {
+	var count, errr = s.keluargaRepository.CountDesilByKecamatan(kecamatanId, nilaiDesil)
+
+	return count, errr
+}
+
+func (s *keluargaService) CountDesilByKelurahan(kelurahanId string, nilaiDesil string) (jumlah int64, err error) {
+	var count, errr = s.keluargaRepository.CountDesilByKelurahan(kelurahanId, nilaiDesil)
 
 	return count, errr
 }

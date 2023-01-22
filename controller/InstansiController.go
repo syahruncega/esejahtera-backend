@@ -101,8 +101,10 @@ func (c *instansiController) CreateInstansi(cntx *gin.Context) {
 		return
 	}
 
+	var instansiResponse = helper.ConvertToInstansiResponse(instansi)
+
 	cntx.JSON(http.StatusCreated, gin.H{
-		"data": instansi,
+		"data": instansiResponse,
 	})
 }
 
@@ -135,8 +137,10 @@ func (c *instansiController) UpdateInstansi(cntx *gin.Context) {
 		return
 	}
 
+	var instansiResponse = helper.ConvertToInstansiResponse(instansi)
+
 	cntx.JSON(http.StatusOK, gin.H{
-		"data": instansi,
+		"data": instansiResponse,
 	})
 }
 

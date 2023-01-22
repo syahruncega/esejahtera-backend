@@ -78,6 +78,38 @@ func main() {
 	var keluargaService = service.NewKeluargaService(keluargaRepository)
 	var keluargaController = controller.NewKeluargaController(keluargaService)
 
+	var monevRepository = repository.NewMonevRepository(config.DB)
+	var monevService = service.NewMonevService(monevRepository)
+	var monevController = controller.NewMonevController(monevService)
+
+	var userRepository = repository.NewUserRepository(config.DB)
+	var userService = service.NewUserService(userRepository)
+	var userController = controller.NewUserController(userService)
+
+	var adminRepository = repository.NewAdminRepository(config.DB)
+	var adminService = service.NewAdminService(adminRepository)
+	var adminController = controller.NewAdminController(adminService)
+
+	var analisRepository = repository.NewAnalisRepository(config.DB)
+	var analisService = service.NewAnalisService(analisRepository)
+	var analisController = controller.NewAnalisController(analisService)
+
+	var dosenRepository = repository.NewDosenRepository(config.DB)
+	var dosenService = service.NewDosenService(dosenRepository)
+	var dosenController = controller.NewDosenController(dosenService)
+
+	var pusbangRepository = repository.NewPusbangRepository(config.DB)
+	var pusbangService = service.NewPusbangService(pusbangRepository)
+	var pusbangController = controller.NewPusbangController(pusbangService)
+
+	var mahasiswaRepository = repository.NewMahasiswaRepository(config.DB)
+	var mahasiswaService = service.NewMahasiswaService(mahasiswaRepository)
+	var mahasiswaController = controller.NewMahasiswaController(mahasiswaService)
+
+	var lokasiDosenRepository = repository.NewLokasiDosenRepository(config.DB)
+	var lokasiDosenService = service.NewLokasiDosenService(lokasiDosenRepository)
+	var lokasiDosenController = controller.NewLokasiDosenController(lokasiDosenService)
+
 	var server = gin.Default()
 
 	server.Use(cors.New(cors.Config{
@@ -148,8 +180,65 @@ func main() {
 
 	server.GET("/keluarga/:kabupatenkotaid", keluargaController.GetKeluargas)
 	server.GET("/keluarga/detail/:kabupatenkotaid/:id", keluargaController.GetKeluargaById)
-	server.GET("/keluarga/idkeluarga/:kabupatenkotaid/:idkeluarga", keluargaController.GetKeluargaByIdKeluarga)
-	server.GET("/keluarga/jumlah/:kabupatenkotaid/:penerimaparameter/:nilai", keluargaController.GetPenerimaByKelurahan)
+	server.GET("/keluarga/idkeluarga/:kabupatenkotaid/:idkeluarga", keluargaController.GetIdKeluargaByKabupatenKota)
+	server.GET("/keluarga/jumlah/penerima/kabupatenkota/:kabupatenkotaid/:penerimaparameter/:nilai", keluargaController.CountPenerimaByKabupatenKota)
+	server.GET("/keluarga/jumlah/penerima/kecamatan/:kecamatanid/:penerimaparameter/:nilai", keluargaController.CountPenerimaByKecamatan)
+	server.GET("/keluarga/jumlah/penerima/kelurahan/:kelurahanid/:penerimaparameter/:nilai", keluargaController.CountPenerimaByKelurahan)
+	server.GET("/keluarga/jumlah/desil/kabupatenkota/:kabupatenkotaid/:nilaidesil", keluargaController.CountDesilByKabupatenKota)
+	server.GET("/keluarga/jumlah/desil/kecamatan/:kecamatanid/:nilaidesil", keluargaController.CountDesilByKecamatan)
+	server.GET("/keluarga/jumlah/desil/kelurahan/:kelurahanid/:nilaidesil", keluargaController.CountDesilByKelurahan)
+
+	server.GET("/monev/:kabupatenkotaid", monevController.GetMonevs)
+	server.GET("/monev/detail/:kabupatenkotaid/:id", monevController.GetMonev)
+
+	server.GET("/user", userController.GetUsers)
+	server.GET("/user/:id", userController.GetUser)
+	server.POST("/user", userController.CreateUser)
+	server.PATCH("/user/:id", userController.UpdateUser)
+	server.DELETE("/user/:id", userController.DeleteUser)
+
+	server.GET("/admin", adminController.GetAdmins)
+	server.GET("/admin/:id", adminController.GetAdmin)
+	server.GET("/adminrelasi", adminController.GetAdminWithRelation)
+	server.POST("/admin", adminController.CreateAdmin)
+	server.PATCH("/admin/:id", adminController.UpdateAdmin)
+	server.DELETE("/admin/:id", adminController.DeleteAdmin)
+
+	server.GET("/analis", analisController.GetAnaliss)
+	server.GET("/analis/:id", analisController.GetAnalis)
+	server.GET("/analisrelasi", analisController.GetAnalisWithRelation)
+	server.POST("/analis", analisController.CreateAnalis)
+	server.PATCH("/analis/:id", analisController.UpdateAnalis)
+	server.DELETE("/analis/:id", analisController.DeleteAnalis)
+
+	server.GET("/dosen", dosenController.GetDosens)
+	server.GET("/dosen/:id", dosenController.GetDosen)
+	server.GET("/dosenrelasi", dosenController.GetDosenWithRelation)
+	server.POST("/dosen", dosenController.CreateDosen)
+	server.PATCH("/dosen/:id", dosenController.UpdateDosen)
+	server.DELETE("/dosen/:id", dosenController.DeleteDosen)
+
+	server.GET("/pusbang", pusbangController.GetPusbangs)
+	server.GET("/pusbang/:id", pusbangController.GetPusbang)
+	server.GET("/pusbangrelasi", pusbangController.GetPusbangWithRelation)
+	server.POST("/pusbang", pusbangController.CreatePusbang)
+	server.PATCH("/pusbang:id", pusbangController.UpdatePusbang)
+	server.DELETE("/pusbang/:id", pusbangController.DeletePusbang)
+
+	server.GET("/mahasiswa", mahasiswaController.GetMahasiswas)
+	server.GET("/mahasiswa/:id", mahasiswaController.GetMahasiswa)
+	server.GET("/mahasiswarelasi", mahasiswaController.GetMahasiswaWithRelation)
+	server.POST("/mahasiswa", mahasiswaController.CreateMahasiswa)
+	server.PATCH("/mahasiswa/:id", mahasiswaController.UpdateMahasiswa)
+	server.DELETE("/mahasiswa/:id", mahasiswaController.DeleteMahasiswa)
+
+	server.GET("/lokasidosen", lokasiDosenController.GetLokasiDosens)
+	server.GET("/lokasidosen/:id", lokasiDosenController.GetLokasiDosen)
+	server.GET("/lokasidosenrelasi", lokasiDosenController.GetLokasiDosenWithRelation)
+	server.GET("/lokasidosen/dosen/:dosenid", lokasiDosenController.GetLokasiDosenRelationByDosenId)
+	server.POST("/lokasidosen", lokasiDosenController.CreateLokasiDosen)
+	server.PATCH("/lokasidosen/:id", lokasiDosenController.UpdateLokasiDosen)
+	server.DELETE("/lokasidosen/:id", lokasiDosenController.DeleteLokasiDosen)
 
 	server.Run(":" + appConfig.AppPort)
 }
