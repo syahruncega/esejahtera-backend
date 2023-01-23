@@ -3,7 +3,7 @@ package request
 type CreateUserRequest struct {
 	Username string `json:"username" binding:"required"`
 	Password string `json:"password" binding:"required"`
-	Email    string `json:"email" binding:"require"`
+	Email    string `json:"email" binding:"required"`
 	NoHp     string `json:"noHp" binding:"required"`
 	Role     string `json:"role" binding:"required"`
 }

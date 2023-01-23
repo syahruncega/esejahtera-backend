@@ -58,7 +58,7 @@ func (r *userRepository) Update(user model.User) (model.User, error) {
 }
 
 func (r *userRepository) Delete(user model.User) (model.User, error) {
-	var err = r.db.Delete("&user").Error
+	var err = r.db.Delete(&user).Error
 
 	return user, err
 }
