@@ -45,6 +45,7 @@ func (r *userRepository) Create(user model.User) (model.User, error) {
 }
 
 func (r *userRepository) Update(user model.User) (model.User, error) {
+
 	var err = r.db.Model(&user).Updates(model.User{
 		Id:       user.Id,
 		Username: user.Username,
