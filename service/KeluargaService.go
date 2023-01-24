@@ -3,6 +3,7 @@ package service
 import (
 	"kemiskinan/model"
 	"kemiskinan/repository"
+	"kemiskinan/request"
 )
 
 type KeluargaService interface {
@@ -15,6 +16,7 @@ type KeluargaService interface {
 	CountDesilByKabupatenKota(kabupatenKotaId string, nilaiDesil string) (jumlah int64, err error)
 	CountDesilByKecamatan(kecamatanId string, nilaiDesil string) (jumlah int64, err error)
 	CountDesilByKelurahan(kelurahanId string, nilaiDesil string) (jumlah int64, err error)
+	Update(kabupatenKotaId string, id int, keluargaRequest request.UpdateKeluargaRequest) (model.Keluarga, error)
 }
 
 type keluargaService struct {
@@ -77,4 +79,15 @@ func (s *keluargaService) CountDesilByKelurahan(kelurahanId string, nilaiDesil s
 	var count, errr = s.keluargaRepository.CountDesilByKelurahan(kelurahanId, nilaiDesil)
 
 	return count, errr
+}
+
+func (s *keluargaService) Update(kabupatenKotaId string, id int, keluargaRequest request.UpdateKeluargaRequest) (model.Keluarga, error) {
+	var keluarga, err = s.keluargaRepository.FindById(kabupatenKotaId, id)
+
+	keluarga.UserId = keluargaRequest.UserId
+	keluarga.StatusVerifikasi = keluargaRequest.StatusVerifikasi
+
+	updatedKeluarga, err := s.keluargaRepository.Update(keluarga)
+
+	return updatedKeluarga, err
 }

@@ -110,6 +110,10 @@ func main() {
 	var lokasiDosenService = service.NewLokasiDosenService(lokasiDosenRepository)
 	var lokasiDosenController = controller.NewLokasiDosenController(lokasiDosenService)
 
+	var keluargaVerifikasiRepository = repository.NewKeluargaVerifikasiRepository(config.DB)
+	var keluargaVerifikasiService = service.NewKeluargaVerifikasiService(keluargaVerifikasiRepository)
+	var keluargaVerifikasiController = controller.NewKeluargaVerifikasiController(keluargaVerifikasiService)
+
 	var server = gin.Default()
 
 	server.Use(cors.New(cors.Config{
@@ -187,6 +191,7 @@ func main() {
 	server.GET("/keluarga/jumlah/desil/kabupatenkota/:kabupatenkotaid/:nilaidesil", keluargaController.CountDesilByKabupatenKota)
 	server.GET("/keluarga/jumlah/desil/kecamatan/:kecamatanid/:nilaidesil", keluargaController.CountDesilByKecamatan)
 	server.GET("/keluarga/jumlah/desil/kelurahan/:kelurahanid/:nilaidesil", keluargaController.CountDesilByKelurahan)
+	server.PATCH("/keluarga/:kabupatenkotaid/:id", keluargaController.UpdateKeluarga)
 
 	server.GET("/monev/:kabupatenkotaid", monevController.GetMonevs)
 	server.GET("/monev/detail/:kabupatenkotaid/:id", monevController.GetMonev)
@@ -239,6 +244,12 @@ func main() {
 	server.POST("/lokasidosen", lokasiDosenController.CreateLokasiDosen)
 	server.PATCH("/lokasidosen/:id", lokasiDosenController.UpdateLokasiDosen)
 	server.DELETE("/lokasidosen/:id", lokasiDosenController.DeleteLokasiDosen)
+
+	server.GET("/keluargaverifikasi/:kabupatenkotaid", keluargaVerifikasiController.GetKeluargaVerifikasis)
+	server.GET("/keluargaverifikasi/detail/:kabupatenkotaid/:id", keluargaVerifikasiController.GetKeluargaVerifikasi)
+	server.POST("/keluargaverifikasi", keluargaVerifikasiController.CreateKeluargaVerifikasi)
+	server.PATCH("/keluargaverifikasi/:kabupatenkotaid/:id", keluargaVerifikasiController.UpdateKeluargaVerifikasi)
+	server.DELETE("/keluargaverifikasi/:kabupatenkotaid/:id", keluargaVerifikasiController.DeleteKeluargaVerifikasi)
 
 	server.Run(":" + appConfig.AppPort)
 }

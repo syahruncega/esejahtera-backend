@@ -106,7 +106,7 @@ type Kelurahan struct {
 }
 
 type Keluarga struct {
-	Id                     int    `gorm:"column:id;not null"`
+	Id                     int    `gorm:"column:id;primaryKey;not null"`
 	IdKeluarga             string `gorm:"column:idKeluarga"`
 	ProvinsiId             string `gorm:"column:provinsiId"`
 	Provinsi               Provinsi
@@ -139,7 +139,9 @@ type Keluarga struct {
 	PenerimaBST            string `gorm:"column:penerimaBST"`
 	PenerimaPKH            string `gorm:"column:penerimaPKH"`
 	PenerimaSembako        string `gorm:"column:penerimaSembako"`
-	StatusVerifikasi       int    `gorm:"column:statusVerifikasi"`
+	UserId                 int    `gorm:"column:userId"`
+	User                   User
+	StatusVerifikasi       int `gorm:"column:statusVerifikasi"`
 }
 
 type Monev struct {
@@ -229,4 +231,48 @@ type Lokasi_Dosen struct {
 	Kelurahan   Kelurahan
 	CreatedAt   time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt   time.Time `gorm:"column:updatedAt;not null"`
+}
+
+type KeluargaVerifikasi struct {
+	Id                     int    `gorm:"column:id;primaryKey;not null"`
+	IdKeluarga             string `gorm:"column:idKeluarga;not null"`
+	ProvinsiId             string `gorm:"column:provinsiId;not null"`
+	Provinsi               Provinsi
+	KabupatenKotaId        string `gorm:"column:kabupatenKotaId;not null"`
+	KabupatenKota          Kabupaten_Kota
+	KecamatanId            string `gorm:"column:kecamatanId;not null"`
+	Kecamatan              Kecamatan
+	KelurahanId            string `gorm:"column:kelurahanId; not null"`
+	DesilKesejahteraan     string `gorm:"column:desilKesejahteraan; not null"`
+	Alamat                 string `gorm:"column:alamat;not null"`
+	KepalaKeluarga         string `gorm:"column:kepalaKeluarga;not null"`
+	Nik                    string `gorm:"column:nik;not null"`
+	PadanDukcapil          string `gorm:"column:padanDukcapil;not null"`
+	JenisKelamin           string `gorm:"column:jenisKelamin;not null"`
+	TanggalLahir           string `gorm:"column:tanggalLahir;not null"`
+	Pekerjaan              string `gorm:"column:pekerjaan;not null"`
+	Pendidikan             string `gorm:"column:pendidikan;not null"`
+	KepemilikanRumah       string `gorm:"column:kepemilikanRumah;not null"`
+	Simpanan               string `gorm:"column:simpanan;not null"`
+	JenisAtap              string `gorm:"column:jenisAtap;not null"`
+	JenisDinding           string `gorm:"column:jenisDinding;not null"`
+	JenisLantai            string `gorm:"column:jenisLantai;not null"`
+	SumberPenerangan       string `gorm:"column:sumberPenerangan;not null"`
+	BahanBakarMemasak      string `gorm:"column:bahanBakarMemasak;not null"`
+	SumberAirMinum         string `gorm:"column:sumberAirMinum;not null"`
+	FasilitasBuangAirBesar string `gorm:"column:fasilitasBuangAirBesar;not null"`
+	PenerimaBPNT           string `gorm:"column:penerimaBPNT;not null"`
+	PenerimaBPUM           string `gorm:"column:penerimaBPUM;not null"`
+	PenerimaBST            string `gorm:"column:penerimaBST;not null"`
+	PenerimaPKH            string `gorm:"column:penerimaPKH;not null"`
+	PenerimaSembako        string `gorm:"column:penerimaSembako;not null"`
+	PenerimaLainnya        string `gorm:"column:penerimaLainnya"`
+	StatusResponden        string `gorm:"column:statusResponden;not null"`
+	UserId                 int    `gorm:"column:userId;not null"`
+	User                   User
+	MahasiswaId            int `gorm:"column:mahasiswaId;not null"`
+	Mahasiswa              Mahasiswa
+	Kelurahan              Kelurahan
+	CreatedAt              time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt              time.Time `gorm:"column:updatedAt;not null"`
 }

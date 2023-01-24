@@ -203,6 +203,8 @@ type KeluargaResponse struct {
 	PenerimaBST            string                 `json:"penerimaBST"`
 	PenerimaPKH            string                 `json:"penerimaPKH"`
 	PenerimaSembako        string                 `json:"penerimaSembako"`
+	UserId                 int                    `json:"userId"`
+	User                   UserResponse           `json:"user"`
 	StatusVerifikasi       int                    `json:"statusVerifikasi"`
 }
 
@@ -351,4 +353,48 @@ type LokasiDosenWithRelationResponse struct {
 	Kelurahan   KelurahanResponse `json:"kelurahan"`
 	CreatedAt   time.Time         `json:"createdAt"`
 	UpdatedAt   time.Time         `json:"updatedAt"`
+}
+
+type KeluargaVerifikasiResponse struct {
+	Id                     int                    `json:"id"`
+	IdKeluarga             string                 `json:"idKeluarga"`
+	ProvinsiId             string                 `json:"provinsiId"`
+	Provinsi               ProvinsiResponse       `json:"provinsi"`
+	KabupatenKotaId        string                 `json:"kabupatenKotaId"`
+	KabupatenKota          Kabupaten_KotaResponse `json:"kabupatenKota"`
+	KecamatanId            string                 `json:"kecamatanId"`
+	Kecamatan              KecamatanResponse      `json:"kecamatan"`
+	KelurahanId            string                 `json:"kelurahanId"`
+	DesilKesejahteraan     string                 `json:"desilKesejahteraan"`
+	Alamat                 string                 `json:"alamat"`
+	KepalaKeluarga         string                 `json:"kepalaKeluarga"`
+	Nik                    string                 `json:"nik"`
+	PadanDukcapil          string                 `json:"padanDukcapil"`
+	JenisKelamin           string                 `json:"jenisKelamin"`
+	TanggalLahir           string                 `json:"tanggalLahir"`
+	Pekerjaan              string                 `json:"pekerjaan"`
+	Pendidikan             string                 `json:"pendidikan"`
+	KepemilikanRumah       string                 `json:"kepemilikanRumah"`
+	Simpanan               string                 `json:"simpanan"`
+	JenisAtap              string                 `json:"jenisAtap"`
+	JenisDinding           string                 `json:"jenisDinding"`
+	JenisLantai            string                 `json:"jenisLantai"`
+	SumberPenerangan       string                 `json:"sumberPenerangan"`
+	BahanBakarMemasak      string                 `json:"bahanBakarMemasak"`
+	SumberAirMinum         string                 `json:"sumberAirMinum"`
+	FasilitasBuangAirBesar string                 `json:"fasilitasBuangAirBesar"`
+	PenerimaBPNT           string                 `json:"penerimaBPNT"`
+	PenerimaBPUM           string                 `json:"penerimaBPUM"`
+	PenerimaBST            string                 `json:"penerimaBST"`
+	PenerimaPKH            string                 `json:"penerimaPKH"`
+	PenerimaSembako        string                 `json:"penerimaSembako"`
+	PenerimaLainnya        string                 `json:"penerimaLainnya"`
+	StatusResponden        string                 `json:"statusResponden"`
+	UserId                 int                    `json:"userId"`
+	User                   UserResponse           `json:"user"`
+	MahasiswaId            int                    `json:"mahasiswaId"`
+	Mahasiswa              MahasiswaResponse      `json:"mahasiswa"`
+	Kelurahan              KelurahanResponse      `json:"kelurahan"`
+	CreatedAt              time.Time              `json:"createdAt"`
+	UpdatedAt              time.Time              `json:"updatedAt"`
 }

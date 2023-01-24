@@ -1,13 +1,16 @@
 package controller
 
 import (
+	"fmt"
 	"kemiskinan/helper"
+	"kemiskinan/request"
 	"kemiskinan/responses"
 	"kemiskinan/service"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 )
 
 type keluargaController struct {
@@ -177,4 +180,39 @@ func (c *keluargaController) CountDesilByKelurahan(cntx *gin.Context) {
 	var jumlahResponse = helper.ConvertToJumlahResponse(jumlah)
 
 	cntx.JSON(http.StatusOK, jumlahResponse)
+}
+
+func (c *keluargaController) UpdateKeluarga(cntx *gin.Context) {
+	var keluargaRequest request.UpdateKeluargaRequest
+
+	var err = cntx.ShouldBindJSON(&keluargaRequest)
+	if err != nil {
+		var errorMessages = []string{}
+
+		for _, e := range err.(validator.ValidationErrors) {
+			var errorMessage = fmt.Sprintf("Error on field %s, condition : %s", e.Field(), e.ActualTag())
+			errorMessages = append(errorMessages, errorMessage)
+		}
+
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": errorMessages,
+		})
+		return
+	}
+
+	var kabupatenKotaId = cntx.Param("kabupatenkotaid")
+	var idString = cntx.Param("id")
+	var id, _ = strconv.Atoi(idString)
+
+	keluarga, err := c.keluargaService.Update(kabupatenKotaId, id, keluargaRequest)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"errors": cntx.Error(err),
+		})
+		return
+	}
+
+	var keluargaResponse = helper.ConvertToKeluargaResponse(keluarga)
+
+	cntx.JSON(http.StatusOK, keluargaResponse)
 }

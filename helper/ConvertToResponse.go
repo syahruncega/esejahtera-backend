@@ -317,7 +317,20 @@ func ConvertToKeluargaResponse(k model.Keluarga) responses.KeluargaResponse {
 		PenerimaBST:            k.PenerimaBST,
 		PenerimaPKH:            k.PenerimaPKH,
 		PenerimaSembako:        k.PenerimaSembako,
-		StatusVerifikasi:       k.StatusVerifikasi,
+
+		UserId: k.UserId,
+		User: responses.UserResponse{
+			Id:        k.User.Id,
+			Username:  k.User.Username,
+			Password:  k.User.Password,
+			Email:     k.User.Email,
+			NoHp:      k.User.NoHp,
+			Role:      k.User.Role,
+			CreatedAt: k.User.CreatedAt,
+			UpdatedAt: k.User.UpdatedAt,
+		},
+
+		StatusVerifikasi: k.StatusVerifikasi,
 	}
 }
 
@@ -567,5 +580,90 @@ func ConvertToLokasiDosenWithRelationResponse(l model.Lokasi_Dosen) responses.Lo
 		},
 		CreatedAt: l.CreatedAt,
 		UpdatedAt: l.UpdatedAt,
+	}
+}
+
+func ConvertToKeluargaVerifikasiResponse(k model.KeluargaVerifikasi) responses.KeluargaVerifikasiResponse {
+	return responses.KeluargaVerifikasiResponse{
+		Id:         k.Id,
+		IdKeluarga: k.IdKeluarga,
+		ProvinsiId: k.ProvinsiId,
+		Provinsi: responses.ProvinsiResponse{
+			Id:   k.Provinsi.Id,
+			Nama: k.Provinsi.Nama,
+		},
+
+		KabupatenKotaId: k.KabupatenKotaId,
+		KabupatenKota: responses.Kabupaten_KotaResponse{
+			Id:         k.KabupatenKota.Id,
+			ProvinsiId: k.KabupatenKota.ProvinsiId,
+			Nama:       k.KabupatenKota.Nama,
+		},
+
+		KecamatanId: k.KecamatanId,
+		Kecamatan: responses.KecamatanResponse{
+			Id:              k.Kecamatan.Id,
+			KabupatenKotaId: k.Kecamatan.KabupatenKotaId,
+			Nama:            k.Kecamatan.Nama,
+		},
+
+		KelurahanId:            k.KelurahanId,
+		DesilKesejahteraan:     k.DesilKesejahteraan,
+		Alamat:                 k.Alamat,
+		KepalaKeluarga:         k.KepalaKeluarga,
+		Nik:                    k.Nik,
+		PadanDukcapil:          k.PadanDukcapil,
+		JenisKelamin:           k.JenisKelamin,
+		TanggalLahir:           k.TanggalLahir,
+		Pekerjaan:              k.Pekerjaan,
+		Pendidikan:             k.Pendidikan,
+		KepemilikanRumah:       k.KepemilikanRumah,
+		Simpanan:               k.Simpanan,
+		JenisAtap:              k.JenisAtap,
+		JenisDinding:           k.JenisDinding,
+		JenisLantai:            k.JenisLantai,
+		SumberPenerangan:       k.SumberPenerangan,
+		BahanBakarMemasak:      k.BahanBakarMemasak,
+		SumberAirMinum:         k.SumberAirMinum,
+		FasilitasBuangAirBesar: k.FasilitasBuangAirBesar,
+		PenerimaBPNT:           k.PenerimaBPNT,
+		PenerimaBPUM:           k.PenerimaBPUM,
+		PenerimaBST:            k.PenerimaBST,
+		PenerimaPKH:            k.PenerimaPKH,
+		PenerimaSembako:        k.PenerimaSembako,
+		PenerimaLainnya:        k.PenerimaLainnya,
+		StatusResponden:        k.StatusResponden,
+
+		UserId: k.UserId,
+		User: responses.UserResponse{
+			Id:        k.User.Id,
+			Username:  k.User.Username,
+			Password:  k.User.Password,
+			Email:     k.User.Email,
+			NoHp:      k.User.NoHp,
+			Role:      k.User.Role,
+			CreatedAt: k.User.CreatedAt,
+			UpdatedAt: k.User.UpdatedAt,
+		},
+
+		MahasiswaId: k.MahasiswaId,
+		Mahasiswa: responses.MahasiswaResponse{
+			Id:           k.Mahasiswa.Id,
+			UserId:       k.UserId,
+			NamaLengkap:  k.Mahasiswa.NamaLengkap,
+			Universitas:  k.Mahasiswa.Universitas,
+			JenisKelamin: k.JenisKelamin,
+			TanggalLahir: k.TanggalLahir,
+			KelurahanId:  k.KelurahanId,
+		},
+
+		Kelurahan: responses.KelurahanResponse{
+			Id:          k.Kelurahan.Id,
+			KecamatanId: k.Kelurahan.KecamatanId,
+			Nama:        k.Kelurahan.Nama,
+		},
+
+		CreatedAt: k.CreatedAt,
+		UpdatedAt: k.UpdatedAt,
 	}
 }
