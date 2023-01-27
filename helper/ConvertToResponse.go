@@ -23,12 +23,25 @@ func ConvertToInstansiResponse(i model.Instansi) responses.InstansiResponse {
 	}
 }
 
-func ConvertToInstansiWithBidangUrusanResponse(i model.Instansi) responses.InstansiWithBidangUrusanResponse {
-	return responses.InstansiWithBidangUrusanResponse{
-		Id:           i.Id,
-		NamaInstansi: i.NamaInstansi,
-		CreatedAt:    i.CreatedAt,
-		UpdatedAt:    i.UpdatedAt,
+func ConvertToDetailInstansiResponse(d model.DetailInstansi) responses.DetailInstansiResponse {
+	return responses.DetailInstansiResponse{
+		Id:         d.Id,
+		InstansiId: d.InstansiId,
+		Instansi: responses.InstansiResponse{
+			Id:           d.Instansi.Id,
+			NamaInstansi: d.Instansi.NamaInstansi,
+			CreatedAt:    d.Instansi.CreatedAt,
+			UpdatedAt:    d.Instansi.UpdatedAt,
+		},
+		BidangUrusanId: d.BidangUrusanId,
+		BidangUrusan: responses.BidangUrusanResponse{
+			Id:               d.BidangUrusan.Id,
+			NamaBidangUrusan: d.BidangUrusan.NamaBidangUrusan,
+			CreatedAt:        d.BidangUrusan.CreatedAt,
+			UpdatedAt:        d.BidangUrusan.UpdatedAt,
+		},
+		CreatedAt: d.CreatedAt,
+		UpdatedAt: d.UpdatedAt,
 	}
 }
 

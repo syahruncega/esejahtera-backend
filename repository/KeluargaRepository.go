@@ -9,6 +9,9 @@ import (
 type KeluargaRepository interface {
 	FindAll(kabupatenKotaId string) ([]model.Keluarga, error)
 	FindById(kabupatenKotaId string, id int) (model.Keluarga, error)
+	FindByKelurahanId(kelurahanId string) ([]model.Keluarga, error)
+	FindByDesil(desilKesejahteraan string) ([]model.Keluarga, error)
+	FindByKelurahanIdAndDesil(kelurahanId string, desilKesejahteraan string) ([]model.Keluarga, error)
 	FindByIdKeluargaByKabupatenKota(kabupatenKotaId string, idKeluarga string) (model.Keluarga, error)
 	CountPenerimaByKabupatenKota(kabupatenKotaId string, penerimaParameter string, nilai string) (jumlah int64, err error)
 	CountPenerimaByKecamatan(kecamatanId string, penerimaParameter string, nilai string) (jumlah int64, err error)
@@ -42,6 +45,30 @@ func (r *keluargaRepository) FindById(kabupatenkotaId string, id int) (model.Kel
 	var err = r.db.Where("kabupatenKotaId = ?", kabupatenkotaId).Model(&keluarga).Preload("Provinsi").Preload("KabupatenKota").Preload("Kecamatan").Preload("Kelurahan").Preload("User").Preload("Mahasiswa").Take(&keluarga, id).Error
 
 	return keluarga, err
+}
+
+func (r *keluargaRepository) FindByKelurahanId(kelurahanId string) ([]model.Keluarga, error) {
+	var keluargas []model.Keluarga
+
+	var err = r.db.Where("kelurahanId = ?", kelurahanId).Model(&keluargas).Preload("Provinsi").Preload("KabupatenKota").Preload("Kecamatan").Preload("Kelurahan").Preload("User").Preload("Mahasiswa").Find(&keluargas).Error
+
+	return keluargas, err
+}
+
+func (r *keluargaRepository) FindByDesil(desilKesejahteraan string) ([]model.Keluarga, error) {
+	var keluargas []model.Keluarga
+
+	var err = r.db.Where("desilKesejahteraan = ?", desilKesejahteraan).Model(&keluargas).Preload("Provinsi").Preload("KabupatenKota").Preload("Kecamatan").Preload("Kelurahan").Preload("User").Preload("Mahasiswa").Find(&keluargas).Error
+
+	return keluargas, err
+}
+
+func (r *keluargaRepository) FindByKelurahanIdAndDesil(kelurahanId string, desilKesejahteraan string) ([]model.Keluarga, error) {
+	var keluargas []model.Keluarga
+
+	var err = r.db.Where("kelurahanId = ? and desilKesejahteraan =  ?", kelurahanId, desilKesejahteraan).Model(&keluargas).Preload("Provinsi").Preload("KabupatenKota").Preload("Kecamatan").Preload("Kelurahan").Preload("User").Preload("Mahasiswa").Find(&keluargas).Error
+
+	return keluargas, err
 }
 
 func (r *keluargaRepository) FindByIdKeluargaByKabupatenKota(kabupatenKotaId string, idKeluarga string) (model.Keluarga, error) {

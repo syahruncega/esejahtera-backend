@@ -16,13 +16,14 @@ type InstansiResponse struct {
 	UpdatedAt    time.Time `json:"updatedAt"`
 }
 
-type InstansiWithBidangUrusanResponse struct {
-	Id             string               `json:"id"`
-	NamaInstansi   string               `json:"namaInstansi"`
+type DetailInstansiResponse struct {
+	Id             int                  `json:"id"`
+	InstansiId     string               `json:"instansiId"`
+	Instansi       InstansiResponse     `json:"instansi"`
 	BidangUrusanId string               `json:"bidangUrusanId"`
+	BidangUrusan   BidangUrusanResponse `json:"bidangUrusan"`
 	CreatedAt      time.Time            `json:"createdAt"`
 	UpdatedAt      time.Time            `json:"updatedAt"`
-	BidangUrusan   BidangUrusanResponse `json:"bidangUrusan"`
 }
 
 type ProgramResponse struct {

@@ -38,6 +38,10 @@ func main() {
 	var instansiService = service.NewInstansiService(instansiRepository)
 	var instansiController = controller.NewInstansiController(instansiService)
 
+	var detailInstansiRepository = repository.NewDetailInstansiRepository(config.DB)
+	var detailInstansiService = service.NewDetailInstansiService(detailInstansiRepository)
+	var detailInstansiController = controller.NewDetailInstansiController(detailInstansiService)
+
 	var programRepository = repository.NewProgramRepository(config.DB)
 	var programService = service.NewProgramService(programRepository)
 	var programController = controller.NewProgramController(programService)
@@ -134,10 +138,16 @@ func main() {
 
 	server.GET("/instansi", instansiController.GetInstansis)
 	server.GET("/instansi/:id", instansiController.GetInstansi)
-	server.GET("/instansirelasi", instansiController.GetInstansiWithRelation)
 	server.POST("/instansi", instansiController.CreateInstansi)
 	server.PATCH("/instansi/:id", instansiController.UpdateInstansi)
 	server.DELETE("/instansi/:id", instansiController.DeleteInstansi)
+
+	server.GET("/detailinstansi", detailInstansiController.GetDetailInstansis)
+	server.GET("/detailinstansi/:id", detailInstansiController.GetDetailInstansi)
+	server.GET("/detailinstansi/detail/:instansiid", detailInstansiController.GetDetailInstansiByInstansiId)
+	server.POST("/detailinstansi", detailInstansiController.CreateDetailInstansi)
+	server.PATCH("/detailinstansi/:id", detailInstansiController.UpdateDetailInstansi)
+	server.DELETE("/detailinstansi/:id", detailInstansiController.DeleteDetailInstansi)
 
 	server.GET("/program", programController.GetPrograms)
 	server.GET("/program/:id", programController.GetProgram)
@@ -188,6 +198,9 @@ func main() {
 
 	server.GET("/keluarga/:kabupatenkotaid", keluargaController.GetKeluargas)
 	server.GET("/keluarga/detail/:kabupatenkotaid/:id", keluargaController.GetKeluargaById)
+	server.GET("/keluarga/kelurahan/:kelurahanid", keluargaController.GetKeluargaByKelurahanId)
+	server.GET("/keluarga/desil/:desilkesejahteraan", keluargaController.GetKeluargaByDesilKesejahteraan)
+	server.GET("/keluarga/kelurahandandesil/:kelurahanid/:desilkesejahteraan", keluargaController.GetKeluargaByKelurahanIdAndDesilKesejahteraan)
 	server.GET("/keluarga/idkeluarga/:kabupatenkotaid/:idkeluarga", keluargaController.GetIdKeluargaByKabupatenKota)
 	server.GET("/keluarga/jumlah/penerima/kabupatenkota/:kabupatenkotaid/:penerimaparameter/:nilai", keluargaController.CountPenerimaByKabupatenKota)
 	server.GET("/keluarga/jumlah/penerima/kecamatan/:kecamatanid/:penerimaparameter/:nilai", keluargaController.CountPenerimaByKecamatan)

@@ -59,6 +59,67 @@ func (c *keluargaController) GetKeluargaById(cntx *gin.Context) {
 	cntx.JSON(http.StatusOK, keluargaResponse)
 }
 
+func (c *keluargaController) GetKeluargaByKelurahanId(cntx *gin.Context) {
+	var kelurahanId = cntx.Param("kelurahanid")
+
+	var keluargas, err = c.keluargaService.FindByKelurahanId(kelurahanId)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	var keluargasResponse []responses.KeluargaResponse
+
+	for _, keluarga := range keluargas {
+		var keluargaResponse = helper.ConvertToKeluargaResponse(keluarga)
+		keluargasResponse = append(keluargasResponse, keluargaResponse)
+	}
+
+	cntx.JSON(http.StatusOK, keluargasResponse)
+}
+
+func (c *keluargaController) GetKeluargaByDesilKesejahteraan(cntx *gin.Context) {
+	var desilKesejahteraan = cntx.Param("desilkesejahteraan")
+
+	var keluargas, err = c.keluargaService.FindByDesil(desilKesejahteraan)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	var keluargasResponse []responses.KeluargaResponse
+
+	for _, keluarga := range keluargas {
+		var keluargaResponse = helper.ConvertToKeluargaResponse(keluarga)
+		keluargasResponse = append(keluargasResponse, keluargaResponse)
+	}
+
+	cntx.JSON(http.StatusOK, keluargasResponse)
+}
+
+func (c *keluargaController) GetKeluargaByKelurahanIdAndDesilKesejahteraan(cntx *gin.Context) {
+	var kelurahanId = cntx.Param("kelurahanid")
+	var desilKesejahteraan = cntx.Param("desilkesejahteraan")
+
+	var keluargas, err = c.keluargaService.FindByKelurahanIdAndDesil(kelurahanId, desilKesejahteraan)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	var keluargasResponse []responses.KeluargaResponse
+
+	for _, keluarga := range keluargas {
+		var keluargaResponse = helper.ConvertToKeluargaResponse(keluarga)
+		keluargasResponse = append(keluargasResponse, keluargaResponse)
+	}
+
+	cntx.JSON(http.StatusOK, keluargasResponse)
+}
+
 func (c *keluargaController) GetIdKeluargaByKabupatenKota(cntx *gin.Context) {
 	var kabupatenKotaId = cntx.Param("kabupatenKotaId")
 	var idKeluarga = cntx.Param("idkeluarga")

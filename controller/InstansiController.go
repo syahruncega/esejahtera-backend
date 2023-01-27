@@ -57,24 +57,6 @@ func (c *instansiController) GetInstansi(cntx *gin.Context) {
 	cntx.JSON(http.StatusOK, instansiResponse)
 }
 
-func (c *instansiController) GetInstansiWithRelation(cntx *gin.Context) {
-	var instansiRelations, err = c.instansiService.FindAllRelation()
-	if err != nil {
-		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
-		})
-	}
-
-	var instansiRelationsResponse []responses.InstansiWithBidangUrusanResponse
-
-	for _, instansiRelation := range instansiRelations {
-		var instansiRelationResponse = helper.ConvertToInstansiWithBidangUrusanResponse(instansiRelation)
-		instansiRelationsResponse = append(instansiRelationsResponse, instansiRelationResponse)
-	}
-
-	cntx.JSON(http.StatusOK, instansiRelationsResponse)
-}
-
 func (c *instansiController) CreateInstansi(cntx *gin.Context) {
 	var instansiRequest request.CreateInstansiRequest
 

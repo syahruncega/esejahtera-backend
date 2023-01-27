@@ -16,6 +16,16 @@ type Instansi struct {
 	UpdatedAt    time.Time `gorm:"column:updatedAt;not null"`
 }
 
+type DetailInstansi struct {
+	Id             int    `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	InstansiId     string `gorm:"column:instansiId;not null"`
+	Instansi       Instansi
+	BidangUrusanId string `gorm:"column:bidangUrusanId;not null"`
+	BidangUrusan   BidangUrusan
+	CreatedAt      time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt      time.Time `gorm:"column:updatedAt;not null"`
+}
+
 type Program struct {
 	Id                      int       `gorm:"column:id;primaryKey;not null;autoIncrement"`
 	Sasaran                 string    `gorm:"column:sasaran;not null"`

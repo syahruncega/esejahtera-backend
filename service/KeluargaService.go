@@ -9,6 +9,9 @@ import (
 type KeluargaService interface {
 	FindAll(kabupatenKotaId string) ([]model.Keluarga, error)
 	FindById(kabupatenKotaId string, id int) (model.Keluarga, error)
+	FindByKelurahanId(kelurahanId string) ([]model.Keluarga, error)
+	FindByDesil(desilKesejahteraan string) ([]model.Keluarga, error)
+	FindByKelurahanIdAndDesil(kelurahanId string, desilKesejahteraan string) ([]model.Keluarga, error)
 	FindByIdKeluargaByKabupatenKota(kabupatenKotaId string, idKeluarga string) (model.Keluarga, error)
 	CountPenerimaByKabupatenKota(kabupatenKotaId string, penerimaParameter string, nilai string) (jumlah int64, err error)
 	CountPenerimaByKecamatan(kecamatanId string, penerimaParameter string, nilai string) (jumlah int64, err error)
@@ -37,6 +40,24 @@ func (s *keluargaService) FindById(kabupatenKotaId string, id int) (model.Keluar
 	var keluarga, err = s.keluargaRepository.FindById(kabupatenKotaId, id)
 
 	return keluarga, err
+}
+
+func (s *keluargaService) FindByKelurahanId(kelurahanId string) ([]model.Keluarga, error) {
+	var keluargas, err = s.keluargaRepository.FindByKelurahanId(kelurahanId)
+
+	return keluargas, err
+}
+
+func (s *keluargaService) FindByDesil(desilKesejahteraan string) ([]model.Keluarga, error) {
+	var keluargas, err = s.keluargaRepository.FindByDesil(desilKesejahteraan)
+
+	return keluargas, err
+}
+
+func (s *keluargaService) FindByKelurahanIdAndDesil(kelurahanId string, desilKesejahteraan string) ([]model.Keluarga, error) {
+	var keluargas, err = s.keluargaRepository.FindByKelurahanIdAndDesil(kelurahanId, desilKesejahteraan)
+
+	return keluargas, err
 }
 
 func (s *keluargaService) FindByIdKeluargaByKabupatenKota(kabupatenKotaId string, idKeluarga string) (model.Keluarga, error) {
