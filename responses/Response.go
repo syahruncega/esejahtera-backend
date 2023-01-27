@@ -3,24 +3,23 @@ package responses
 import "time"
 
 type BidangUrusanResponse struct {
-	Id               int       `json:"id"`
+	Id               string    `json:"id"`
 	NamaBidangUrusan string    `json:"namaBidangUrusan"`
 	CreatedAt        time.Time `json:"createdAt"`
 	UpdatedAt        time.Time `json:"updatedAt"`
 }
 
 type InstansiResponse struct {
-	Id             int       `json:"id"`
-	NamaInstansi   string    `json:"namaInstansi"`
-	BidangUrusanId int       `json:"bidangUrusanId"`
-	CreatedAt      time.Time `json:"createdAt"`
-	UpdatedAt      time.Time `json:"updatedAt"`
+	Id           string    `json:"id"`
+	NamaInstansi string    `json:"namaInstansi"`
+	CreatedAt    time.Time `json:"createdAt"`
+	UpdatedAt    time.Time `json:"updatedAt"`
 }
 
 type InstansiWithBidangUrusanResponse struct {
-	Id             int                  `json:"id"`
+	Id             string               `json:"id"`
 	NamaInstansi   string               `json:"namaInstansi"`
-	BidangUrusanId int                  `json:"bidangUrusanId"`
+	BidangUrusanId string               `json:"bidangUrusanId"`
 	CreatedAt      time.Time            `json:"createdAt"`
 	UpdatedAt      time.Time            `json:"updatedAt"`
 	BidangUrusan   BidangUrusanResponse `json:"bidangUrusan"`
@@ -34,7 +33,7 @@ type ProgramResponse struct {
 	NamaProgram             string    `json:"namaProgram"`
 	IndikatorKinerjaProgram string    `json:"indikatorKinerjaProgram"`
 	PaguProgram             int       `json:"paguProgram"`
-	InstansiId              int       `json:"instansiId"`
+	InstansiId              string    `json:"instansiId"`
 	CreatedAt               time.Time `json:"createdAt"`
 	UpdatedAt               time.Time `json:"updatedAt"`
 }
@@ -47,7 +46,7 @@ type ProgramWithInstansiResponse struct {
 	NamaProgram             string           `json:"namaProgram"`
 	IndikatorKinerjaProgram string           `json:"indikatorKinerjaProgram"`
 	PaguProgram             int              `json:"paguProgram"`
-	InstansiId              int              `json:"instansiId"`
+	InstansiId              string           `json:"instansiId"`
 	CreatedAt               time.Time        `json:"createdAt"`
 	UpdatedAt               time.Time        `json:"updatedAt"`
 	Instansi                InstansiResponse `json:"instansi"`
@@ -205,6 +204,8 @@ type KeluargaResponse struct {
 	PenerimaSembako        string                 `json:"penerimaSembako"`
 	UserId                 int                    `json:"userId"`
 	User                   UserResponse           `json:"user"`
+	MahasiswaId            int                    `json:"mahasiswaId"`
+	Mahasiswa              MahasiswaResponse      `json:"mahasiswa"`
 	StatusVerifikasi       int                    `json:"statusVerifikasi"`
 }
 
@@ -312,29 +313,35 @@ type DosenWithRelationResponse struct {
 }
 
 type MahasiswaResponse struct {
-	Id           int       `json:"id"`
-	UserId       int       `json:"userId"`
-	NamaLengkap  string    `json:"namaLengkap"`
-	Universitas  string    `json:"universitas"`
-	JenisKelamin string    `json:"jenisKelamin"`
-	TanggalLahir string    `json:"tanggalLahir"`
-	KelurahanId  string    `json:"KelurahanId"`
-	CreatedAt    time.Time `json:"createdAt"`
-	UpdatedAt    time.Time `json:"updatedAt"`
+	Id              int       `json:"id"`
+	UserId          int       `json:"userId"`
+	NamaLengkap     string    `json:"namaLengkap"`
+	Universitas     string    `json:"universitas"`
+	JenisKelamin    string    `json:"jenisKelamin"`
+	TanggalLahir    string    `json:"tanggalLahir"`
+	KabupatenKotaId string    `json:"kabupatenKotaId"`
+	KecamatanId     string    `json:"kecamatanId"`
+	KelurahanId     string    `json:"KelurahanId"`
+	CreatedAt       time.Time `json:"createdAt"`
+	UpdatedAt       time.Time `json:"updatedAt"`
 }
 
 type MahasiswaWithRelationResponse struct {
-	Id           int          `json:"id"`
-	UserId       int          `json:"userId"`
-	User         UserResponse `json:"user"`
-	NamaLengkap  string       `json:"namaLengkap"`
-	Universitas  string       `json:"universitas"`
-	JenisKelamin string       `json:"jenisKelamin"`
-	TanggalLahir string       `json:"tanggalLahir"`
-	KelurahanId  string       `json:"kelurahanId"`
-	Kelurahan    KelurahanResponse
-	CreatedAt    time.Time `json:"createdAt"`
-	UpdatedAt    time.Time `json:"updatedAt"`
+	Id              int                    `json:"id"`
+	UserId          int                    `json:"userId"`
+	User            UserResponse           `json:"user"`
+	NamaLengkap     string                 `json:"namaLengkap"`
+	Universitas     string                 `json:"universitas"`
+	JenisKelamin    string                 `json:"jenisKelamin"`
+	TanggalLahir    string                 `json:"tanggalLahir"`
+	KabupatenKotaId string                 `json:"kabupatenKotaId"`
+	KabupatenKota   Kabupaten_KotaResponse `json:"kabupatenKota"`
+	KecamatanId     string                 `json:"kecamatanId"`
+	Kecamatan       KecamatanResponse      `json:"kecamatan"`
+	KelurahanId     string                 `json:"kelurahanId"`
+	Kelurahan       KelurahanResponse      `json:"kelurahan"`
+	CreatedAt       time.Time              `json:"createdAt"`
+	UpdatedAt       time.Time              `json:"updatedAt"`
 }
 
 type LokasiDosenResponse struct {
@@ -397,4 +404,40 @@ type KeluargaVerifikasiResponse struct {
 	Kelurahan              KelurahanResponse      `json:"kelurahan"`
 	CreatedAt              time.Time              `json:"createdAt"`
 	UpdatedAt              time.Time              `json:"updatedAt"`
+}
+
+type IndividuResponse struct {
+	Id                 int                    `json:"id"`
+	IdKeluarga         string                 `json:"idKeluarga"`
+	ProvinsiId         string                 `json:"provinsiId"`
+	Provinsi           ProvinsiResponse       `json:"provinsi"`
+	KabupatenKotaId    string                 `json:"kabupatenKotaId"`
+	Kabupaten_Kota     Kabupaten_KotaResponse `json:"kabupatenKota"`
+	KecamatanId        string                 `json:"kecamatanId"`
+	Kecamatan          KecamatanResponse      `json:"kecamatan"`
+	KelurahanId        string                 `json:"kelurahanId"`
+	Kelurahan          KelurahanResponse      `json:"kelurahan"`
+	DesilKesejahteraan string                 `json:"desilKesejahteraan"`
+	Alamat             string                 `json:"alamat"`
+	IdIndividu         string                 `json:"idIndividu"`
+	Nama               string                 `json:"nama"`
+	Nik                string                 `json:"nik"`
+	PadanDukcapil      string                 `json:"padanDukcapil"`
+	JenisKelamin       string                 `json:"jenisKelamin"`
+	Hubungan           string                 `json:"hubungan"`
+	TanggalLahir       string                 `json:"tanggalLahir"`
+	StatusKawin        string                 `json:"statusKawin"`
+	Pekerjaan          string                 `json:"pekerjaan"`
+	Pendidikan         string                 `json:"pendidikan"`
+	KategoriUsia       string                 `json:"kategoriUsia"`
+	PenerimaBPNT       string                 `json:"penerimaBPNT"`
+	PenerimaBPUM       string                 `json:"penerimaBPUM"`
+	PenerimaBST        string                 `json:"penerimaBST"`
+	PenerimaPKH        string                 `json:"penerimaPKH"`
+	PenerimaSembako    string                 `json:"penerimaSembako"`
+	UserId             int                    `json:"userId"`
+	User               UserResponse           `json:"user"`
+	MahasiswaId        int                    `json:"mahasiswaId"`
+	Mahasiswa          MahasiswaResponse      `json:"mahasiswa"`
+	StatusVerifikasi   int                    `json:"statusVerifikasi"`
 }

@@ -42,7 +42,7 @@ func (r *mahasiswaRepository) FindById(id int) (model.Mahasiswa, error) {
 func (r *mahasiswaRepository) FindAllRelation() ([]model.Mahasiswa, error) {
 	var mahasiswas []model.Mahasiswa
 
-	var err = r.db.Model(&mahasiswas).Preload("User").Preload("Kelurahan").Find(&mahasiswas).Error
+	var err = r.db.Model(&mahasiswas).Preload("User").Preload("KabupatenKota").Preload("Kecamatan").Preload("Kelurahan").Find(&mahasiswas).Error
 
 	return mahasiswas, err
 }
@@ -55,12 +55,14 @@ func (r *mahasiswaRepository) Create(mahasiswa model.Mahasiswa) (model.Mahasiswa
 
 func (r *mahasiswaRepository) Update(mahasiswa model.Mahasiswa) (model.Mahasiswa, error) {
 	var err = r.db.Model(&mahasiswa).Updates(model.Mahasiswa{
-		UserId:       mahasiswa.UserId,
-		NamaLengkap:  mahasiswa.NamaLengkap,
-		Universitas:  mahasiswa.Universitas,
-		JenisKelamin: mahasiswa.JenisKelamin,
-		TanggalLahir: mahasiswa.TanggalLahir,
-		KelurahanId:  mahasiswa.KelurahanId,
+		UserId:          mahasiswa.UserId,
+		NamaLengkap:     mahasiswa.NamaLengkap,
+		Universitas:     mahasiswa.Universitas,
+		JenisKelamin:    mahasiswa.JenisKelamin,
+		TanggalLahir:    mahasiswa.TanggalLahir,
+		KabupatenKotaId: mahasiswa.KabupatenKotaId,
+		KecamatanId:     mahasiswa.KecamatanId,
+		KelurahanId:     mahasiswa.KelurahanId,
 	}).Error
 
 	return mahasiswa, err

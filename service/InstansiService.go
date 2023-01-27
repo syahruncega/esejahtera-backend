@@ -43,8 +43,7 @@ func (s *instansiService) FindAllRelation() ([]model.Instansi, error) {
 
 func (s *instansiService) Create(instansiRequest request.CreateInstansiRequest) (model.Instansi, error) {
 	var instansi = model.Instansi{
-		NamaInstansi:   instansiRequest.NamaInstansi,
-		BidangUrusanId: instansiRequest.BidangUrusanId,
+		NamaInstansi: instansiRequest.NamaInstansi,
 	}
 
 	var newInstansi, err = s.instansiRepository.Create(instansi)
@@ -56,7 +55,6 @@ func (s *instansiService) Update(id int, instansiRequest request.UpdateInstansiR
 	var instansi, err = s.instansiRepository.FindById(id)
 
 	instansi.NamaInstansi = instansiRequest.NamaInstansi
-	instansi.BidangUrusanId = instansiRequest.BidangUrusanId
 
 	updatedInstansi, err := s.instansiRepository.Update(instansi)
 

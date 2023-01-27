@@ -31,7 +31,7 @@ func (r *keluargaRepository) FindAll(kabupatenKotaId string) ([]model.Keluarga, 
 
 	var keluargas []model.Keluarga
 
-	var err = r.db.Where("kabupatenKotaId = ?", kabupatenKotaId).Limit(15).Model(&keluargas).Preload("Provinsi").Preload("KabupatenKota").Preload("Kecamatan").Preload("Kelurahan").Preload("User").Find(&keluargas).Error
+	var err = r.db.Where("kabupatenKotaId = ?", kabupatenKotaId).Limit(15).Model(&keluargas).Preload("Provinsi").Preload("KabupatenKota").Preload("Kecamatan").Preload("Kelurahan").Preload("User").Preload("Mahasiswa").Find(&keluargas).Error
 
 	return keluargas, err
 }
@@ -39,7 +39,7 @@ func (r *keluargaRepository) FindAll(kabupatenKotaId string) ([]model.Keluarga, 
 func (r *keluargaRepository) FindById(kabupatenkotaId string, id int) (model.Keluarga, error) {
 	var keluarga model.Keluarga
 
-	var err = r.db.Where("kabupatenKotaId = ?", kabupatenkotaId).Model(&keluarga).Preload("Provinsi").Preload("KabupatenKota").Preload("Kecamatan").Preload("Kelurahan").Preload("User").Take(&keluarga, id).Error
+	var err = r.db.Where("kabupatenKotaId = ?", kabupatenkotaId).Model(&keluarga).Preload("Provinsi").Preload("KabupatenKota").Preload("Kecamatan").Preload("Kelurahan").Preload("User").Preload("Mahasiswa").Take(&keluarga, id).Error
 
 	return keluarga, err
 }
@@ -47,7 +47,7 @@ func (r *keluargaRepository) FindById(kabupatenkotaId string, id int) (model.Kel
 func (r *keluargaRepository) FindByIdKeluargaByKabupatenKota(kabupatenKotaId string, idKeluarga string) (model.Keluarga, error) {
 	var keluarga model.Keluarga
 
-	var err = r.db.Where("kabupatenKotaId = ? AND idKeluarga = ?", kabupatenKotaId, idKeluarga).Model(&keluarga).Preload("Provinsi").Preload("KabupatenKota").Preload("Kecamatan").Preload("Kelurahan").Preload("User").Take(&keluarga).Error
+	var err = r.db.Where("kabupatenKotaId = ? AND idKeluarga = ?", kabupatenKotaId, idKeluarga).Model(&keluarga).Preload("Provinsi").Preload("KabupatenKota").Preload("Kecamatan").Preload("Kelurahan").Preload("User").Preload("Mahasiswa").Take(&keluarga).Error
 
 	return keluarga, err
 }
@@ -104,6 +104,7 @@ func (r *keluargaRepository) Update(keluarga model.Keluarga) (model.Keluarga, er
 	var err = r.db.Model(&keluarga).Updates(model.Keluarga{
 		UserId:           keluarga.UserId,
 		StatusVerifikasi: keluarga.StatusVerifikasi,
+		MahasiswaId:      keluarga.MahasiswaId,
 	}).Error
 
 	return keluarga, err

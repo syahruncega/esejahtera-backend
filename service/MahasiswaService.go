@@ -43,12 +43,14 @@ func (s *mahasiswaService) FindAllRelation() ([]model.Mahasiswa, error) {
 
 func (s *mahasiswaService) Create(mahasiswaRequest request.CreateMahasiswaRequest) (model.Mahasiswa, error) {
 	var mahasiswa = model.Mahasiswa{
-		UserId:       mahasiswaRequest.UserId,
-		NamaLengkap:  mahasiswaRequest.NamaLengkap,
-		Universitas:  mahasiswaRequest.Universitas,
-		JenisKelamin: mahasiswaRequest.JenisKelamin,
-		TanggalLahir: mahasiswaRequest.TanggalLahir,
-		KelurahanId:  mahasiswaRequest.KelurahanId,
+		UserId:          mahasiswaRequest.UserId,
+		NamaLengkap:     mahasiswaRequest.NamaLengkap,
+		Universitas:     mahasiswaRequest.Universitas,
+		JenisKelamin:    mahasiswaRequest.JenisKelamin,
+		TanggalLahir:    mahasiswaRequest.TanggalLahir,
+		KabupatenKotaId: mahasiswaRequest.KabupatenKotaId,
+		KecamatanId:     mahasiswaRequest.KecamatanId,
+		KelurahanId:     mahasiswaRequest.KelurahanId,
 	}
 
 	newMahasiswa, err := s.mahasiswaRepository.Create(mahasiswa)
@@ -64,6 +66,8 @@ func (s *mahasiswaService) Update(id int, mahasiswaRequest request.UpdateMahasis
 	mahasiswa.Universitas = mahasiswaRequest.Universitas
 	mahasiswa.JenisKelamin = mahasiswaRequest.JenisKelamin
 	mahasiswa.TanggalLahir = mahasiswaRequest.TanggalLahir
+	mahasiswa.KabupatenKotaId = mahasiswaRequest.KabupatenKotaId
+	mahasiswa.KecamatanId = mahasiswaRequest.KecamatanId
 	mahasiswa.KelurahanId = mahasiswaRequest.KelurahanId
 
 	updatedMahasiswa, err := s.mahasiswaRepository.Update(mahasiswa)

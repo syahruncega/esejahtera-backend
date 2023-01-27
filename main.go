@@ -114,6 +114,10 @@ func main() {
 	var keluargaVerifikasiService = service.NewKeluargaVerifikasiService(keluargaVerifikasiRepository)
 	var keluargaVerifikasiController = controller.NewKeluargaVerifikasiController(keluargaVerifikasiService)
 
+	var individuRepository = repository.NewIndividuRepository(config.DB)
+	var individuService = service.NewIndividuService(individuRepository)
+	var individuController = controller.NewIndividuController(individuService)
+
 	var server = gin.Default()
 
 	server.Use(cors.New(cors.Config{
@@ -250,6 +254,11 @@ func main() {
 	server.POST("/keluargaverifikasi", keluargaVerifikasiController.CreateKeluargaVerifikasi)
 	server.PATCH("/keluargaverifikasi/:kabupatenkotaid/:id", keluargaVerifikasiController.UpdateKeluargaVerifikasi)
 	server.DELETE("/keluargaverifikasi/:kabupatenkotaid/:id", keluargaVerifikasiController.DeleteKeluargaVerifikasi)
+
+	server.GET("/individu/:kabupatenkotaid", individuController.GetIndividus)
+	server.GET("/individu/detail/:kabupatenkotaid/:id", individuController.GetIndividu)
+	server.GET("/individu/idkeluarga/:kabupatenkotaid/:idkeluarga", individuController.GetIndividuByIdKeluarga)
+	server.PATCH("/individu/:kabupatenkotaid/:id", individuController.UpdateIndividu)
 
 	server.Run(":" + appConfig.AppPort)
 }

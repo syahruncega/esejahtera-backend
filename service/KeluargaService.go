@@ -86,6 +86,7 @@ func (s *keluargaService) Update(kabupatenKotaId string, id int, keluargaRequest
 
 	keluarga.UserId = keluargaRequest.UserId
 	keluarga.StatusVerifikasi = keluargaRequest.StatusVerifikasi
+	keluarga.MahasiswaId = keluargaRequest.MahasiswaId
 
 	updatedKeluarga, err := s.keluargaRepository.Update(keluarga)
 

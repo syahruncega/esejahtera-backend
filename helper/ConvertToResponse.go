@@ -16,27 +16,19 @@ func ConvertToBidangUrusanResponse(b model.BidangUrusan) responses.BidangUrusanR
 
 func ConvertToInstansiResponse(i model.Instansi) responses.InstansiResponse {
 	return responses.InstansiResponse{
-		Id:             i.Id,
-		BidangUrusanId: i.BidangUrusanId,
-		NamaInstansi:   i.NamaInstansi,
-		CreatedAt:      i.CreatedAt,
-		UpdatedAt:      i.UpdatedAt,
+		Id:           i.Id,
+		NamaInstansi: i.NamaInstansi,
+		CreatedAt:    i.CreatedAt,
+		UpdatedAt:    i.UpdatedAt,
 	}
 }
 
 func ConvertToInstansiWithBidangUrusanResponse(i model.Instansi) responses.InstansiWithBidangUrusanResponse {
 	return responses.InstansiWithBidangUrusanResponse{
-		Id:             i.Id,
-		NamaInstansi:   i.NamaInstansi,
-		CreatedAt:      i.CreatedAt,
-		UpdatedAt:      i.UpdatedAt,
-		BidangUrusanId: i.BidangUrusanId,
-		BidangUrusan: responses.BidangUrusanResponse{
-			Id:               i.BidangUrusan.Id,
-			NamaBidangUrusan: i.BidangUrusan.NamaBidangUrusan,
-			CreatedAt:        i.BidangUrusan.CreatedAt,
-			UpdatedAt:        i.BidangUrusan.UpdatedAt,
-		},
+		Id:           i.Id,
+		NamaInstansi: i.NamaInstansi,
+		CreatedAt:    i.CreatedAt,
+		UpdatedAt:    i.UpdatedAt,
 	}
 }
 
@@ -330,6 +322,19 @@ func ConvertToKeluargaResponse(k model.Keluarga) responses.KeluargaResponse {
 			UpdatedAt: k.User.UpdatedAt,
 		},
 
+		MahasiswaId: k.MahasiswaId,
+		Mahasiswa: responses.MahasiswaResponse{
+			Id:           k.Mahasiswa.Id,
+			UserId:       k.Mahasiswa.UserId,
+			NamaLengkap:  k.Mahasiswa.NamaLengkap,
+			Universitas:  k.Mahasiswa.Universitas,
+			JenisKelamin: k.Mahasiswa.JenisKelamin,
+			TanggalLahir: k.Mahasiswa.TanggalLahir,
+			KelurahanId:  k.Mahasiswa.KelurahanId,
+			CreatedAt:    k.Mahasiswa.CreatedAt,
+			UpdatedAt:    k.Mahasiswa.UpdatedAt,
+		},
+
 		StatusVerifikasi: k.StatusVerifikasi,
 	}
 }
@@ -509,15 +514,17 @@ func ConvertToDosenWithRelationResponse(d model.Dosen) responses.DosenWithRelati
 
 func ConvertToMahasiswaResponse(m model.Mahasiswa) responses.MahasiswaResponse {
 	return responses.MahasiswaResponse{
-		Id:           m.Id,
-		UserId:       m.UserId,
-		NamaLengkap:  m.NamaLengkap,
-		Universitas:  m.Universitas,
-		JenisKelamin: m.JenisKelamin,
-		TanggalLahir: m.TanggalLahir,
-		KelurahanId:  m.KelurahanId,
-		CreatedAt:    m.CreatedAt,
-		UpdatedAt:    m.UpdatedAt,
+		Id:              m.Id,
+		UserId:          m.UserId,
+		NamaLengkap:     m.NamaLengkap,
+		Universitas:     m.Universitas,
+		JenisKelamin:    m.JenisKelamin,
+		TanggalLahir:    m.TanggalLahir,
+		KabupatenKotaId: m.KabupatenKotaId,
+		KecamatanId:     m.KecamatanId,
+		KelurahanId:     m.KelurahanId,
+		CreatedAt:       m.CreatedAt,
+		UpdatedAt:       m.UpdatedAt,
 	}
 }
 
@@ -535,11 +542,23 @@ func ConvertToMahasiswaWithRelationResponse(m model.Mahasiswa) responses.Mahasis
 			CreatedAt: m.User.CreatedAt,
 			UpdatedAt: m.User.UpdatedAt,
 		},
-		NamaLengkap:  m.NamaLengkap,
-		Universitas:  m.Universitas,
-		JenisKelamin: m.JenisKelamin,
-		TanggalLahir: m.TanggalLahir,
-		KelurahanId:  m.KelurahanId,
+		NamaLengkap:     m.NamaLengkap,
+		Universitas:     m.Universitas,
+		JenisKelamin:    m.JenisKelamin,
+		TanggalLahir:    m.TanggalLahir,
+		KabupatenKotaId: m.KabupatenKotaId,
+		KabupatenKota: responses.Kabupaten_KotaResponse{
+			Id:         m.KabupatenKota.Id,
+			ProvinsiId: m.KabupatenKota.ProvinsiId,
+			Nama:       m.KabupatenKota.Nama,
+		},
+		KecamatanId: m.KecamatanId,
+		Kecamatan: responses.KecamatanResponse{
+			Id:              m.Kecamatan.Id,
+			KabupatenKotaId: m.Kecamatan.KabupatenKotaId,
+			Nama:            m.KabupatenKota.Nama,
+		},
+		KelurahanId: m.KelurahanId,
 		Kelurahan: responses.KelurahanResponse{
 			Id:          m.Kelurahan.Id,
 			KecamatanId: m.Kelurahan.KecamatanId,
@@ -665,5 +684,87 @@ func ConvertToKeluargaVerifikasiResponse(k model.KeluargaVerifikasi) responses.K
 
 		CreatedAt: k.CreatedAt,
 		UpdatedAt: k.UpdatedAt,
+	}
+}
+
+func ConvertToIndividuResponse(i model.Individu) responses.IndividuResponse {
+	return responses.IndividuResponse{
+		Id:         i.Id,
+		IdKeluarga: i.IdKeluarga,
+
+		ProvinsiId: i.ProvinsiId,
+		Provinsi: responses.ProvinsiResponse{
+			Id:   i.Provinsi.Id,
+			Nama: i.Provinsi.Nama,
+		},
+
+		KabupatenKotaId: i.KabupatenKotaId,
+		Kabupaten_Kota: responses.Kabupaten_KotaResponse{
+			Id:         i.KabupatenKota.Id,
+			ProvinsiId: i.KabupatenKota.ProvinsiId,
+			Nama:       i.KabupatenKota.Nama,
+		},
+
+		KecamatanId: i.KecamatanId,
+		Kecamatan: responses.KecamatanResponse{
+			Id:              i.Kecamatan.Id,
+			KabupatenKotaId: i.Kecamatan.KabupatenKotaId,
+			Nama:            i.Kecamatan.Nama,
+		},
+
+		KelurahanId: i.KelurahanId,
+		Kelurahan: responses.KelurahanResponse{
+			Id:          i.Kelurahan.Id,
+			KecamatanId: i.Kelurahan.KecamatanId,
+			Nama:        i.Kelurahan.Nama,
+		},
+
+		DesilKesejahteraan: i.DesilKesejahteraan,
+		Alamat:             i.Alamat,
+		IdIndividu:         i.IdIndividu,
+		Nama:               i.Nama,
+		Nik:                i.Nik,
+		PadanDukcapil:      i.PadanDukcapil,
+		JenisKelamin:       i.JenisKelamin,
+		Hubungan:           i.Hubungan,
+		TanggalLahir:       i.TanggalLahir,
+		StatusKawin:        i.StatusKawin,
+		Pekerjaan:          i.Pekerjaan,
+		Pendidikan:         i.Pendidikan,
+		KategoriUsia:       i.KategoriUsia,
+		PenerimaBPNT:       i.PenerimaBPNT,
+		PenerimaBPUM:       i.PenerimaBPUM,
+		PenerimaBST:        i.PenerimaBST,
+		PenerimaPKH:        i.PenerimaPKH,
+		PenerimaSembako:    i.PenerimaSembako,
+
+		UserId: i.UserId,
+		User: responses.UserResponse{
+			Id:        i.User.Id,
+			Username:  i.User.Username,
+			Password:  i.User.Password,
+			Email:     i.User.Email,
+			NoHp:      i.User.NoHp,
+			Role:      i.User.Role,
+			CreatedAt: i.User.CreatedAt,
+			UpdatedAt: i.Mahasiswa.UpdatedAt,
+		},
+
+		MahasiswaId: i.MahasiswaId,
+		Mahasiswa: responses.MahasiswaResponse{
+			Id:              i.Mahasiswa.Id,
+			UserId:          i.Mahasiswa.UserId,
+			NamaLengkap:     i.Mahasiswa.NamaLengkap,
+			Universitas:     i.Mahasiswa.Universitas,
+			JenisKelamin:    i.Mahasiswa.JenisKelamin,
+			TanggalLahir:    i.Mahasiswa.TanggalLahir,
+			KabupatenKotaId: i.Mahasiswa.KabupatenKotaId,
+			KecamatanId:     i.Mahasiswa.KecamatanId,
+			KelurahanId:     i.Mahasiswa.KelurahanId,
+			CreatedAt:       i.Mahasiswa.CreatedAt,
+			UpdatedAt:       i.Mahasiswa.UpdatedAt,
+		},
+
+		StatusVerifikasi: i.StatusVerifikasi,
 	}
 }
