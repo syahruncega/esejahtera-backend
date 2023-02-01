@@ -1,21 +1,11 @@
 package request
 
 type CreateProgramRequest struct {
-	Sasaran                 string `json:"sasaran" binding:"required"`
-	IndikatorSasaran        string `json:"indikatorSasaran" binding:"required"`
-	Kebijakan               string `json:"kebijakan" binding:"required"`
-	NamaProgram             string `json:"namaProgram" binding:"required"`
-	IndikatorKinerjaProgram string `json:"indikatorKinerjaProgram" binding:"required"`
-	PaguProgram             int    `json:"paguProgram"`
-	InstansiId              string `json:"instansiId" binding:"required"`
+	Id          string `json:"id" binding:"required"`
+	NamaProgram string `json:"namaProgram" binding:"required"`
 }
 
 type UpdateProgramRequest struct {
-	Sasaran                 string `json:"sasaran"`
-	IndikatorSasaran        string `json:"indikatorSasaran"`
-	Kebijakan               string `json:"kebijakan"`
-	NamaProgram             string `json:"namaProgram"`
-	IndikatorKinerjaProgram string `json:"indikatorKinerjaProgram"`
-	PaguProgram             int    `json:"paguProgram"`
-	InstansiId              string `json:"instansiId"`
+	Id          string `json:"id"`
+	NamaProgram string `json:"namaProgram" binding:"required"`
 }

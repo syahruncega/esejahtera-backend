@@ -7,19 +7,17 @@ import (
 )
 
 type KeluargaService interface {
-	FindAll(kabupatenKotaId string) ([]model.Keluarga, error)
-	FindById(kabupatenKotaId string, id int) (model.Keluarga, error)
-	FindByKelurahanId(kelurahanId string) ([]model.Keluarga, error)
-	FindByDesil(desilKesejahteraan string) ([]model.Keluarga, error)
-	FindByKelurahanIdAndDesil(kelurahanId string, desilKesejahteraan string) ([]model.Keluarga, error)
-	FindByIdKeluargaByKabupatenKota(kabupatenKotaId string, idKeluarga string) (model.Keluarga, error)
+	FindAll() ([]model.Keluarga, error)
+	FindById(id int) (model.Keluarga, error)
+	FindByIdKeluarga(idKeluarga string) (model.Keluarga, error)
+	FindBySearch(whereClause map[string]interface{}) ([]model.Keluarga, error)
 	CountPenerimaByKabupatenKota(kabupatenKotaId string, penerimaParameter string, nilai string) (jumlah int64, err error)
 	CountPenerimaByKecamatan(kecamatanId string, penerimaParameter string, nilai string) (jumlah int64, err error)
 	CountPenerimaByKelurahan(kelurahanId string, penerimaParameter string, nilai string) (jumlah int64, err error)
 	CountDesilByKabupatenKota(kabupatenKotaId string, nilaiDesil string) (jumlah int64, err error)
 	CountDesilByKecamatan(kecamatanId string, nilaiDesil string) (jumlah int64, err error)
 	CountDesilByKelurahan(kelurahanId string, nilaiDesil string) (jumlah int64, err error)
-	Update(kabupatenKotaId string, id int, keluargaRequest request.UpdateKeluargaRequest) (model.Keluarga, error)
+	Update(id int, keluargaRequest request.UpdateKeluargaRequest) (model.Keluarga, error)
 }
 
 type keluargaService struct {
@@ -30,40 +28,28 @@ func NewKeluargaService(keluargaRepository repository.KeluargaRepository) *kelua
 	return &keluargaService{keluargaRepository}
 }
 
-func (s *keluargaService) FindAll(kabupatenKotaId string) ([]model.Keluarga, error) {
-	var keluargas, err = s.keluargaRepository.FindAll(kabupatenKotaId)
+func (s *keluargaService) FindAll() ([]model.Keluarga, error) {
+	var keluargas, err = s.keluargaRepository.FindAll()
 
 	return keluargas, err
 }
 
-func (s *keluargaService) FindById(kabupatenKotaId string, id int) (model.Keluarga, error) {
-	var keluarga, err = s.keluargaRepository.FindById(kabupatenKotaId, id)
+func (s *keluargaService) FindById(id int) (model.Keluarga, error) {
+	var keluarga, err = s.keluargaRepository.FindById(id)
 
 	return keluarga, err
 }
 
-func (s *keluargaService) FindByKelurahanId(kelurahanId string) ([]model.Keluarga, error) {
-	var keluargas, err = s.keluargaRepository.FindByKelurahanId(kelurahanId)
-
-	return keluargas, err
-}
-
-func (s *keluargaService) FindByDesil(desilKesejahteraan string) ([]model.Keluarga, error) {
-	var keluargas, err = s.keluargaRepository.FindByDesil(desilKesejahteraan)
-
-	return keluargas, err
-}
-
-func (s *keluargaService) FindByKelurahanIdAndDesil(kelurahanId string, desilKesejahteraan string) ([]model.Keluarga, error) {
-	var keluargas, err = s.keluargaRepository.FindByKelurahanIdAndDesil(kelurahanId, desilKesejahteraan)
-
-	return keluargas, err
-}
-
-func (s *keluargaService) FindByIdKeluargaByKabupatenKota(kabupatenKotaId string, idKeluarga string) (model.Keluarga, error) {
-	var keluarga, err = s.keluargaRepository.FindByIdKeluargaByKabupatenKota(kabupatenKotaId, idKeluarga)
+func (s *keluargaService) FindByIdKeluarga(idKeluarga string) (model.Keluarga, error) {
+	var keluarga, err = s.keluargaRepository.FindByIdKeluarga(idKeluarga)
 
 	return keluarga, err
+}
+
+func (s *keluargaService) FindBySearch(whereClause map[string]interface{}) ([]model.Keluarga, error) {
+	var keluargas, err = s.keluargaRepository.FindBySearch(whereClause)
+
+	return keluargas, err
 }
 
 func (s *keluargaService) CountPenerimaByKabupatenKota(kabupatenKotaId string, penerimaParameter string, nilai string) (jumlah int64, err error) {
@@ -102,8 +88,8 @@ func (s *keluargaService) CountDesilByKelurahan(kelurahanId string, nilaiDesil s
 	return count, errr
 }
 
-func (s *keluargaService) Update(kabupatenKotaId string, id int, keluargaRequest request.UpdateKeluargaRequest) (model.Keluarga, error) {
-	var keluarga, err = s.keluargaRepository.FindById(kabupatenKotaId, id)
+func (s *keluargaService) Update(id int, keluargaRequest request.UpdateKeluargaRequest) (model.Keluarga, error) {
+	var keluarga, err = s.keluargaRepository.FindById(id)
 
 	keluarga.UserId = keluargaRequest.UserId
 	keluarga.StatusVerifikasi = keluargaRequest.StatusVerifikasi

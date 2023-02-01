@@ -7,10 +7,11 @@ import (
 )
 
 type IndividuService interface {
-	FindAll(kabupatenKotaId string) ([]model.Individu, error)
-	FindById(kabupatenKotaid string, id int) (model.Individu, error)
-	FindByIdKeluarga(kabupatenKotaId string, idKeluarga string) ([]model.Individu, error)
-	Update(kabupatenKotaId string, id int, individuReqeust request.UpdateIndividuRequest) (model.Individu, error)
+	FindAll() ([]model.Individu, error)
+	FindById(id int) (model.Individu, error)
+	FindByIdKeluarga(idKeluarga string) ([]model.Individu, error)
+	FindBySearch(whereClause map[string]interface{}) ([]model.Individu, error)
+	Update(id int, individuReqeust request.UpdateIndividuRequest) (model.Individu, error)
 }
 
 type individuService struct {
@@ -21,26 +22,32 @@ func NewIndividuService(individuRepository repository.IndividuRepository) *indiv
 	return &individuService{individuRepository}
 }
 
-func (s *individuService) FindAll(kabupatenKotaId string) ([]model.Individu, error) {
-	var individus, err = s.individuRepository.FindAll(kabupatenKotaId)
+func (s *individuService) FindAll() ([]model.Individu, error) {
+	var individus, err = s.individuRepository.FindAll()
 
 	return individus, err
 }
 
-func (s *individuService) FindById(kabupatenKotaId string, id int) (model.Individu, error) {
-	var individu, err = s.individuRepository.FindById(kabupatenKotaId, id)
+func (s *individuService) FindById(id int) (model.Individu, error) {
+	var individu, err = s.individuRepository.FindById(id)
 
 	return individu, err
 }
 
-func (s *individuService) FindByIdKeluarga(kabupatenKotaId string, idKeluarga string) ([]model.Individu, error) {
-	var individus, err = s.individuRepository.FindByIdKeluarga(kabupatenKotaId, idKeluarga)
+func (s *individuService) FindByIdKeluarga(idKeluarga string) ([]model.Individu, error) {
+	var individus, err = s.individuRepository.FindByIdKeluarga(idKeluarga)
 
 	return individus, err
 }
 
-func (s *individuService) Update(kabupatenKotaId string, id int, individuRequest request.UpdateIndividuRequest) (model.Individu, error) {
-	var individu, err = s.individuRepository.FindById(kabupatenKotaId, id)
+func (s *individuService) FindBySearch(whereClause map[string]interface{}) ([]model.Individu, error) {
+	var individus, err = s.individuRepository.FindBySearch(whereClause)
+
+	return individus, err
+}
+
+func (s *individuService) Update(id int, individuRequest request.UpdateIndividuRequest) (model.Individu, error) {
+	var individu, err = s.individuRepository.FindById(id)
 
 	individu.UserId = individuRequest.UserId
 	individu.MahasiswaId = individuRequest.MahasiswaId

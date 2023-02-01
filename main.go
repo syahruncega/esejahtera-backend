@@ -46,17 +46,41 @@ func main() {
 	var programService = service.NewProgramService(programRepository)
 	var programController = controller.NewProgramController(programService)
 
+	var detailProgramRepository = repository.NewDetailProgramRepository(config.DB)
+	var detailProgramService = service.NewDetailProgramService(detailProgramRepository)
+	var detailProgramController = controller.NewDetailProgramController(detailProgramService)
+
+	var indikatorProgramRepository = repository.NewIndikatorProgramRepository(config.DB)
+	var indikatorProgramService = service.NewIndikatorProgramService(indikatorProgramRepository)
+	var indikatorProgramController = controller.NewIndikatorProgramController(indikatorProgramService)
+
 	var kegiatanRepository = repository.NewKegiatanRepository(config.DB)
 	var kegiatanService = service.NewKegiatanService(kegiatanRepository)
 	var kegiatanController = controller.NewKegiatanController(kegiatanService)
+
+	var detailKegiatanRepository = repository.NewDetailKegiatanRepository(config.DB)
+	var detailKegiatanService = service.NewDetailKegiatanService(detailKegiatanRepository)
+	var detailKegiatanController = controller.NewDetailKegiatanController(detailKegiatanService)
+
+	var indikatorKegiatanRepository = repository.NewIndikatorKegiatanRepository(config.DB)
+	var indikatorKegiatanService = service.NewIndikatorKegiatanService(indikatorKegiatanRepository)
+	var indikatorKegiatanController = controller.NewIndikatorKegiatanController(indikatorKegiatanService)
 
 	var subKegiatanRepository = repository.NewSubKegiatanRepository(config.DB)
 	var subKegiatanService = service.NewSubKegiatanService(subKegiatanRepository)
 	var subKegiatanController = controller.NewSubKegiatanController(subKegiatanService)
 
+	var indikatorSubKegiatanRepository = repository.NewIndikatorSubKegiatanRepository(config.DB)
+	var indikatorSubKegiatanService = service.NewIndikatorSubKegiatanService(indikatorSubKegiatanRepository)
+	var indikatorSubKegiatanController = controller.NewIndikatorSubKegiatanController(indikatorSubKegiatanService)
+
 	var detailSubKegiatanRepository = repository.NewDetailSubKegiatanRepository(config.DB)
 	var detailSubKegiatanService = service.NewDetailSubKegiatanService(detailSubKegiatanRepository)
 	var detailSubKegiatanController = controller.NewDetailSubKegiatanController(detailSubKegiatanService)
+
+	var fokusBelanjaRepository = repository.NewFokusBelanjaRepository(config.DB)
+	var fokusBelanjaService = service.NewFokusBelanjaService(fokusBelanjaRepository)
+	var fokusBelanjaController = controller.NewFokusBelanjaController(fokusBelanjaService)
 
 	var detailLokasiRepository = repository.NewDetailLokasiRepository(config.DB)
 	var detailLokasiService = service.NewDetailLokasiService(detailLokasiRepository)
@@ -122,6 +146,10 @@ func main() {
 	var individuService = service.NewIndividuService(individuRepository)
 	var individuController = controller.NewIndividuController(individuService)
 
+	var individuVerifikasiRepository = repository.NewIndividuVerifikasiRepository(config.DB)
+	var individuVerifikasiService = service.NewIndividuVerifikasiService(individuVerifikasiRepository)
+	var individuVerifikasiController = controller.NewIndividuVerifikasiController(individuVerifikasiService)
+
 	var server = gin.Default()
 
 	server.Use(cors.New(cors.Config{
@@ -144,42 +172,72 @@ func main() {
 
 	server.GET("/detailinstansi", detailInstansiController.GetDetailInstansis)
 	server.GET("/detailinstansi/:id", detailInstansiController.GetDetailInstansi)
-	server.GET("/detailinstansi/detail/:instansiid", detailInstansiController.GetDetailInstansiByInstansiId)
 	server.POST("/detailinstansi", detailInstansiController.CreateDetailInstansi)
 	server.PATCH("/detailinstansi/:id", detailInstansiController.UpdateDetailInstansi)
 	server.DELETE("/detailinstansi/:id", detailInstansiController.DeleteDetailInstansi)
 
 	server.GET("/program", programController.GetPrograms)
 	server.GET("/program/:id", programController.GetProgram)
-	server.GET("/programrelasi", programController.GetProgramWithRelation)
 	server.POST("/program", programController.CreateProgram)
 	server.PATCH("/program/:id", programController.UpdateProgram)
 	server.DELETE("/program/:id", programController.DeleteProgram)
 
+	server.GET("/detailprogram", detailProgramController.GetDetailPrograms)
+	server.GET("/detailprogram/:id", detailProgramController.GetDetailProgram)
+	server.POST("/detailprogram", detailProgramController.CreateDetailProgram)
+	server.PATCH("/detailprogram/:id", detailProgramController.UpdateDetailProgram)
+	server.DELETE("/detailprogram/:id", detailProgramController.DeleteDetailProgram)
+
+	server.GET("/indikatorprogram", indikatorProgramController.GetIndikatorPrograms)
+	server.GET("/indikatorprogram/:id", indikatorProgramController.GetIndikatorProgram)
+	server.POST("/indikatorprogram", indikatorProgramController.CreateIndikatorProgram)
+	server.PATCH("/indikatorprogram/:id", indikatorProgramController.UpdateIndikatorProgram)
+	server.DELETE("/indikatorprogram/:id", indikatorProgramController.DeleteIndikatorProgram)
+
 	server.GET("/kegiatan", kegiatanController.GetKegiatans)
 	server.GET("/kegiatan/:id", kegiatanController.GetKegiatan)
-	server.GET("/kegiatanrelasi", kegiatanController.GetKegiatanWithRelation)
 	server.POST("/kegiatan", kegiatanController.CreateKegiatan)
 	server.PATCH("/kegiatan/:id", kegiatanController.UpdateKegiatan)
 	server.DELETE("/kegiatan/:id", kegiatanController.DeleteKegiatan)
 
+	server.GET("/indikatorsubkegiatan", indikatorSubKegiatanController.GetIndikatorSubKegiatans)
+	server.GET("/indikatorsubkegiatan/:id", indikatorSubKegiatanController.GetIndikatorSubKegiatan)
+	server.POST("/indikatorsubkegiatan", indikatorSubKegiatanController.CreateIndikatorSubKegiatan)
+	server.PATCH("/indikatorsubkegiatan/:id", indikatorSubKegiatanController.UpdateIndikatorSubKegiatan)
+	server.DELETE("/indikatorsubkegiatan/:id", indikatorSubKegiatanController.DeleteIndikatorSubKegiatan)
+
+	server.GET("/detailkegiatan", detailKegiatanController.GetDetailKegiatans)
+	server.GET("/detailkegiatan/:id", detailKegiatanController.GetDetailKegiatan)
+	server.POST("/detailkegiatan", detailKegiatanController.CreateDetailKegiatan)
+	server.PATCH("/detailkegiatan/:id", detailKegiatanController.UpdateDetailKegiatan)
+	server.DELETE("/detailkegiatan/:id", detailKegiatanController.DeleteDetailKegiatan)
+
+	server.GET("/indikatorkegiatan", indikatorKegiatanController.GetIndikatorKegiatans)
+	server.GET("/indikatorkegiatan/:id", indikatorKegiatanController.GetIndikatorKegiatan)
+	server.POST("/indikatorkegiatan", indikatorKegiatanController.CreateIndikatorKegiatan)
+	server.PATCH("/indikatorkegiatan/:id", indikatorKegiatanController.UpdateIndikatorKegiatan)
+	server.DELETE("/indikatorkegiatan/:id", indikatorKegiatanController.DeleteIndikatorKegiatan)
+
 	server.GET("/subkegiatan", subKegiatanController.GetSubKegiatans)
 	server.GET("/subkegiatan/:id", subKegiatanController.GetSubKegiatan)
-	server.GET("/subkegiatanrelasi", subKegiatanController.GetSubKegiatanWithRelation)
 	server.POST("/subkegiatan", subKegiatanController.CreateSubKegiatan)
 	server.PATCH("/subkegiatan/:id", subKegiatanController.UpdateSubKegiatan)
 	server.DELETE("/subkegiatan/:id", subKegiatanController.DeleteSubKegiatan)
 
 	server.GET("/detailsubkegiatan", detailSubKegiatanController.GetDetailSubKegiatans)
 	server.GET("/detailsubkegiatan/:id", detailSubKegiatanController.GetDetailSubKegiatan)
-	server.GET("/detailsubkegiatanrelasi", detailSubKegiatanController.GetDetailSubKegiatanWithRelation)
 	server.POST("/detailsubkegiatan", detailSubKegiatanController.CreateDetailSubKegiatan)
 	server.PATCH("/detailsubkegiatan/:id", detailSubKegiatanController.UpdateDetailSubKegiatan)
-	server.DELETE("/detailsubkegiatan/:id", detailSubKegiatanController.DeleteDetailSubKegitan)
+	server.DELETE("/detailsubkegiatan/:id", detailSubKegiatanController.DeleteDetailSubKegiatan)
+
+	server.GET("/fokusbelanja", fokusBelanjaController.GetFokusBelanjas)
+	server.GET("/fokusbelanja/:id", fokusBelanjaController.GetFokusBelanja)
+	server.POST("/fokusbelanja", fokusBelanjaController.CreateFokusBelanja)
+	server.PATCH("/fokusbelanja/:id", fokusBelanjaController.UpdateFokusBelanja)
+	server.DELETE("/fokusbelanja/:id", fokusBelanjaController.DeleteFokusBelanja)
 
 	server.GET("/detaillokasi", detailLokasiController.GetDetailLokasis)
 	server.GET("/detaillokasi/:id", detailLokasiController.GetDetailLokasi)
-	server.GET("/detaillokasirelasi", detailLokasiController.GetDetailLokasiWithRelation)
 	server.POST("/detaillokasi", detailLokasiController.CreateDetailLokasi)
 	server.PATCH("/detaillokasi/:id", detailLokasiController.UpdateDetailLokasi)
 	server.DELETE("/detaillokasi/:id", detailLokasiController.DeleteDetailLokasi)
@@ -196,19 +254,17 @@ func main() {
 	server.GET("/kelurahan", kelurahanController.GetKelurahans)
 	server.GET("/kelurahan/:id", kelurahanController.GetKelurahan)
 
-	server.GET("/keluarga/:kabupatenkotaid", keluargaController.GetKeluargas)
-	server.GET("/keluarga/detail/:kabupatenkotaid/:id", keluargaController.GetKeluargaById)
-	server.GET("/keluarga/kelurahan/:kelurahanid", keluargaController.GetKeluargaByKelurahanId)
-	server.GET("/keluarga/desil/:desilkesejahteraan", keluargaController.GetKeluargaByDesilKesejahteraan)
-	server.GET("/keluarga/kelurahandandesil/:kelurahanid/:desilkesejahteraan", keluargaController.GetKeluargaByKelurahanIdAndDesilKesejahteraan)
-	server.GET("/keluarga/idkeluarga/:kabupatenkotaid/:idkeluarga", keluargaController.GetIdKeluargaByKabupatenKota)
+	server.GET("/keluarga/", keluargaController.GetKeluargas)
+	server.GET("/keluarga/:id", keluargaController.GetKeluargaById)
+	server.GET("/keluarga/idkeluarga/:idkeluarga", keluargaController.GetKeluargaByIdKeluarga)
+	server.GET("/keluarga/search/", keluargaController.GetKeluargaBySearch)
 	server.GET("/keluarga/jumlah/penerima/kabupatenkota/:kabupatenkotaid/:penerimaparameter/:nilai", keluargaController.CountPenerimaByKabupatenKota)
 	server.GET("/keluarga/jumlah/penerima/kecamatan/:kecamatanid/:penerimaparameter/:nilai", keluargaController.CountPenerimaByKecamatan)
 	server.GET("/keluarga/jumlah/penerima/kelurahan/:kelurahanid/:penerimaparameter/:nilai", keluargaController.CountPenerimaByKelurahan)
 	server.GET("/keluarga/jumlah/desil/kabupatenkota/:kabupatenkotaid/:nilaidesil", keluargaController.CountDesilByKabupatenKota)
 	server.GET("/keluarga/jumlah/desil/kecamatan/:kecamatanid/:nilaidesil", keluargaController.CountDesilByKecamatan)
 	server.GET("/keluarga/jumlah/desil/kelurahan/:kelurahanid/:nilaidesil", keluargaController.CountDesilByKelurahan)
-	server.PATCH("/keluarga/:kabupatenkotaid/:id", keluargaController.UpdateKeluarga)
+	server.PATCH("/keluarga/:id", keluargaController.UpdateKeluarga)
 
 	server.GET("/monev/:kabupatenkotaid", monevController.GetMonevs)
 	server.GET("/monev/detail/:kabupatenkotaid/:id", monevController.GetMonev)
@@ -262,16 +318,27 @@ func main() {
 	server.PATCH("/lokasidosen/:id", lokasiDosenController.UpdateLokasiDosen)
 	server.DELETE("/lokasidosen/:id", lokasiDosenController.DeleteLokasiDosen)
 
-	server.GET("/keluargaverifikasi/:kabupatenkotaid", keluargaVerifikasiController.GetKeluargaVerifikasis)
-	server.GET("/keluargaverifikasi/detail/:kabupatenkotaid/:id", keluargaVerifikasiController.GetKeluargaVerifikasi)
+	server.GET("/keluargaverifikasi/", keluargaVerifikasiController.GetKeluargaVerifikasis)
+	server.GET("/keluargaverifikasi/:id", keluargaVerifikasiController.GetKeluargaVerifikasi)
+	server.GET("/keluargaverifikasi/idkeluarga/:idkeluarga", keluargaVerifikasiController.GetKeluargaVerifikasiByIdKeluarga)
+	server.GET("/keluargaverifikasi/search", keluargaVerifikasiController.GetKeluargaVerifikasiBySearch)
 	server.POST("/keluargaverifikasi", keluargaVerifikasiController.CreateKeluargaVerifikasi)
 	server.PATCH("/keluargaverifikasi/:kabupatenkotaid/:id", keluargaVerifikasiController.UpdateKeluargaVerifikasi)
 	server.DELETE("/keluargaverifikasi/:kabupatenkotaid/:id", keluargaVerifikasiController.DeleteKeluargaVerifikasi)
 
-	server.GET("/individu/:kabupatenkotaid", individuController.GetIndividus)
-	server.GET("/individu/detail/:kabupatenkotaid/:id", individuController.GetIndividu)
-	server.GET("/individu/idkeluarga/:kabupatenkotaid/:idkeluarga", individuController.GetIndividuByIdKeluarga)
+	server.GET("/individu/", individuController.GetIndividus)
+	server.GET("/individu/:id", individuController.GetIndividu)
+	server.GET("/individu/idkeluarga/:idkeluarga", individuController.GetIndividuByIdKeluarga)
+	server.GET("/individu/search", individuController.GetIndividuBySearch)
 	server.PATCH("/individu/:kabupatenkotaid/:id", individuController.UpdateIndividu)
+
+	server.GET("/individuverifikasi", individuVerifikasiController.GetIndividuVerifikasis)
+	server.GET("/individuverifikasi/:id", individuVerifikasiController.GetIndividuVerifikasi)
+	server.GET("/individuverifikasi/idkeluarga/:idkeluarga", individuVerifikasiController.GetIndividuVerifikasiByIdKeluarga)
+	server.GET("/individuverifikasi/search", individuVerifikasiController.GetIndividuVerifikasiBySearch)
+	server.POST("/individuverifikasi", individuVerifikasiController.CreateIndividuVerifikasi)
+	server.PATCH("/individuverifikasi/:id", individuVerifikasiController.UpdateIndividuVerifikasi)
+	server.DELETE("/individuverifikasi/:id", individuVerifikasiController.DeleteIndividuVerifikasi)
 
 	server.Run(":" + appConfig.AppPort)
 }

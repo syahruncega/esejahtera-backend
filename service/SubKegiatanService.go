@@ -7,12 +7,11 @@ import (
 )
 
 type SubKegiatanService interface {
-	FindAll() ([]model.Sub_Kegiatan, error)
-	FindById(id int) (model.Sub_Kegiatan, error)
-	FindAllRelation() ([]model.Sub_Kegiatan, error)
-	Create(subKegiatanRequest request.CreateSub_KegiatanRequest) (model.Sub_Kegiatan, error)
-	Update(id int, subKegiatanRequest request.UpdateSub_KegiatanRequest) (model.Sub_Kegiatan, error)
-	Delete(id int) (model.Sub_Kegiatan, error)
+	FindAll() ([]model.SubKegiatan, error)
+	FindById(id string) (model.SubKegiatan, error)
+	Create(subKegiatanRequest request.CreateSubKegiatanRequest) (model.SubKegiatan, error)
+	Update(id string, subKegiatanRequest request.UpdateSubKegiatanRequest) (model.SubKegiatan, error)
+	Delete(id string) (model.SubKegiatan, error)
 }
 
 type subKegiatanService struct {
@@ -23,51 +22,41 @@ func NewSubKegiatanService(subKegiatanRepository repository.SubKegiatanRepositor
 	return &subKegiatanService{subKegiatanRepository}
 }
 
-func (s *subKegiatanService) FindAll() ([]model.Sub_Kegiatan, error) {
+func (s *subKegiatanService) FindAll() ([]model.SubKegiatan, error) {
 	var subKegiatans, err = s.subKegiatanRepository.FindAll()
 
 	return subKegiatans, err
 }
 
-func (s *subKegiatanService) FindById(id int) (model.Sub_Kegiatan, error) {
+func (s *subKegiatanService) FindById(id string) (model.SubKegiatan, error) {
 	var subKegiatan, err = s.subKegiatanRepository.FindById(id)
 
 	return subKegiatan, err
 }
 
-func (s *subKegiatanService) FindAllRelation() ([]model.Sub_Kegiatan, error) {
-	var subKegiatanRelations, err = s.subKegiatanRepository.FindAllRelation()
-
-	return subKegiatanRelations, err
-}
-
-func (s *subKegiatanService) Create(subKegiatanRequest request.CreateSub_KegiatanRequest) (model.Sub_Kegiatan, error) {
-	var subKegiatan = model.Sub_Kegiatan{
-		NamaSubKegiatan:             subKegiatanRequest.NamaSubKegiatan,
-		IndikatorKinerjaSubKegiatan: subKegiatanRequest.IndikatorKinerjaSubKegiatan,
-		PaguSubKegiatan:             subKegiatanRequest.PaguSubKegiatan,
-		KegiatanId:                  subKegiatanRequest.KegiatanId,
+func (s *subKegiatanService) Create(subKegiatanRequest request.CreateSubKegiatanRequest) (model.SubKegiatan, error) {
+	var subKegiatan = model.SubKegiatan{
+		Id:              subKegiatanRequest.Id,
+		NamaSubKegiatan: subKegiatanRequest.NamaSubKegiatan,
 	}
 
-	var newSubKegiatan, err = s.subKegiatanRepository.Create(subKegiatan)
+	newSubKegiatan, err := s.subKegiatanRepository.Create(subKegiatan)
 
 	return newSubKegiatan, err
 }
 
-func (s *subKegiatanService) Update(id int, subKegiatanRequest request.UpdateSub_KegiatanRequest) (model.Sub_Kegiatan, error) {
+func (s *subKegiatanService) Update(id string, subKegiatanRequest request.UpdateSubKegiatanRequest) (model.SubKegiatan, error) {
 	var subKegiatan, err = s.subKegiatanRepository.FindById(id)
 
+	subKegiatan.Id = subKegiatanRequest.Id
 	subKegiatan.NamaSubKegiatan = subKegiatanRequest.NamaSubKegiatan
-	subKegiatan.IndikatorKinerjaSubKegiatan = subKegiatanRequest.IndikatorKinerjaSubKegiatan
-	subKegiatan.PaguSubKegiatan = subKegiatanRequest.PaguSubKegiatan
-	subKegiatan.KegiatanId = subKegiatanRequest.KegiatanId
 
 	updatedSubKegiatan, err := s.subKegiatanRepository.Update(subKegiatan)
 
 	return updatedSubKegiatan, err
 }
 
-func (s *subKegiatanService) Delete(id int) (model.Sub_Kegiatan, error) {
+func (s *subKegiatanService) Delete(id string) (model.SubKegiatan, error) {
 	var subKegiatan, err = s.subKegiatanRepository.FindById(id)
 
 	deletedSubKegiatan, err := s.subKegiatanRepository.Delete(subKegiatan)

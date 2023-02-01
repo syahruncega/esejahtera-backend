@@ -22,9 +22,7 @@ func NewIndividuController(individuService service.IndividuService) *individuCon
 }
 
 func (c *individuController) GetIndividus(cntx *gin.Context) {
-	var kabupatenKotaId = cntx.Param("kabupatenkotaid")
-
-	var individus, err = c.individuService.FindAll(kabupatenKotaId)
+	var individus, err = c.individuService.FindAll()
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),
@@ -42,11 +40,10 @@ func (c *individuController) GetIndividus(cntx *gin.Context) {
 }
 
 func (c *individuController) GetIndividu(cntx *gin.Context) {
-	var kabupatenKotaId = cntx.Param("kabupatenkotaid")
 	var idString = cntx.Param("id")
 	var id, _ = strconv.Atoi(idString)
 
-	var individu, err = c.individuService.FindById(kabupatenKotaId, id)
+	var individu, err = c.individuService.FindById(id)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": "Data tidak ditemukan",
@@ -60,10 +57,37 @@ func (c *individuController) GetIndividu(cntx *gin.Context) {
 }
 
 func (c *individuController) GetIndividuByIdKeluarga(cntx *gin.Context) {
-	var kabupatenKotaId = cntx.Param("kabupatenkotaid")
 	var idKeluarga = cntx.Param("idkeluarga")
 
-	var individus, err = c.individuService.FindByIdKeluarga(kabupatenKotaId, idKeluarga)
+	var individus, err = c.individuService.FindByIdKeluarga(idKeluarga)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	var individusResponse []responses.IndividuResponse
+
+	for _, individu := range individus {
+		var individuResponse = helper.ConvertToIndividuResponse(individu)
+		individusResponse = append(individusResponse, individuResponse)
+	}
+
+	cntx.JSON(http.StatusOK, individusResponse)
+}
+
+func (c *individuController) GetIndividuBySearch(cntx *gin.Context) {
+	var whereClauseString = cntx.Request.URL.Query()
+	var whereClauseInterface = make(map[string]interface{})
+
+	for k, v := range whereClauseString {
+		interfaceKey := k
+		interfaceValue := v
+
+		whereClauseInterface[interfaceKey] = interfaceValue
+	}
+
+	var individus, err = c.individuService.FindBySearch(whereClauseInterface)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),
@@ -98,11 +122,10 @@ func (c *individuController) UpdateIndividu(cntx *gin.Context) {
 		return
 	}
 
-	var kabupatenKotaId = cntx.Param("kabupatenkotaid")
 	var idString = cntx.Param("id")
 	var id, _ = strconv.Atoi(idString)
 
-	individu, err := c.individuService.Update(kabupatenKotaId, id, individuRequest)
+	individu, err := c.individuService.Update(id, individuRequest)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"errors": cntx.Error(err),

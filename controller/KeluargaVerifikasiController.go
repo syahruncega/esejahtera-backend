@@ -22,9 +22,7 @@ func NewKeluargaVerifikasiController(keluargaVerifikasiService service.KeluargaV
 }
 
 func (c *keluargaVerifikasiController) GetKeluargaVerifikasis(cntx *gin.Context) {
-	var kabupatenKotaId = cntx.Param("kabupatenkotaid")
-
-	var keluargaVerifikasis, err = c.keluargaVerifikasiService.FindAll(kabupatenKotaId)
+	var keluargaVerifikasis, err = c.keluargaVerifikasiService.FindAll()
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),
@@ -42,11 +40,10 @@ func (c *keluargaVerifikasiController) GetKeluargaVerifikasis(cntx *gin.Context)
 }
 
 func (c *keluargaVerifikasiController) GetKeluargaVerifikasi(cntx *gin.Context) {
-	var kabupatenKotaId = cntx.Param("kabupatenkotaid")
 	var idString = cntx.Param("id")
 	var id, _ = strconv.Atoi(idString)
 
-	var keluargaVerifikasi, err = c.keluargaVerifikasiService.FindById(kabupatenKotaId, id)
+	var keluargaVerifikasi, err = c.keluargaVerifikasiService.FindById(id)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": "Data tidak ditemukan",
@@ -57,6 +54,51 @@ func (c *keluargaVerifikasiController) GetKeluargaVerifikasi(cntx *gin.Context) 
 	var keluargaVerifikasiResponse = helper.ConvertToKeluargaVerifikasiResponse(keluargaVerifikasi)
 
 	cntx.JSON(http.StatusOK, keluargaVerifikasiResponse)
+}
+
+func (c *keluargaVerifikasiController) GetKeluargaVerifikasiByIdKeluarga(cntx *gin.Context) {
+	var idKeluarga = cntx.Param("idkeluarga")
+
+	var keluargaVerifikasi, err = c.keluargaVerifikasiService.FindByIdKeluarga(idKeluarga)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": "Data tidak ditemukan",
+		})
+		return
+	}
+
+	var keluargaVerifikasiResponse = helper.ConvertToKeluargaVerifikasiResponse(keluargaVerifikasi)
+
+	cntx.JSON(http.StatusOK, keluargaVerifikasiResponse)
+}
+
+func (c *keluargaVerifikasiController) GetKeluargaVerifikasiBySearch(cntx *gin.Context) {
+	var whereClauseString = cntx.Request.URL.Query()
+	var whereClauseInterface = make(map[string]interface{})
+
+	for k, v := range whereClauseString {
+		interfaceKey := k
+		interfaceValue := v
+
+		whereClauseInterface[interfaceKey] = interfaceValue
+	}
+
+	var keluargaVerifikasis, err = c.keluargaVerifikasiService.FindBySearch(whereClauseInterface)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	var keluargaVerifikasisResponse []responses.KeluargaVerifikasiResponse
+
+	for _, keluargaVerifikasi := range keluargaVerifikasis {
+		var keluargaVerifikasiResponse = helper.ConvertToKeluargaVerifikasiResponse(keluargaVerifikasi)
+		keluargaVerifikasisResponse = append(keluargaVerifikasisResponse, keluargaVerifikasiResponse)
+	}
+
+	cntx.JSON(http.StatusOK, keluargaVerifikasisResponse)
+
 }
 
 func (c *keluargaVerifikasiController) CreateKeluargaVerifikasi(cntx *gin.Context) {
@@ -108,11 +150,10 @@ func (c *keluargaVerifikasiController) UpdateKeluargaVerifikasi(cntx *gin.Contex
 		return
 	}
 
-	var kabupatenKotaId = cntx.Param("kabupatenkotaid")
 	var idString = cntx.Param("id")
 	var id, _ = strconv.Atoi(idString)
 
-	keluargaVerifikasi, err := c.keluargaVerifikasiService.Update(kabupatenKotaId, id, keluargaVerifikasiRequest)
+	keluargaVerifikasi, err := c.keluargaVerifikasiService.Update(id, keluargaVerifikasiRequest)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"errors": cntx.Error(err),
@@ -126,11 +167,10 @@ func (c *keluargaVerifikasiController) UpdateKeluargaVerifikasi(cntx *gin.Contex
 }
 
 func (c *keluargaVerifikasiController) DeleteKeluargaVerifikasi(cntx *gin.Context) {
-	var kabupatenKotaId = cntx.Param("kabupatenkotaid")
 	var idString = cntx.Param("id")
 	var id, _ = strconv.Atoi(idString)
 
-	_, err := c.keluargaVerifikasiService.Delete(kabupatenKotaId, id)
+	_, err := c.keluargaVerifikasiService.Delete(id)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": "Data gagal dihapus",

@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"kemiskinan/helper"
+	"kemiskinan/model"
 	"kemiskinan/request"
 	"kemiskinan/responses"
 	"kemiskinan/service"
@@ -22,14 +23,24 @@ func NewDetailSubKegiatanController(detailSubKegiatanService service.DetailSubKe
 }
 
 func (c *detailSubKegiatanController) GetDetailSubKegiatans(cntx *gin.Context) {
-	var detailSubKegiatans, err = c.detailSubKegiatanService.FindAll()
+	var kegiatanId = cntx.Query("kegiatanid")
+
+	var detailSubKegiatans []model.DetailSubKegiatan
+	var err error
+
+	if kegiatanId != "" {
+		detailSubKegiatans, err = c.detailSubKegiatanService.FindByKegiatanId(kegiatanId)
+	} else {
+		detailSubKegiatans, err = c.detailSubKegiatanService.FindAll()
+	}
+
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),
 		})
 	}
 
-	var detailSubKegiatansResponse []responses.Detail_Sub_KegiatanResponse
+	var detailSubKegiatansResponse []responses.DetailSubKegiatanResponse
 
 	for _, detailSubKegiatan := range detailSubKegiatans {
 		var detailSubKegiatanResponse = helper.ConvertToDetailSubKegiatanResponse(detailSubKegiatan)
@@ -56,27 +67,8 @@ func (c *detailSubKegiatanController) GetDetailSubKegiatan(cntx *gin.Context) {
 	cntx.JSON(http.StatusOK, detailSubKegiatanResponse)
 }
 
-func (c *detailSubKegiatanController) GetDetailSubKegiatanWithRelation(cntx *gin.Context) {
-	var detailSubKegiatanRelations, err = c.detailSubKegiatanService.FindAllRelation()
-	if err != nil {
-		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
-		})
-	}
-
-	var detailSubKegiatansResponse []responses.Detail_Sub_KegiatanWithSub_KegiatanResponse
-
-	for _, detailSubKegiatanRelation := range detailSubKegiatanRelations {
-		var detailSubKegiatanRelationResponse = helper.ConvertToDetailSubKegiatanWithSubKegiatanResponse(detailSubKegiatanRelation)
-		detailSubKegiatansResponse = append(detailSubKegiatansResponse, detailSubKegiatanRelationResponse)
-	}
-
-	cntx.JSON(http.StatusOK, detailSubKegiatansResponse)
-
-}
-
 func (c *detailSubKegiatanController) CreateDetailSubKegiatan(cntx *gin.Context) {
-	var detailSubKegiatanRequest request.CreateDetail_Sub_KegiatanRequest
+	var detailSubKegiatanRequest request.CreateDetailSubKegiatanRequest
 
 	var err = cntx.ShouldBindJSON(&detailSubKegiatanRequest)
 	if err != nil {
@@ -103,13 +95,11 @@ func (c *detailSubKegiatanController) CreateDetailSubKegiatan(cntx *gin.Context)
 
 	var detailSubKegiatanResponse = helper.ConvertToDetailSubKegiatanResponse(detailSubKegiatan)
 
-	cntx.JSON(http.StatusCreated, gin.H{
-		"data": detailSubKegiatanResponse,
-	})
+	cntx.JSON(http.StatusCreated, detailSubKegiatanResponse)
 }
 
 func (c *detailSubKegiatanController) UpdateDetailSubKegiatan(cntx *gin.Context) {
-	var detailSubKegiatanRequest request.UpdateDetail_Sub_KegiatanRequest
+	var detailSubKegiatanRequest request.UpdateDetailSubKegiatanRequest
 
 	var err = cntx.ShouldBindJSON(&detailSubKegiatanRequest)
 	if err != nil {
@@ -132,19 +122,17 @@ func (c *detailSubKegiatanController) UpdateDetailSubKegiatan(cntx *gin.Context)
 	detailSubKegiatan, err := c.detailSubKegiatanService.Update(id, detailSubKegiatanRequest)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
-			"errors": cntx.Error(err),
+			"error": cntx.Error(err),
 		})
 		return
 	}
 
 	var detailSubKegiatanResponse = helper.ConvertToDetailSubKegiatanResponse(detailSubKegiatan)
 
-	cntx.JSON(http.StatusOK, gin.H{
-		"data": detailSubKegiatanResponse,
-	})
+	cntx.JSON(http.StatusOK, detailSubKegiatanResponse)
 }
 
-func (c *detailSubKegiatanController) DeleteDetailSubKegitan(cntx *gin.Context) {
+func (c *detailSubKegiatanController) DeleteDetailSubKegiatan(cntx *gin.Context) {
 	var idString = cntx.Param("id")
 	var id, _ = strconv.Atoi(idString)
 

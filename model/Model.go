@@ -27,67 +27,121 @@ type DetailInstansi struct {
 }
 
 type Program struct {
-	Id                      int       `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	Id          string    `gorm:"column:id;primaryKey;not null"`
+	NamaProgram string    `gorm:"column:namaProgram;not null"`
+	CreatedAt   time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt   time.Time `gorm:"column:updatedAt;not null"`
+}
+
+type DetailProgram struct {
+	Id         int    `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	InstansiId string `gorm:"column:instansiId;not null"`
+	Instansi   Instansi
+	ProgramId  string `gorm:"column:programId;not null"`
+	Program    Program
+	CreatedAt  time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt  time.Time `gorm:"column:updatedAt;not null"`
+}
+
+type IndikatorProgram struct {
+	Id                      int    `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	InstansiId              string `gorm:"column:instansiId;not null"`
+	Instansi                Instansi
+	ProgramId               string `gorm:"column:programId;not null"`
+	Program                 Program
 	Sasaran                 string    `gorm:"column:sasaran;not null"`
 	IndikatorSasaran        string    `gorm:"column:indikatorSasaran;not null"`
 	Kebijakan               string    `gorm:"column:kebijakan;not null"`
-	NamaProgram             string    `gorm:"column:namaProgram;not null"`
 	IndikatorKinerjaProgram string    `gorm:"column:indikatorKinerjaProgram;not null"`
 	PaguProgram             int       `gorm:"column:paguProgram"`
-	InstansiId              string    `gorm:"column:instansiId;not null"`
 	CreatedAt               time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt               time.Time `gorm:"column:updatedAt;not null"`
-	Instansi                Instansi
 }
 
 type Kegiatan struct {
-	Id                       int       `gorm:"column:id;primaryKey;not null;autoIncrement"`
-	NamaKegiatan             string    `gorm:"column:namaKegiatan;not null"`
+	Id           string    `gorm:"column:id;primaryKey;not null"`
+	NamaKegiatan string    `gorm:"column:namaKegiatan;not null"`
+	CreatedAt    time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt    time.Time `gorm:"column:updatedAt;not null"`
+}
+
+type DetailKegiatan struct {
+	Id         int    `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	ProgramId  string `gorm:"column:programId;not null"`
+	Program    Program
+	KegiatanId string `gorm:"column:kegiatanId;not null"`
+	Kegiatan   Kegiatan
+	CreatedAt  time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt  time.Time `gorm:"column:updatedAt;not null"`
+}
+
+type IndikatorKegiatan struct {
+	Id                       int    `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	ProgramId                string `gorm:"column:programId;not null"`
+	Program                  Program
+	KegiatanId               string `gorm:"column:kegiatanId;not null"`
+	Kegiatan                 Kegiatan
 	IndikatorKinerjaKegiatan string    `gorm:"column:indikatorKinerjaKegiatan;not null"`
 	PaguKegiatan             int       `gorm:"column:paguKegiatan"`
-	ProgramId                int       `gorm:"column:programId;not null"`
 	CreatedAt                time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt                time.Time `gorm:"column:updatedAt;not null"`
-	Program                  Program
 }
 
-type Sub_Kegiatan struct {
-	Id                          int       `gorm:"column:id;primaryKey;not null;autoIncrement"`
-	NamaSubKegiatan             string    `gorm:"column:namaSubKegiatan;not null"`
+type SubKegiatan struct {
+	Id              string    `gorm:"column:id;primaryKey;not null"`
+	NamaSubKegiatan string    `gorm:"column:namaSubKegiatan;not null"`
+	CreatedAt       time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt       time.Time `gorm:"column:updatedAt;not null"`
+}
+
+type IndikatorSubKegiatan struct {
+	Id                          int    `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	KegiatanId                  string `gorm:"column:kegiatanId;not null"`
+	Kegiatan                    Kegiatan
+	SubKegiatanId               string `gorm:"column:subKegiatanId;not null"`
+	SubKegiatan                 SubKegiatan
 	IndikatorKinerjaSubKegiatan string    `gorm:"column:indikatorKinerjaSubKegiatan;not null"`
 	PaguSubKegiatan             int       `gorm:"column:paguSubKegiatan"`
-	KegiatanId                  int       `gorm:"column:kegiatanId;not null"`
 	CreatedAt                   time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt                   time.Time `gorm:"column:updatedAt;not null"`
-	Kegiatan                    Kegiatan
 }
 
-type Detail_Sub_Kegiatan struct {
-	Id               int       `gorm:"column:id;primaryKey;not null;autoIncrement"`
+type DetailSubKegiatan struct {
+	Id            int    `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	KegiatanId    string `gorm:"column:kegiatanId;not null"`
+	Kegiatan      Kegiatan
+	SubKegiatanId string `gorm:"column:subKegiatanId;not null"`
+	SubKegiatan   SubKegiatan
+	CreatedAt     time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt     time.Time `gorm:"column:updatedAt;not null"`
+}
+
+type FokusBelanja struct {
+	Id               int    `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	SubKegiatanId    string `gorm:"column:subKegiatanId;not null"`
+	SubKegiatan      SubKegiatan
 	FokusBelanja     string    `gorm:"column:fokusBelanja;not null"`
 	Indikator        string    `gorm:"column:indikator;not null"`
 	Target           float32   `gorm:"column:target"`
 	Satuan           string    `gorm:"column:satuan;not null"`
 	PaguFokusBelanja int       `gorm:"column:paguFokusBelanja"`
 	Keterangan       string    `gorm:"column:keterangan;not null"`
-	SubKegiatanId    int       `gorm:"column:subKegiatanId;not null"`
 	CreatedAt        time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt        time.Time `gorm:"column:updatedAt;not null"`
-	SubKegiatan      Sub_Kegiatan
 }
 
 type Detail_Lokasi struct {
-	Id                  int       `gorm:"column:id;primaryKey;not null;autoIncrement"`
-	KabupatenKotaId     string    `gorm:"column:kabupatenKotaId;not null"`
-	KecamatanId         string    `gorm:"column:kecamatanId;not null"`
-	KelurahanId         string    `gorm:"column:kelurahanId;not null"`
-	DetailSubKegiatanId int       `gorm:"column:detailSubKegiatanId;not null"`
-	CreatedAt           time.Time `gorm:"column:createdAt;not null"`
-	UpdatedAt           time.Time `gorm:"column:updatedAt;not null"`
-	DetailSubKegiatan   Detail_Sub_Kegiatan
-	KabupatenKota       Kabupaten_Kota
-	Kecamatan           Kecamatan
-	Kelurahan           Kelurahan
+	Id              int `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	FokusBelanjaId  int `gorm:"column:fokusBelanjaId;not null"`
+	FokusBelanja    FokusBelanja
+	KabupatenKotaId string `gorm:"column:kabupatenKotaId;not null"`
+	KabupatenKota   Kabupaten_Kota
+	KecamatanId     string `gorm:"column:kecamatanId;not null"`
+	Kecamatan       Kecamatan
+	KelurahanId     string `gorm:"column:kelurahanId;not null"`
+	Kelurahan       Kelurahan
+	CreatedAt       time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt       time.Time `gorm:"column:updatedAt;not null"`
 }
 
 type Provinsi struct {
@@ -325,4 +379,43 @@ type Individu struct {
 	MahasiswaId        int `gorm:"column:mahasiswaId"`
 	Mahasiswa          Mahasiswa
 	StatusVerifikasi   int `gorm:"column:statusVerifikasi"`
+}
+
+type IndividuVerifikasi struct {
+	Id                 int    `gorm:"column:id;primaryKey;not null"`
+	IdKeluarga         string `gorm:"column:idKeluarga;not null"`
+	ProvinsiId         string `gorm:"column:provinsiId;not null"`
+	Provinsi           Provinsi
+	KabupatenKotaId    string `gorm:"column:kabupatenKotaId;not null"`
+	KabupatenKota      Kabupaten_Kota
+	KecamatanId        string `gorm:"column:kecamatanId;not null"`
+	Kecamatan          Kecamatan
+	KelurahanId        string `gorm:"column:kelurahanId;not null"`
+	Kelurahan          Kelurahan
+	DesilKesejahteraan string `gorm:"column:desilKesejahteraan;not null"`
+	Alamat             string `gorm:"column:alamat;not null"`
+	IdIndividu         string `gorm:"column:idIndividu;not null"`
+	Nama               string `gorm:"column:nama;not null"`
+	Nik                string `gorm:"column:nik;not null"`
+	PadanDukcapil      string `gorm:"column:padanDukcapil;not null"`
+	JenisKelamin       string `gorm:"column:jenisKelamin;not null"`
+	Hubungan           string `gorm:"column:hubungan;not null"`
+	TanggalLahir       string `gorm:"column:tanggalLahir;not null"`
+	StatusKawin        string `gorm:"column:statusKawin;not null"`
+	Pekerjaan          string `gorm:"column:pekerjaan;not null"`
+	Pendidikan         string `gorm:"column:pendidikan;not null"`
+	KategoriUsia       string `gorm:"column:kategoriUsia;not null"`
+	PenerimaBPNT       string `gorm:"column:penerimaBPNT;not null"`
+	PenerimaBPUM       string `gorm:"column:penerimaBPUM;not null"`
+	PenerimaBST        string `gorm:"column:penerimaBST;not null"`
+	PenerimaPKH        string `gorm:"column:penerimaPKH;not null"`
+	PenerimaSembako    string `gorm:"column:penerimaSembako;not null"`
+	PenerimaLainnya    string `gorm:"column:penerimaLainnya;not null"`
+	StatusResponden    string `gorm:"column:statusResponden;not null"`
+	UserId             int    `gorm:"column:userId;not null"`
+	User               User
+	MahasiswaId        int `gorm:"column:mahasiswaId;not null"`
+	Mahasiswa          Mahasiswa
+	CreatedAt          time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt          time.Time `gorm:"column:updatedAt;not null"`
 }

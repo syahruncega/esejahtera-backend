@@ -22,9 +22,7 @@ func NewKeluargaController(keluargaService service.KeluargaService) *keluargaCon
 }
 
 func (c *keluargaController) GetKeluargas(cntx *gin.Context) {
-	var kabupatenKotaId = cntx.Param("kabupatenkotaid")
-
-	var keluargas, err = c.keluargaService.FindAll(kabupatenKotaId)
+	var keluargas, err = c.keluargaService.FindAll()
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),
@@ -42,11 +40,10 @@ func (c *keluargaController) GetKeluargas(cntx *gin.Context) {
 }
 
 func (c *keluargaController) GetKeluargaById(cntx *gin.Context) {
-	var kabupatenKotaId = cntx.Param("kabupatenkotaid")
 	var idString = cntx.Param("id")
 	var id, _ = strconv.Atoi(idString)
 
-	var keluarga, err = c.keluargaService.FindById(kabupatenKotaId, id)
+	var keluarga, err = c.keluargaService.FindById(id)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": "Data tidak ditemukan",
@@ -59,72 +56,10 @@ func (c *keluargaController) GetKeluargaById(cntx *gin.Context) {
 	cntx.JSON(http.StatusOK, keluargaResponse)
 }
 
-func (c *keluargaController) GetKeluargaByKelurahanId(cntx *gin.Context) {
-	var kelurahanId = cntx.Param("kelurahanid")
-
-	var keluargas, err = c.keluargaService.FindByKelurahanId(kelurahanId)
-	if err != nil {
-		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
-		})
-	}
-
-	var keluargasResponse []responses.KeluargaResponse
-
-	for _, keluarga := range keluargas {
-		var keluargaResponse = helper.ConvertToKeluargaResponse(keluarga)
-		keluargasResponse = append(keluargasResponse, keluargaResponse)
-	}
-
-	cntx.JSON(http.StatusOK, keluargasResponse)
-}
-
-func (c *keluargaController) GetKeluargaByDesilKesejahteraan(cntx *gin.Context) {
-	var desilKesejahteraan = cntx.Param("desilkesejahteraan")
-
-	var keluargas, err = c.keluargaService.FindByDesil(desilKesejahteraan)
-	if err != nil {
-		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
-		})
-	}
-
-	var keluargasResponse []responses.KeluargaResponse
-
-	for _, keluarga := range keluargas {
-		var keluargaResponse = helper.ConvertToKeluargaResponse(keluarga)
-		keluargasResponse = append(keluargasResponse, keluargaResponse)
-	}
-
-	cntx.JSON(http.StatusOK, keluargasResponse)
-}
-
-func (c *keluargaController) GetKeluargaByKelurahanIdAndDesilKesejahteraan(cntx *gin.Context) {
-	var kelurahanId = cntx.Param("kelurahanid")
-	var desilKesejahteraan = cntx.Param("desilkesejahteraan")
-
-	var keluargas, err = c.keluargaService.FindByKelurahanIdAndDesil(kelurahanId, desilKesejahteraan)
-	if err != nil {
-		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
-		})
-	}
-
-	var keluargasResponse []responses.KeluargaResponse
-
-	for _, keluarga := range keluargas {
-		var keluargaResponse = helper.ConvertToKeluargaResponse(keluarga)
-		keluargasResponse = append(keluargasResponse, keluargaResponse)
-	}
-
-	cntx.JSON(http.StatusOK, keluargasResponse)
-}
-
-func (c *keluargaController) GetIdKeluargaByKabupatenKota(cntx *gin.Context) {
-	var kabupatenKotaId = cntx.Param("kabupatenKotaId")
+func (c *keluargaController) GetKeluargaByIdKeluarga(cntx *gin.Context) {
 	var idKeluarga = cntx.Param("idkeluarga")
 
-	var keluarga, err = c.keluargaService.FindByIdKeluargaByKabupatenKota(kabupatenKotaId, idKeluarga)
+	var keluarga, err = c.keluargaService.FindByIdKeluarga(idKeluarga)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": "Data tidak ditemukan",
@@ -136,6 +71,48 @@ func (c *keluargaController) GetIdKeluargaByKabupatenKota(cntx *gin.Context) {
 
 	cntx.JSON(http.StatusOK, keluargaResponse)
 }
+
+func (c *keluargaController) GetKeluargaBySearch(cntx *gin.Context) {
+	var whereClauseString = cntx.Request.URL.Query()
+	var whereClauseInterface = make(map[string]interface{})
+
+	for k, v := range whereClauseString {
+		interfaceKey := k
+		interfaceVal := v
+
+		whereClauseInterface[interfaceKey] = interfaceVal
+	}
+
+	var keluargas, err = c.keluargaService.FindBySearch(whereClauseInterface)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	var keluargasResponse []responses.KeluargaResponse
+
+	for _, keluarga := range keluargas {
+		var keluargaResponse = helper.ConvertToKeluargaResponse(keluarga)
+		keluargasResponse = append(keluargasResponse, keluargaResponse)
+	}
+
+	cntx.JSON(http.StatusOK, keluargasResponse)
+}
+
+// func (c *keluargaController) GetKeluargaBySearch(cntx *gin.Context) {
+// 	var whereClause = cntx.Request.URL.Query()
+
+// 	value := whereClause["test"]
+// 	var testint []int
+// 	for _, val := range value {
+// 		var testtis, _ = strconv.Atoi(val)
+// 		testint = append(testint, testtis)
+// 	}
+
+// 	// var keluargas, err = c.keluargaService.FindBySearch(whereClause)
+// 	cntx.JSON(http.StatusOK, testint)
+// }
 
 func (c *keluargaController) CountPenerimaByKabupatenKota(cntx *gin.Context) {
 	var kabupatenKotaId = cntx.Param("kabupatenkotaid")
@@ -261,11 +238,10 @@ func (c *keluargaController) UpdateKeluarga(cntx *gin.Context) {
 		return
 	}
 
-	var kabupatenKotaId = cntx.Param("kabupatenkotaid")
 	var idString = cntx.Param("id")
 	var id, _ = strconv.Atoi(idString)
 
-	keluarga, err := c.keluargaService.Update(kabupatenKotaId, id, keluargaRequest)
+	keluarga, err := c.keluargaService.Update(id, keluargaRequest)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"errors": cntx.Error(err),

@@ -8,8 +8,7 @@ import (
 
 type KegiatanRepository interface {
 	FindAll() ([]model.Kegiatan, error)
-	FindById(id int) (model.Kegiatan, error)
-	FindAllRelation() ([]model.Kegiatan, error)
+	FindById(id string) (model.Kegiatan, error)
 	Create(kegiatan model.Kegiatan) (model.Kegiatan, error)
 	Update(kegiatan model.Kegiatan) (model.Kegiatan, error)
 	Delete(kegiatan model.Kegiatan) (model.Kegiatan, error)
@@ -31,20 +30,12 @@ func (r *kegiatanRepository) FindAll() ([]model.Kegiatan, error) {
 	return kegiatans, err
 }
 
-func (r *kegiatanRepository) FindById(id int) (model.Kegiatan, error) {
+func (r *kegiatanRepository) FindById(id string) (model.Kegiatan, error) {
 	var kegiatan model.Kegiatan
 
-	var err = r.db.Take(&kegiatan, id).Error
+	var err = r.db.Where("id = ?", id).Take(&kegiatan).Error
 
 	return kegiatan, err
-}
-
-func (r *kegiatanRepository) FindAllRelation() ([]model.Kegiatan, error) {
-	var kegiatans []model.Kegiatan
-
-	var err = r.db.Model(&kegiatans).Preload("Program").Find(&kegiatans).Error
-
-	return kegiatans, err
 }
 
 func (r *kegiatanRepository) Create(kegiatan model.Kegiatan) (model.Kegiatan, error) {
@@ -54,11 +45,9 @@ func (r *kegiatanRepository) Create(kegiatan model.Kegiatan) (model.Kegiatan, er
 }
 
 func (r *kegiatanRepository) Update(kegiatan model.Kegiatan) (model.Kegiatan, error) {
-	var err = r.db.Model(&kegiatan).Select("NamaKegiatan", "IndikatorKinerjaKegiatan", "PaguKegiatan", "ProgramId").Updates(model.Kegiatan{
-		NamaKegiatan:             kegiatan.NamaKegiatan,
-		IndikatorKinerjaKegiatan: kegiatan.IndikatorKinerjaKegiatan,
-		PaguKegiatan:             kegiatan.PaguKegiatan,
-		ProgramId:                kegiatan.ProgramId,
+	var err = r.db.Model(&kegiatan).Updates(model.Kegiatan{
+		Id:           kegiatan.Id,
+		NamaKegiatan: kegiatan.NamaKegiatan,
 	}).Error
 
 	return kegiatan, err

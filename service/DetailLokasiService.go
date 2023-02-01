@@ -9,7 +9,6 @@ import (
 type DetailLokasiService interface {
 	FindAll() ([]model.Detail_Lokasi, error)
 	FindById(id int) (model.Detail_Lokasi, error)
-	FindAllRelation() ([]model.Detail_Lokasi, error)
 	Create(detailLokasiRequest request.CreateDetail_LokasiRequest) (model.Detail_Lokasi, error)
 	Update(id int, detailLokasiRequest request.UpdateDetail_LokasiRequest) (model.Detail_Lokasi, error)
 	Delete(id int) (model.Detail_Lokasi, error)
@@ -35,18 +34,12 @@ func (s *detailLokasiService) FindById(id int) (model.Detail_Lokasi, error) {
 	return detailLokasi, err
 }
 
-func (s *detailLokasiService) FindAllRelation() ([]model.Detail_Lokasi, error) {
-	var detailLokasiRelation, err = s.detailLokasiRepository.FindAllRelation()
-
-	return detailLokasiRelation, err
-}
-
 func (s *detailLokasiService) Create(detailLokasiRequest request.CreateDetail_LokasiRequest) (model.Detail_Lokasi, error) {
 	var detailLokasi = model.Detail_Lokasi{
-		KabupatenKotaId:     detailLokasiRequest.KabupatenKotaId,
-		KecamatanId:         detailLokasiRequest.KecamatanId,
-		KelurahanId:         detailLokasiRequest.KelurahanId,
-		DetailSubKegiatanId: detailLokasiRequest.DetailSubKegiatanId,
+		FokusBelanjaId:  detailLokasiRequest.FokusBelanjaId,
+		KabupatenKotaId: detailLokasiRequest.KabupatenKotaId,
+		KecamatanId:     detailLokasiRequest.KecamatanId,
+		KelurahanId:     detailLokasiRequest.KelurahanId,
 	}
 
 	var newDetailLokasi, err = s.detailLokasiRepository.Create(detailLokasi)
@@ -60,7 +53,7 @@ func (s *detailLokasiService) Update(id int, detailLokasiRequest request.UpdateD
 	detailLokasi.KabupatenKotaId = detailLokasiRequest.KabupatenKotaId
 	detailLokasi.KecamatanId = detailLokasiRequest.KecamatanId
 	detailLokasi.KelurahanId = detailLokasiRequest.KelurahanId
-	detailLokasi.DetailSubKegiatanId = detailLokasiRequest.DetailSubKegiatanId
+	detailLokasi.FokusBelanjaId = detailLokasiRequest.FokusBelanjaId
 
 	updatedDetailLokasi, err := s.detailLokasiRepository.Update(detailLokasi)
 

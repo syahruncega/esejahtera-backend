@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"kemiskinan/helper"
+	"kemiskinan/model"
 	"kemiskinan/request"
 	"kemiskinan/responses"
 	"kemiskinan/service"
@@ -22,14 +23,24 @@ func NewDetailInstansiController(detailInstansiService service.DetailInstansiSer
 }
 
 func (c *detailInstansiController) GetDetailInstansis(cntx *gin.Context) {
-	var detailInstansis, err = c.detailInstansiService.FindAll()
+	var instansiId = cntx.Query("instansiid")
+
+	var detailInstansis []model.DetailInstansi
+	var err error
+
+	var detailInstansisResponse []responses.DetailInstansiResponse
+
+	if instansiId != "" {
+		detailInstansis, err = c.detailInstansiService.FindByInstansiId(instansiId)
+	} else {
+		detailInstansis, err = c.detailInstansiService.FindAll()
+	}
+
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),
 		})
 	}
-
-	var detailInstansisResponse []responses.DetailInstansiResponse
 
 	for _, detailInstansi := range detailInstansis {
 		var detailInstansiResponse = helper.ConvertToDetailInstansiResponse(detailInstansi)
@@ -54,26 +65,6 @@ func (c *detailInstansiController) GetDetailInstansi(cntx *gin.Context) {
 	var detailInstansiResponse = helper.ConvertToDetailInstansiResponse(detailInstansi)
 
 	cntx.JSON(http.StatusOK, detailInstansiResponse)
-}
-
-func (c *detailInstansiController) GetDetailInstansiByInstansiId(cntx *gin.Context) {
-	var instansiId = cntx.Param("instansiid")
-
-	var detailInstansis, err = c.detailInstansiService.FindByInstansiId(instansiId)
-	if err != nil {
-		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
-		})
-	}
-
-	var detailInstansisResponse []responses.DetailInstansiResponse
-
-	for _, detailInstansi := range detailInstansis {
-		var detailInstansiResponse = helper.ConvertToDetailInstansiResponse(detailInstansi)
-		detailInstansisResponse = append(detailInstansisResponse, detailInstansiResponse)
-	}
-
-	cntx.JSON(http.StatusOK, detailInstansisResponse)
 }
 
 func (c *detailInstansiController) CreateDetailInstansi(cntx *gin.Context) {

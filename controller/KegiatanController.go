@@ -7,7 +7,6 @@ import (
 	"kemiskinan/responses"
 	"kemiskinan/service"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -40,8 +39,7 @@ func (c *kegiatanController) GetKegiatans(cntx *gin.Context) {
 }
 
 func (c *kegiatanController) GetKegiatan(cntx *gin.Context) {
-	var idString = cntx.Param("id")
-	var id, _ = strconv.Atoi(idString)
+	var id = cntx.Param("id")
 
 	var kegiatan, err = c.kegiatanService.FindById(id)
 	if err != nil {
@@ -54,24 +52,6 @@ func (c *kegiatanController) GetKegiatan(cntx *gin.Context) {
 	var kegiatanResponse = helper.ConvertToKegiatanResponse(kegiatan)
 
 	cntx.JSON(http.StatusOK, kegiatanResponse)
-}
-
-func (c *kegiatanController) GetKegiatanWithRelation(cntx *gin.Context) {
-	var kegiatanRelations, err = c.kegiatanService.FindAllRelation()
-	if err != nil {
-		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
-		})
-	}
-
-	var kegiatansRelationResponse []responses.KegiatanWithProgramResponse
-
-	for _, kegiatanRelation := range kegiatanRelations {
-		var kegiatanRelationResponse = helper.ConvertToKegiatanWithProgramResponse(kegiatanRelation)
-		kegiatansRelationResponse = append(kegiatansRelationResponse, kegiatanRelationResponse)
-	}
-
-	cntx.JSON(http.StatusOK, kegiatansRelationResponse)
 }
 
 func (c *kegiatanController) CreateKegiatan(cntx *gin.Context) {
@@ -95,16 +75,14 @@ func (c *kegiatanController) CreateKegiatan(cntx *gin.Context) {
 	kegiatan, err := c.kegiatanService.Create(kegiatanRequest)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
+			"errors": cntx.Error(err),
 		})
 		return
 	}
 
 	var kegiatanResponse = helper.ConvertToKegiatanResponse(kegiatan)
 
-	cntx.JSON(http.StatusCreated, gin.H{
-		"data": kegiatanResponse,
-	})
+	cntx.JSON(http.StatusCreated, kegiatanResponse)
 }
 
 func (c *kegiatanController) UpdateKegiatan(cntx *gin.Context) {
@@ -125,8 +103,7 @@ func (c *kegiatanController) UpdateKegiatan(cntx *gin.Context) {
 		return
 	}
 
-	var idString = cntx.Param("id")
-	var id, _ = strconv.Atoi(idString)
+	var id = cntx.Param("id")
 
 	kegiatan, err := c.kegiatanService.Update(id, kegiatanRequest)
 	if err != nil {
@@ -138,14 +115,11 @@ func (c *kegiatanController) UpdateKegiatan(cntx *gin.Context) {
 
 	var kegiatanResponse = helper.ConvertToKegiatanResponse(kegiatan)
 
-	cntx.JSON(http.StatusOK, gin.H{
-		"data": kegiatanResponse,
-	})
+	cntx.JSON(http.StatusOK, kegiatanResponse)
 }
 
 func (c *kegiatanController) DeleteKegiatan(cntx *gin.Context) {
-	var idString = cntx.Param("id")
-	var id, _ = strconv.Atoi(idString)
+	var id = cntx.Param("id")
 
 	_, err := c.kegiatanService.Delete(id)
 	if err != nil {
@@ -156,6 +130,6 @@ func (c *kegiatanController) DeleteKegiatan(cntx *gin.Context) {
 	}
 
 	cntx.JSON(http.StatusOK, gin.H{
-		"status": "Data Berhasil Dihapus",
+		"status": "Data berhasil dihapus",
 	})
 }

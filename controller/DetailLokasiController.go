@@ -56,24 +56,6 @@ func (c *detailLokasiController) GetDetailLokasi(cntx *gin.Context) {
 	cntx.JSON(http.StatusOK, detailLokasiResponse)
 }
 
-func (c *detailLokasiController) GetDetailLokasiWithRelation(cntx *gin.Context) {
-	var detailLokasiRelations, err = c.detailLokasiService.FindAllRelation()
-	if err != nil {
-		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
-		})
-	}
-
-	var detailLokasiRelationsResponse []responses.Detail_LokasiWithRelationResponse
-
-	for _, detailLokasiRelation := range detailLokasiRelations {
-		var detailLokasiRelationResponse = helper.ConvertToDetailLokasiWithRelationResponse(detailLokasiRelation)
-		detailLokasiRelationsResponse = append(detailLokasiRelationsResponse, detailLokasiRelationResponse)
-	}
-
-	cntx.JSON(http.StatusOK, detailLokasiRelationsResponse)
-}
-
 func (c *detailLokasiController) CreateDetailLokasi(cntx *gin.Context) {
 	var detailLokasiRequest request.CreateDetail_LokasiRequest
 

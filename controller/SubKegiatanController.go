@@ -7,7 +7,6 @@ import (
 	"kemiskinan/responses"
 	"kemiskinan/service"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -29,7 +28,7 @@ func (c *subKegiatanController) GetSubKegiatans(cntx *gin.Context) {
 		})
 	}
 
-	var subKegiatansResponse []responses.Sub_KegiatanResponse
+	var subKegiatansResponse []responses.SubKegiatanResponse
 
 	for _, subKegiatan := range subKegiatans {
 		var subKegiatanResponse = helper.ConvertToSubKegiatanResponse(subKegiatan)
@@ -40,8 +39,7 @@ func (c *subKegiatanController) GetSubKegiatans(cntx *gin.Context) {
 }
 
 func (c *subKegiatanController) GetSubKegiatan(cntx *gin.Context) {
-	var idString = cntx.Param("id")
-	var id, _ = strconv.Atoi(idString)
+	var id = cntx.Param("id")
 
 	var subKegiatan, err = c.subKegiatanService.FindById(id)
 	if err != nil {
@@ -56,26 +54,8 @@ func (c *subKegiatanController) GetSubKegiatan(cntx *gin.Context) {
 	cntx.JSON(http.StatusOK, subKegiatanResponse)
 }
 
-func (c *subKegiatanController) GetSubKegiatanWithRelation(cntx *gin.Context) {
-	var subKegiatanRelations, err = c.subKegiatanService.FindAllRelation()
-	if err != nil {
-		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
-		})
-	}
-
-	var subKegiatansRelationResponse []responses.Sub_KegiatanWithKegiatanResponse
-
-	for _, subKegiatanRelation := range subKegiatanRelations {
-		var subKegiatanRelationResponse = helper.ConvertToSubKegiatanWithKegiatanResponse(subKegiatanRelation)
-		subKegiatansRelationResponse = append(subKegiatansRelationResponse, subKegiatanRelationResponse)
-	}
-
-	cntx.JSON(http.StatusOK, subKegiatansRelationResponse)
-}
-
 func (c *subKegiatanController) CreateSubKegiatan(cntx *gin.Context) {
-	var subKegiatanRequest request.CreateSub_KegiatanRequest
+	var subKegiatanRequest request.CreateSubKegiatanRequest
 
 	var err = cntx.ShouldBindJSON(&subKegiatanRequest)
 	if err != nil {
@@ -102,13 +82,11 @@ func (c *subKegiatanController) CreateSubKegiatan(cntx *gin.Context) {
 
 	var subKegiatanResponse = helper.ConvertToSubKegiatanResponse(subKegiatan)
 
-	cntx.JSON(http.StatusCreated, gin.H{
-		"data": subKegiatanResponse,
-	})
+	cntx.JSON(http.StatusCreated, subKegiatanResponse)
 }
 
 func (c *subKegiatanController) UpdateSubKegiatan(cntx *gin.Context) {
-	var subKegiatanRequest request.UpdateSub_KegiatanRequest
+	var subKegiatanRequest request.UpdateSubKegiatanRequest
 
 	var err = cntx.ShouldBindJSON(&subKegiatanRequest)
 	if err != nil {
@@ -125,27 +103,23 @@ func (c *subKegiatanController) UpdateSubKegiatan(cntx *gin.Context) {
 		return
 	}
 
-	var idString = cntx.Param("id")
-	var id, _ = strconv.Atoi(idString)
+	var id = cntx.Param("id")
 
 	subKegiatan, err := c.subKegiatanService.Update(id, subKegiatanRequest)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
-			"errors": cntx.Error(err),
+			"error": cntx.Error(err),
 		})
 		return
 	}
 
 	var subKegiatanResponse = helper.ConvertToSubKegiatanResponse(subKegiatan)
 
-	cntx.JSON(http.StatusOK, gin.H{
-		"data": subKegiatanResponse,
-	})
+	cntx.JSON(http.StatusOK, subKegiatanResponse)
 }
 
 func (c *subKegiatanController) DeleteSubKegiatan(cntx *gin.Context) {
-	var idString = cntx.Param("id")
-	var id, _ = strconv.Atoi(idString)
+	var id = cntx.Param("id")
 
 	_, err := c.subKegiatanService.Delete(id)
 	if err != nil {
