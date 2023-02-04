@@ -12,6 +12,7 @@ type UserRepository interface {
 	Create(user model.User) (model.User, error)
 	Update(user model.User) (model.User, error)
 	Delete(user model.User) (model.User, error)
+	Login(username string) (model.User, error)
 }
 
 type userRepository struct {
@@ -60,6 +61,14 @@ func (r *userRepository) Update(user model.User) (model.User, error) {
 
 func (r *userRepository) Delete(user model.User) (model.User, error) {
 	var err = r.db.Delete(&user).Error
+
+	return user, err
+}
+
+func (r *userRepository) Login(username string) (model.User, error) {
+	var user model.User
+
+	var err = r.db.Where("username = ?", username).Take(&user).Error
 
 	return user, err
 }

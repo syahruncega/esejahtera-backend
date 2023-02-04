@@ -6,4 +6,5 @@ type AppConfig struct {
 	DatabasePort     string
 	DatabaseName     string
 	AppPort          string
+	SecretKey        string
 }

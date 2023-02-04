@@ -13,6 +13,7 @@ type UserService interface {
 	Create(userRequest request.CreateUserRequest) (model.User, error)
 	Update(id int, userRequest request.UpdateUserRequest) (model.User, error)
 	Delete(id int) (model.User, error)
+	Login(username string) (model.User, error)
 }
 
 type userService struct {
@@ -75,4 +76,10 @@ func (s *userService) Delete(id int) (model.User, error) {
 	deletedUser, err := s.userRepository.Delete(user)
 
 	return deletedUser, err
+}
+
+func (s *userService) Login(username string) (model.User, error) {
+	var user, err = s.userRepository.Login(username)
+
+	return user, err
 }

@@ -3,6 +3,7 @@ package main
 import (
 	"kemiskinan/config"
 	"kemiskinan/controller"
+	"kemiskinan/middleware"
 	"kemiskinan/repository"
 	"kemiskinan/service"
 	"log"
@@ -153,9 +154,10 @@ func main() {
 	var server = gin.Default()
 
 	server.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"*"},
-		AllowMethods: []string{"POST", "PUT", "DELETE", "GET", "PATCH"},
-		AllowHeaders: []string{"Content-Type, access-control-allow-origin, access-control-allow-headers"},
+		AllowOrigins:     []string{"http://localhost:4003", "http://localhost:3003"},
+		AllowCredentials: true,
+		AllowMethods:     []string{"POST", "PUT", "DELETE", "GET", "PATCH"},
+		AllowHeaders:     []string{"Access-Control-Allow-Headers", "Access-Control-Allow-Origin", "access-control-allow-origin, access-control-allow-headers", "Content-Type", "Accept", "Origin", "Authorization"},
 	}))
 
 	server.GET("/bidangurusan", bidangUrusanController.GetBidangUrusans)
@@ -257,7 +259,7 @@ func main() {
 	server.GET("/keluarga/", keluargaController.GetKeluargas)
 	server.GET("/keluarga/:id", keluargaController.GetKeluargaById)
 	server.GET("/keluarga/idkeluarga/:idkeluarga", keluargaController.GetKeluargaByIdKeluarga)
-	server.GET("/keluarga/search/", keluargaController.GetKeluargaBySearch)
+	server.GET("/keluarga/search", keluargaController.GetKeluargaBySearch)
 	server.GET("/keluarga/jumlah/penerima/kabupatenkota/:kabupatenkotaid/:penerimaparameter/:nilai", keluargaController.CountPenerimaByKabupatenKota)
 	server.GET("/keluarga/jumlah/penerima/kecamatan/:kecamatanid/:penerimaparameter/:nilai", keluargaController.CountPenerimaByKecamatan)
 	server.GET("/keluarga/jumlah/penerima/kelurahan/:kelurahanid/:penerimaparameter/:nilai", keluargaController.CountPenerimaByKelurahan)
@@ -271,6 +273,8 @@ func main() {
 
 	server.GET("/user", userController.GetUsers)
 	server.GET("/user/:id", userController.GetUser)
+	server.POST("/user/login/", userController.LoginUser)
+	server.GET("/validate", middleware.RequireAuth, userController.Validate)
 	server.POST("/user", userController.CreateUser)
 	server.PATCH("/user/:id", userController.UpdateUser)
 	server.DELETE("/user/:id", userController.DeleteUser)
