@@ -46,6 +46,7 @@ func (r *instansiRepository) Create(instansi model.Instansi) (model.Instansi, er
 
 func (r *instansiRepository) Update(instansi model.Instansi) (model.Instansi, error) {
 	var err = r.db.Model(&instansi).Updates(model.Instansi{
+		Id:           instansi.Id,
 		NamaInstansi: instansi.NamaInstansi,
 	}).Error
 

@@ -36,6 +36,7 @@ func (s *instansiService) FindById(id int) (model.Instansi, error) {
 
 func (s *instansiService) Create(instansiRequest request.CreateInstansiRequest) (model.Instansi, error) {
 	var instansi = model.Instansi{
+		Id:           instansiRequest.Id,
 		NamaInstansi: instansiRequest.NamaInstansi,
 	}
 
@@ -47,6 +48,7 @@ func (s *instansiService) Create(instansiRequest request.CreateInstansiRequest) 
 func (s *instansiService) Update(id int, instansiRequest request.UpdateInstansiRequest) (model.Instansi, error) {
 	var instansi, err = s.instansiRepository.FindById(id)
 
+	instansi.Id = instansiRequest.Id
 	instansi.NamaInstansi = instansiRequest.NamaInstansi
 
 	updatedInstansi, err := s.instansiRepository.Update(instansi)

@@ -36,6 +36,7 @@ func (s *bidangUrusanService) FindById(id int) (model.BidangUrusan, error) {
 
 func (s *bidangUrusanService) Create(bidangUrusanRequest request.CreateBidangUrusan) (model.BidangUrusan, error) {
 	var bidangUrusan = model.BidangUrusan{
+		Id:               bidangUrusanRequest.Id,
 		NamaBidangUrusan: bidangUrusanRequest.NamaBidangUrusan,
 	}
 
@@ -47,6 +48,7 @@ func (s *bidangUrusanService) Create(bidangUrusanRequest request.CreateBidangUru
 func (s *bidangUrusanService) Update(id int, bidangUrusanRequest request.UpdateBidangUrusan) (model.BidangUrusan, error) {
 	var bidangUrusan, err = s.bidangUrusanRepository.FindById(id)
 
+	bidangUrusan.Id = bidangUrusanRequest.Id
 	bidangUrusan.NamaBidangUrusan = bidangUrusanRequest.NamaBidangUrusan
 
 	updatedBidangUrusan, err := s.bidangUrusanRepository.Update(bidangUrusan)
