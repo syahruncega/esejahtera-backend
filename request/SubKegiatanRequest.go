@@ -1,11 +1,11 @@
 package request
 
 type CreateSubKegiatanRequest struct {
-	Id              string `json:"id" binding:"required"`
+	SubKegiatanId   string `json:"subKegiatanId" binding:"required"`
 	NamaSubKegiatan string `json:"namaSubKegiatan" binding:"required"`
 }
 
 type UpdateSubKegiatanRequest struct {
-	Id              string `json:"id"`
+	SubKegiatanId   string `json:"subKegiatanId"`
 	NamaSubKegiatan string `json:"namaSubKegiatan"`
 }

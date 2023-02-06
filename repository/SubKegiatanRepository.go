@@ -8,7 +8,7 @@ import (
 
 type SubKegiatanRepository interface {
 	FindAll() ([]model.SubKegiatan, error)
-	FindById(id string) (model.SubKegiatan, error)
+	FindById(id int) (model.SubKegiatan, error)
 	Create(subKegiatan model.SubKegiatan) (model.SubKegiatan, error)
 	Update(subKegiatan model.SubKegiatan) (model.SubKegiatan, error)
 	Delete(subKegiatan model.SubKegiatan) (model.SubKegiatan, error)
@@ -30,10 +30,10 @@ func (r *subKegiatanRepository) FindAll() ([]model.SubKegiatan, error) {
 	return subKegiatans, err
 }
 
-func (r *subKegiatanRepository) FindById(id string) (model.SubKegiatan, error) {
+func (r *subKegiatanRepository) FindById(id int) (model.SubKegiatan, error) {
 	var subKegiatan model.SubKegiatan
 
-	var err = r.db.Where("id = ? ", id).Model(&subKegiatan).Take(&subKegiatan).Error
+	var err = r.db.Take(&subKegiatan, id).Error
 
 	return subKegiatan, err
 }
@@ -46,7 +46,7 @@ func (r *subKegiatanRepository) Create(subKegiatan model.SubKegiatan) (model.Sub
 
 func (r *subKegiatanRepository) Update(subKegiatan model.SubKegiatan) (model.SubKegiatan, error) {
 	var err = r.db.Model(&subKegiatan).Updates(model.SubKegiatan{
-		Id:              subKegiatan.Id,
+		SubKegiatanId:   subKegiatan.SubKegiatanId,
 		NamaSubKegiatan: subKegiatan.NamaSubKegiatan,
 	}).Error
 

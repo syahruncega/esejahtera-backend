@@ -183,14 +183,14 @@ func (c *userController) LoginUser(cntx *gin.Context) {
 
 	// Create a new token object, specifying signing method and the claims
 	// you would like it to contain.
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"uId": user.Id,
 
-		"exp": time.Now().Add(time.Hour * 1).Unix(),
+		"exp": time.Now().Add(time.Minute * 15).Unix(),
 	})
 
 	// Sign and get the complete encoded token as a string using the secret
-	tokenString, err := token.SignedString([]byte(os.Getenv("APP_SECRET_KEY")))
+	accessTokenString, err := accessToken.SignedString([]byte(os.Getenv("APP_SECRET_KEY")))
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": "Gagal generate token",
@@ -202,7 +202,7 @@ func (c *userController) LoginUser(cntx *gin.Context) {
 	//send cookies back
 	cntx.SetSameSite(http.SameSiteLaxMode)
 	//false on secure (6th parameter) maybe want to change it to "true" when it goes online
-	cntx.SetCookie("Authorization", tokenString, 3600*1, "", "", false, true)
+	cntx.SetCookie("Authorization", accessTokenString, 3600*1, "", "", false, true)
 
 	cntx.JSON(http.StatusOK, gin.H{})
 

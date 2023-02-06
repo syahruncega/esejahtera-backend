@@ -1,11 +1,11 @@
 package request
 
 type CreateBidangUrusan struct {
-	Id               string `json:"id" binding:"required"`
+	BidangUrusanId   string `json:"bidangUrusanId" binding:"required"`
 	NamaBidangUrusan string `json:"namaBidangUrusan" binding:"required"`
 }
 
 type UpdateBidangUrusan struct {
-	Id               string `json:"id"`
+	BidangUrusanId   string `json:"bidangUrusanId"`
 	NamaBidangUrusan string `json:"namaBidangUrusan"`
 }

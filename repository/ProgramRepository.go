@@ -8,7 +8,7 @@ import (
 
 type ProgramRepository interface {
 	FindAll() ([]model.Program, error)
-	FindById(id string) (model.Program, error)
+	FindById(id int) (model.Program, error)
 	Create(program model.Program) (model.Program, error)
 	Update(program model.Program) (model.Program, error)
 	Delete(program model.Program) (model.Program, error)
@@ -30,10 +30,10 @@ func (r *programRepository) FindAll() ([]model.Program, error) {
 	return programs, err
 }
 
-func (r *programRepository) FindById(id string) (model.Program, error) {
+func (r *programRepository) FindById(id int) (model.Program, error) {
 	var program model.Program
 
-	var err = r.db.Where("id = ?", id).Take(&program).Error
+	var err = r.db.Take(&program, id).Error
 
 	return program, err
 }
@@ -46,7 +46,7 @@ func (r *programRepository) Create(program model.Program) (model.Program, error)
 
 func (r *programRepository) Update(program model.Program) (model.Program, error) {
 	var err = r.db.Model(&program).Updates(model.Program{
-		Id:          program.Id,
+		ProgramId:   program.ProgramId,
 		NamaProgram: program.NamaProgram,
 	}).Error
 

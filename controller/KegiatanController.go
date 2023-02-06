@@ -7,6 +7,7 @@ import (
 	"kemiskinan/responses"
 	"kemiskinan/service"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -39,7 +40,8 @@ func (c *kegiatanController) GetKegiatans(cntx *gin.Context) {
 }
 
 func (c *kegiatanController) GetKegiatan(cntx *gin.Context) {
-	var id = cntx.Param("id")
+	var idString = cntx.Param("id")
+	var id, _ = strconv.Atoi(idString)
 
 	var kegiatan, err = c.kegiatanService.FindById(id)
 	if err != nil {
@@ -103,7 +105,8 @@ func (c *kegiatanController) UpdateKegiatan(cntx *gin.Context) {
 		return
 	}
 
-	var id = cntx.Param("id")
+	var idString = cntx.Param("id")
+	var id, _ = strconv.Atoi(idString)
 
 	kegiatan, err := c.kegiatanService.Update(id, kegiatanRequest)
 	if err != nil {
@@ -119,7 +122,8 @@ func (c *kegiatanController) UpdateKegiatan(cntx *gin.Context) {
 }
 
 func (c *kegiatanController) DeleteKegiatan(cntx *gin.Context) {
-	var id = cntx.Param("id")
+	var idString = cntx.Param("id")
+	var id, _ = strconv.Atoi(idString)
 
 	_, err := c.kegiatanService.Delete(id)
 	if err != nil {

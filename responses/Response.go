@@ -3,14 +3,16 @@ package responses
 import "time"
 
 type BidangUrusanResponse struct {
-	Id               string    `json:"id"`
+	Id               int       `json:"id"`
+	BidangUrusanId   string    `json:"bidangUrusanId"`
 	NamaBidangUrusan string    `json:"namaBidangUrusan"`
 	CreatedAt        time.Time `json:"createdAt"`
 	UpdatedAt        time.Time `json:"updatedAt"`
 }
 
 type InstansiResponse struct {
-	Id           string    `json:"id"`
+	Id           int       `json:"id"`
+	InstansiId   string    `json:"instansiId"`
 	NamaInstansi string    `json:"namaInstansi"`
 	CreatedAt    time.Time `json:"createdAt"`
 	UpdatedAt    time.Time `json:"updatedAt"`
@@ -27,7 +29,8 @@ type DetailInstansiResponse struct {
 }
 
 type ProgramResponse struct {
-	Id          string    `json:"id"`
+	Id          int       `json:"id"`
+	ProgramId   string    `json:"programId"`
 	NamaProgram string    `json:"namaProgram"`
 	CreatedAt   time.Time `json:"createdAt"`
 	UpdatedAt   time.Time `json:"updatedAt"`
@@ -59,7 +62,8 @@ type IndikatorProgramResponse struct {
 }
 
 type KegiatanResponse struct {
-	Id           string    `json:"id"`
+	Id           int       `json:"id"`
+	KegiatanId   string    `json:"kegiatanId"`
 	NamaKegiatan string    `json:"namaKegiatan"`
 	CreatedAt    time.Time `json:"createdAt"`
 	UpdatedAt    time.Time `json:"updatedAt"`
@@ -88,7 +92,8 @@ type IndikatorKegiatanResponse struct {
 }
 
 type SubKegiatanResponse struct {
-	Id              string    `json:"id"`
+	Id              int       `json:"id"`
+	SubKegiatanId   string    `json:"subKegiatanId"`
 	NamaSubKegiatan string    `json:"namaSubKegiatan"`
 	CreatedAt       time.Time `json:"createdAt"`
 	UpdatedAt       time.Time `json:"updatedAt"`

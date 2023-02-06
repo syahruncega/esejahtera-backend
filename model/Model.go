@@ -3,14 +3,16 @@ package model
 import "time"
 
 type BidangUrusan struct {
-	Id               string    `gorm:"column:id;primaryKey;not null"`
+	Id               int       `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	BidangUrusanId   string    `gorm:"column:bidangUrusanId;not null"`
 	NamaBidangUrusan string    `gorm:"column:namaBidangUrusan;not null"`
 	CreatedAt        time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt        time.Time `gorm:"column:updatedAt;not null"`
 }
 
 type Instansi struct {
-	Id           string    `gorm:"column:id;primaryKey;not null"`
+	Id           int       `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	InstansiId   string    `gorm:"column:instansiId;not null"`
 	NamaInstansi string    `gorm:"column:namaInstansi;not null"`
 	CreatedAt    time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt    time.Time `gorm:"column:updatedAt;not null"`
@@ -27,7 +29,8 @@ type DetailInstansi struct {
 }
 
 type Program struct {
-	Id          string    `gorm:"column:id;primaryKey;not null"`
+	Id          int       `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	ProgramId   string    `gorm:"column:programId;not null"`
 	NamaProgram string    `gorm:"column:namaProgram;not null"`
 	CreatedAt   time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt   time.Time `gorm:"column:updatedAt;not null"`
@@ -59,7 +62,8 @@ type IndikatorProgram struct {
 }
 
 type Kegiatan struct {
-	Id           string    `gorm:"column:id;primaryKey;not null"`
+	Id           int       `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	KegiatanId   string    `gorm:"column:kegiatanId;not null"`
 	NamaKegiatan string    `gorm:"column:namaKegiatan;not null"`
 	CreatedAt    time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt    time.Time `gorm:"column:updatedAt;not null"`
@@ -88,7 +92,8 @@ type IndikatorKegiatan struct {
 }
 
 type SubKegiatan struct {
-	Id              string    `gorm:"column:id;primaryKey;not null"`
+	Id              int       `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	SubKegiatanId   string    `gorm:"column:subKegiatanId;not null"`
 	NamaSubKegiatan string    `gorm:"column:namaSubKegiatan;not null"`
 	CreatedAt       time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt       time.Time `gorm:"column:updatedAt;not null"`

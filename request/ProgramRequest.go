@@ -1,11 +1,11 @@
 package request
 
 type CreateProgramRequest struct {
-	Id          string `json:"id" binding:"required"`
+	ProgramId   string `json:"programId" binding:"required"`
 	NamaProgram string `json:"namaProgram" binding:"required"`
 }
 
 type UpdateProgramRequest struct {
-	Id          string `json:"id"`
+	ProgramId   string `json:"programId"`
 	NamaProgram string `json:"namaProgram" binding:"required"`
 }

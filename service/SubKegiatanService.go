@@ -8,10 +8,10 @@ import (
 
 type SubKegiatanService interface {
 	FindAll() ([]model.SubKegiatan, error)
-	FindById(id string) (model.SubKegiatan, error)
+	FindById(id int) (model.SubKegiatan, error)
 	Create(subKegiatanRequest request.CreateSubKegiatanRequest) (model.SubKegiatan, error)
-	Update(id string, subKegiatanRequest request.UpdateSubKegiatanRequest) (model.SubKegiatan, error)
-	Delete(id string) (model.SubKegiatan, error)
+	Update(id int, subKegiatanRequest request.UpdateSubKegiatanRequest) (model.SubKegiatan, error)
+	Delete(id int) (model.SubKegiatan, error)
 }
 
 type subKegiatanService struct {
@@ -28,7 +28,7 @@ func (s *subKegiatanService) FindAll() ([]model.SubKegiatan, error) {
 	return subKegiatans, err
 }
 
-func (s *subKegiatanService) FindById(id string) (model.SubKegiatan, error) {
+func (s *subKegiatanService) FindById(id int) (model.SubKegiatan, error) {
 	var subKegiatan, err = s.subKegiatanRepository.FindById(id)
 
 	return subKegiatan, err
@@ -36,7 +36,7 @@ func (s *subKegiatanService) FindById(id string) (model.SubKegiatan, error) {
 
 func (s *subKegiatanService) Create(subKegiatanRequest request.CreateSubKegiatanRequest) (model.SubKegiatan, error) {
 	var subKegiatan = model.SubKegiatan{
-		Id:              subKegiatanRequest.Id,
+		SubKegiatanId:   subKegiatanRequest.SubKegiatanId,
 		NamaSubKegiatan: subKegiatanRequest.NamaSubKegiatan,
 	}
 
@@ -45,10 +45,10 @@ func (s *subKegiatanService) Create(subKegiatanRequest request.CreateSubKegiatan
 	return newSubKegiatan, err
 }
 
-func (s *subKegiatanService) Update(id string, subKegiatanRequest request.UpdateSubKegiatanRequest) (model.SubKegiatan, error) {
+func (s *subKegiatanService) Update(id int, subKegiatanRequest request.UpdateSubKegiatanRequest) (model.SubKegiatan, error) {
 	var subKegiatan, err = s.subKegiatanRepository.FindById(id)
 
-	subKegiatan.Id = subKegiatanRequest.Id
+	subKegiatan.SubKegiatanId = subKegiatanRequest.SubKegiatanId
 	subKegiatan.NamaSubKegiatan = subKegiatanRequest.NamaSubKegiatan
 
 	updatedSubKegiatan, err := s.subKegiatanRepository.Update(subKegiatan)
@@ -56,7 +56,7 @@ func (s *subKegiatanService) Update(id string, subKegiatanRequest request.Update
 	return updatedSubKegiatan, err
 }
 
-func (s *subKegiatanService) Delete(id string) (model.SubKegiatan, error) {
+func (s *subKegiatanService) Delete(id int) (model.SubKegiatan, error) {
 	var subKegiatan, err = s.subKegiatanRepository.FindById(id)
 
 	deletedSubKegiatan, err := s.subKegiatanRepository.Delete(subKegiatan)

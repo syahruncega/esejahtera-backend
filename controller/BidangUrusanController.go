@@ -120,9 +120,7 @@ func (c *bidangUrusanController) UpdateBidangUrusan(cntx *gin.Context) {
 
 	var bidangUrusanResponse = helper.ConvertToBidangUrusanResponse(bidangUrusan)
 
-	cntx.JSON(http.StatusOK, gin.H{
-		"data": bidangUrusanResponse,
-	})
+	cntx.JSON(http.StatusOK, bidangUrusanResponse)
 }
 
 func (c *bidangUrusanController) DeleteBidangUrusan(cntx *gin.Context) {

@@ -8,10 +8,10 @@ import (
 
 type ProgramService interface {
 	FindAll() ([]model.Program, error)
-	FindById(id string) (model.Program, error)
+	FindById(id int) (model.Program, error)
 	Create(programRequest request.CreateProgramRequest) (model.Program, error)
-	Update(id string, programRequest request.UpdateProgramRequest) (model.Program, error)
-	Delete(id string) (model.Program, error)
+	Update(id int, programRequest request.UpdateProgramRequest) (model.Program, error)
+	Delete(id int) (model.Program, error)
 }
 
 type programService struct {
@@ -28,7 +28,7 @@ func (s *programService) FindAll() ([]model.Program, error) {
 	return programs, err
 }
 
-func (s *programService) FindById(id string) (model.Program, error) {
+func (s *programService) FindById(id int) (model.Program, error) {
 	var program, err = s.programRepository.FindById(id)
 
 	return program, err
@@ -36,7 +36,7 @@ func (s *programService) FindById(id string) (model.Program, error) {
 
 func (s *programService) Create(programRequest request.CreateProgramRequest) (model.Program, error) {
 	var program = model.Program{
-		Id:          programRequest.Id,
+		ProgramId:   programRequest.ProgramId,
 		NamaProgram: programRequest.NamaProgram,
 	}
 
@@ -45,10 +45,10 @@ func (s *programService) Create(programRequest request.CreateProgramRequest) (mo
 	return newProgram, err
 }
 
-func (s *programService) Update(id string, programRequest request.UpdateProgramRequest) (model.Program, error) {
+func (s *programService) Update(id int, programRequest request.UpdateProgramRequest) (model.Program, error) {
 	var program, err = s.programRepository.FindById(id)
 
-	program.Id = programRequest.Id
+	program.ProgramId = programRequest.ProgramId
 	program.NamaProgram = programRequest.NamaProgram
 
 	updatedProgram, err := s.programRepository.Update(program)
@@ -56,7 +56,7 @@ func (s *programService) Update(id string, programRequest request.UpdateProgramR
 	return updatedProgram, err
 }
 
-func (s *programService) Delete(id string) (model.Program, error) {
+func (s *programService) Delete(id int) (model.Program, error) {
 	var program, err = s.programRepository.FindById(id)
 
 	deletedProgram, err := s.programRepository.Delete(program)

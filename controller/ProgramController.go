@@ -7,6 +7,7 @@ import (
 	"kemiskinan/responses"
 	"kemiskinan/service"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -39,7 +40,8 @@ func (c *programController) GetPrograms(cntx *gin.Context) {
 }
 
 func (c *programController) GetProgram(cntx *gin.Context) {
-	var id = cntx.Param("id")
+	var idString = cntx.Param("id")
+	var id, _ = strconv.Atoi(idString)
 
 	var program, err = c.programService.FindById(id)
 	if err != nil {
@@ -103,7 +105,8 @@ func (c *programController) UpdateProgram(cntx *gin.Context) {
 		return
 	}
 
-	var id = cntx.Param("id")
+	var idString = cntx.Param("id")
+	var id, _ = strconv.Atoi(idString)
 
 	program, err := c.programService.Update(id, programRequest)
 	if err != nil {
@@ -119,7 +122,8 @@ func (c *programController) UpdateProgram(cntx *gin.Context) {
 }
 
 func (c *programController) DeleteProgram(cntx *gin.Context) {
-	var id = cntx.Param("id")
+	var idString = cntx.Param("id")
+	var id, _ = strconv.Atoi(idString)
 
 	_, err := c.programService.Delete(id)
 	if err != nil {
