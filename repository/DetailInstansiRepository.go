@@ -28,6 +28,8 @@ func (r *detailInstansiRepository) FindAll() ([]model.DetailInstansi, error) {
 
 	var err = r.db.Model(&detailInstansis).Preload("Instansi").Preload("BidangUrusan").Find(&detailInstansis).Error
 
+	// var err = r.db.Joins("JOIN instansis ON instansis.instansiId = detail_instansis.instansiId").Joins("JOIN bidang_urusans ON bidang_urusans.bidangUrusanId = detail_instansis.bidangUrusanId").Find(&detailInstansis).Error
+
 	return detailInstansis, err
 }
 
