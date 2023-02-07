@@ -70,6 +70,7 @@ func (s *individuVerifikasiService) Create(individuVerifikasiRequest request.Cre
 		Pendidikan:         individuVerifikasiRequest.Pendidikan,
 		KategoriUsia:       individuVerifikasiRequest.KategoriUsia,
 		PenerimaBPNT:       individuVerifikasiRequest.PenerimaBPNT,
+		PenerimaBPUM:       individuVerifikasiRequest.PenerimaBPUM,
 		PenerimaBST:        individuVerifikasiRequest.PenerimaBST,
 		PenerimaPKH:        individuVerifikasiRequest.PenerimaPKH,
 		PenerimaSembako:    individuVerifikasiRequest.PenerimaSembako,
@@ -87,7 +88,6 @@ func (s *individuVerifikasiService) Create(individuVerifikasiRequest request.Cre
 func (s *individuVerifikasiService) Update(id int, individuVerifikasiRequest request.UpdateIndividuVerifikasiRequest) (model.IndividuVerifikasi, error) {
 	var individuVerifikasi, err = s.individuVerifikasiRepository.FindById(id)
 
-	individuVerifikasi.Id = individuVerifikasiRequest.Id
 	individuVerifikasi.IdKeluarga = individuVerifikasiRequest.IdKeluarga
 	individuVerifikasi.ProvinsiId = individuVerifikasiRequest.ProvinsiId
 	individuVerifikasi.KabupatenKotaId = individuVerifikasiRequest.KabupatenKotaId

@@ -32,7 +32,6 @@ type CreateIndividuVerifikasiRequest struct {
 }
 
 type UpdateIndividuVerifikasiRequest struct {
-	Id                 int    `json:"id"`
 	IdKeluarga         string `json:"idKeluarga"`
 	ProvinsiId         string `json:"provinsiId"`
 	KabupatenKotaId    string `json:"kabupatenKotaId"`

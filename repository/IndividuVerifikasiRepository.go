@@ -64,7 +64,6 @@ func (r *individuVerifikasiRepository) Create(individuVerifikasi model.IndividuV
 
 func (r *individuVerifikasiRepository) Update(individuVerifikasi model.IndividuVerifikasi) (model.IndividuVerifikasi, error) {
 	var err = r.db.Model(&individuVerifikasi).Updates(model.IndividuVerifikasi{
-		Id:                 individuVerifikasi.Id,
 		IdKeluarga:         individuVerifikasi.IdKeluarga,
 		ProvinsiId:         individuVerifikasi.ProvinsiId,
 		KabupatenKotaId:    individuVerifikasi.KabupatenKotaId,
@@ -84,6 +83,7 @@ func (r *individuVerifikasiRepository) Update(individuVerifikasi model.IndividuV
 		Pendidikan:         individuVerifikasi.Pendidikan,
 		KategoriUsia:       individuVerifikasi.KategoriUsia,
 		PenerimaBPNT:       individuVerifikasi.PenerimaBPNT,
+		PenerimaBPUM:       individuVerifikasi.PenerimaBPUM,
 		PenerimaBST:        individuVerifikasi.PenerimaBST,
 		PenerimaPKH:        individuVerifikasi.PenerimaPKH,
 		PenerimaSembako:    individuVerifikasi.PenerimaSembako,
