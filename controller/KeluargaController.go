@@ -6,6 +6,7 @@ import (
 	"kemiskinan/request"
 	"kemiskinan/responses"
 	"kemiskinan/service"
+	"math"
 	"net/http"
 	"strconv"
 
@@ -73,17 +74,44 @@ func (c *keluargaController) GetKeluargaByIdKeluarga(cntx *gin.Context) {
 }
 
 func (c *keluargaController) GetKeluargaBySearch(cntx *gin.Context) {
+	var pageRowString = cntx.Query("pagerow")
+	var limit, _ = strconv.Atoi(pageRowString)
+	var pageRowFloat, _ = strconv.ParseFloat(pageRowString, 64)
+
+	var halamanString = cntx.Query("halaman")
+	var halaman, _ = strconv.Atoi(halamanString)
+
 	var whereClauseString = cntx.Request.URL.Query()
 	var whereClauseInterface = make(map[string]interface{})
 
 	for k, v := range whereClauseString {
+		if k == "halaman" || k == "pagerow" {
+			continue
+		}
+
 		interfaceKey := k
 		interfaceVal := v
 
 		whereClauseInterface[interfaceKey] = interfaceVal
 	}
 
-	var keluargas, err = c.keluargaService.FindBySearch(whereClauseInterface)
+	var jumlahData, err = c.keluargaService.CountData(whereClauseInterface)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	var offset = limit * (halaman - 1)
+
+	var hasilBagi = float64(jumlahData) / float64(pageRowFloat)
+	var jumlahHalaman = int(math.Ceil(hasilBagi))
+
+	fmt.Println(whereClauseInterface)
+	fmt.Println(jumlahData)
+	fmt.Println(hasilBagi)
+
+	keluargas, err := c.keluargaService.FindBySearch(whereClauseInterface, limit, offset)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),
@@ -97,127 +125,10 @@ func (c *keluargaController) GetKeluargaBySearch(cntx *gin.Context) {
 		keluargasResponse = append(keluargasResponse, keluargaResponse)
 	}
 
-	cntx.JSON(http.StatusOK, keluargasResponse)
-}
-
-// func (c *keluargaController) GetKeluargaBySearch(cntx *gin.Context) {
-// 	var whereClause = cntx.Request.URL.Query()
-
-// 	value := whereClause["test"]
-// 	var testint []int
-// 	for _, val := range value {
-// 		var testtis, _ = strconv.Atoi(val)
-// 		testint = append(testint, testtis)
-// 	}
-
-// 	// var keluargas, err = c.keluargaService.FindBySearch(whereClause)
-// 	cntx.JSON(http.StatusOK, testint)
-// }
-
-func (c *keluargaController) CountPenerimaByKabupatenKota(cntx *gin.Context) {
-	var kabupatenKotaId = cntx.Param("kabupatenkotaid")
-	var penerimaParameter = cntx.Param("penerimaparameter")
-	var nilai = cntx.Param("nilai")
-
-	var jumlah, err = c.keluargaService.CountPenerimaByKabupatenKota(kabupatenKotaId, penerimaParameter, nilai)
-	if err != nil {
-		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
-		})
-		return
-	}
-
-	var jumlahResponse = helper.ConvertToJumlahResponse(jumlah)
-
-	cntx.JSON(http.StatusOK, jumlahResponse)
-}
-
-func (c *keluargaController) CountPenerimaByKecamatan(cntx *gin.Context) {
-	var kecamatanId = cntx.Param("kecamatanid")
-	var penerimaParameter = cntx.Param("penerimaparameter")
-	var nilai = cntx.Param("nilai")
-
-	var jumlah, err = c.keluargaService.CountPenerimaByKecamatan(kecamatanId, penerimaParameter, nilai)
-	if err != nil {
-		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
-		})
-		return
-	}
-
-	var jumlahResponse = helper.ConvertToJumlahResponse(jumlah)
-
-	cntx.JSON(http.StatusOK, jumlahResponse)
-
-}
-
-func (c *keluargaController) CountPenerimaByKelurahan(cntx *gin.Context) {
-	var kelurahanId = cntx.Param("kelurahanid")
-	var penerimaParameter = cntx.Param("penerimaparameter")
-	var nilai = cntx.Param("nilai")
-
-	var jumlah, err = c.keluargaService.CountPenerimaByKelurahan(kelurahanId, penerimaParameter, nilai)
-	if err != nil {
-		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
-		})
-		return
-	}
-
-	var jumlahResponse = helper.ConvertToJumlahResponse(jumlah)
-
-	cntx.JSON(http.StatusOK, jumlahResponse)
-}
-
-func (c *keluargaController) CountDesilByKabupatenKota(cntx *gin.Context) {
-	var kabupatenKotaId = cntx.Param("kabupatenkotaid")
-	var nilaiDesil = cntx.Param("nilaidesil")
-
-	var jumlah, err = c.keluargaService.CountDesilByKabupatenKota(kabupatenKotaId, nilaiDesil)
-	if err != nil {
-		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
-		})
-		return
-	}
-
-	var jumlahResponse = helper.ConvertToJumlahResponse(jumlah)
-
-	cntx.JSON(http.StatusOK, jumlahResponse)
-}
-
-func (c *keluargaController) CountDesilByKecamatan(cntx *gin.Context) {
-	var kecamatanId = cntx.Param("kecamatanid")
-	var nilaiDesil = cntx.Param("nilaidesil")
-
-	var jumlah, err = c.keluargaService.CountDesilByKecamatan(kecamatanId, nilaiDesil)
-	if err != nil {
-		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
-		})
-		return
-	}
-
-	var jumlahResponse = helper.ConvertToJumlahResponse(jumlah)
-
-	cntx.JSON(http.StatusOK, jumlahResponse)
-}
-
-func (c *keluargaController) CountDesilByKelurahan(cntx *gin.Context) {
-	var kelurahanId = cntx.Param("kelurahanid")
-	var nilaiDesil = cntx.Param("nilaidesil")
-
-	var jumlah, err = c.keluargaService.CountDesilByKelurahan(kelurahanId, nilaiDesil)
-	if err != nil {
-		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
-		})
-		return
-	}
-
-	var jumlahResponse = helper.ConvertToJumlahResponse(jumlah)
-
-	cntx.JSON(http.StatusOK, jumlahResponse)
+	cntx.JSON(http.StatusOK, gin.H{
+		"data":          keluargasResponse,
+		"jumlahHalaman": jumlahHalaman,
+	})
 }
 
 func (c *keluargaController) UpdateKeluarga(cntx *gin.Context) {
@@ -253,3 +164,588 @@ func (c *keluargaController) UpdateKeluarga(cntx *gin.Context) {
 
 	cntx.JSON(http.StatusOK, keluargaResponse)
 }
+
+func (c *keluargaController) CountDataKeluargaProvinsi(cntx *gin.Context) {
+	var places = "provinsiId"
+	var placesId = "72"
+
+	jumlahKeluarga, err := c.keluargaService.CountJumlahKeluarga(places, placesId)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	jumlahDesil1, err := c.keluargaService.CountJumlahDesil(places, placesId, "1")
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	jumlahDesil2, err := c.keluargaService.CountJumlahDesil(places, placesId, "2")
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	jumlahDesil3, err := c.keluargaService.CountJumlahDesil(places, placesId, "3")
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+	jumlahDesil4, err := c.keluargaService.CountJumlahDesil(places, placesId, "4")
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+	jumlahDesil5, err := c.keluargaService.CountJumlahDesil(places, placesId, "5")
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	jumlahPenerimaBPNTYa, err := c.keluargaService.CountJumlahPenerima(places, placesId, "penerimaBPNT", "Ya")
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	jumlahPenerimaBPNTTidak, err := c.keluargaService.CountJumlahPenerima(places, placesId, "penerimaBPNT", "Tidak")
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	jumlahPenerimaBPUMYa, err := c.keluargaService.CountJumlahPenerima(places, placesId, "penerimaBPUM", "Ya")
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	jumlahPenerimaBPUMTidak, err := c.keluargaService.CountJumlahPenerima(places, placesId, "penerimaBPUM", "Tidak")
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	jumlahPenerimaBSTYa, err := c.keluargaService.CountJumlahPenerima(places, placesId, "penerimaBST", "Ya")
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	jumlahPenerimaBSTTidak, err := c.keluargaService.CountJumlahPenerima(places, placesId, "penerimaBST", "Tidak")
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	jumlahPenerimaPKHYa, err := c.keluargaService.CountJumlahPenerima(places, placesId, "penerimaPKH", "Ya")
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	jumlahPenerimaPKHTidak, err := c.keluargaService.CountJumlahPenerima(places, placesId, "penerimaPKH", "Tidak")
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	jumlahPenerimaSembakoYa, err := c.keluargaService.CountJumlahPenerima(places, placesId, "penerimaSembako", "Ya")
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	jumlahPenerimaSembakoTidak, err := c.keluargaService.CountJumlahPenerima(places, placesId, "penerimaSembako", "Tidak")
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	kabupatenKotaCountKeluarga, err := c.keluargaService.DistinctCountKabupatenKota()
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	cntx.JSON(http.StatusOK, gin.H{
+		"dataHitungKeluargaProvinsi": gin.H{
+			"jumlahKeseluruhan": gin.H{
+				"jumlahKeluarga": jumlahKeluarga,
+			},
+			"desilKesejahteraan": gin.H{
+				"desil1": jumlahDesil1,
+				"desil2": jumlahDesil2,
+				"desil3": jumlahDesil3,
+				"desil4": jumlahDesil4,
+				"desil5": jumlahDesil5,
+			},
+			"penerimaBantuan": gin.H{
+				"jumlahPenerimaBPNT": gin.H{
+					"ya":    jumlahPenerimaBPNTYa,
+					"tidak": jumlahPenerimaBPNTTidak,
+				},
+				"jumlahPenerimaBPUM": gin.H{
+					"ya":    jumlahPenerimaBPUMYa,
+					"tidak": jumlahPenerimaBPUMTidak,
+				},
+				"jumlahPenerimaBST": gin.H{
+					"ya":    jumlahPenerimaBSTYa,
+					"tidak": jumlahPenerimaBSTTidak,
+				},
+				"jumlahPenerimaPKH": gin.H{
+					"ya":    jumlahPenerimaPKHYa,
+					"tidak": jumlahPenerimaPKHTidak,
+				},
+				"jumlahPenerimaSembako": gin.H{
+					"ya":    jumlahPenerimaSembakoYa,
+					"tidak": jumlahPenerimaSembakoTidak,
+				},
+			},
+			"jumlahKeluargaKabupatenKota": kabupatenKotaCountKeluarga,
+		},
+	})
+}
+
+func (c *keluargaController) CountDataKeluargaKabupatenKota(cntx *gin.Context) {
+	var err error
+	kabupatenKotaDistinct, err := c.keluargaService.DistinctKabupatenKota()
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	var places = "kabupatenKotaId"
+
+	var jumlahKeluarga, jumlahDesil1, jumlahDesil2, jumlahDesil3, jumlahDesil4, jumlahDesil5, jumlahPenerimaBPNTYa, jumlahPenerimaBPNTTidak, jumlahPenerimaBPUMYa, jumlahPenerimaBPUMTidak, jumlahPenerimaBSTYa, jumlahPenerimaBSTTidak, jumlahPenerimaPKHYa, jumlahPenerimaPKHTidak, jumlahPenerimaSembakoYa, jumlahPenerimaSembakoTidak int64
+
+	var nestedJSON = map[string]map[string]interface{}{}
+
+	for _, kabupatenKota := range kabupatenKotaDistinct {
+
+		jumlahKeluarga, err = c.keluargaService.CountJumlahKeluarga(places, kabupatenKota.KabupatenKotaId)
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahDesil1, err = c.keluargaService.CountJumlahDesil(places, kabupatenKota.KabupatenKotaId, "1")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahDesil2, err = c.keluargaService.CountJumlahDesil(places, kabupatenKota.KabupatenKotaId, "2")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahDesil3, err = c.keluargaService.CountJumlahDesil(places, kabupatenKota.KabupatenKotaId, "3")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahDesil4, err = c.keluargaService.CountJumlahDesil(places, kabupatenKota.KabupatenKotaId, "4")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahDesil5, err = c.keluargaService.CountJumlahDesil(places, kabupatenKota.KabupatenKotaId, "5")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahPenerimaBPNTYa, err = c.keluargaService.CountJumlahPenerima(places, kabupatenKota.KabupatenKotaId, "penerimaBPNT", "Ya")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahPenerimaBPNTTidak, err = c.keluargaService.CountJumlahPenerima(places, kabupatenKota.KabupatenKotaId, "penerimaBPNT", "Tidak")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahPenerimaBPUMYa, err = c.keluargaService.CountJumlahPenerima(places, kabupatenKota.KabupatenKotaId, "penerimaBPUM", "Ya")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahPenerimaBPUMTidak, err = c.keluargaService.CountJumlahPenerima(places, kabupatenKota.KabupatenKotaId, "penerimaBPUM", "Tidak")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahPenerimaBSTYa, err = c.keluargaService.CountJumlahPenerima(places, kabupatenKota.KabupatenKotaId, "penerimaBST", "Ya")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahPenerimaBSTTidak, err = c.keluargaService.CountJumlahPenerima(places, kabupatenKota.KabupatenKotaId, "penerimaBST", "Tidak")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahPenerimaPKHYa, err = c.keluargaService.CountJumlahPenerima(places, kabupatenKota.KabupatenKotaId, "penerimaPKH", "Ya")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahPenerimaPKHTidak, err = c.keluargaService.CountJumlahPenerima(places, kabupatenKota.KabupatenKotaId, "penerimaPKH", "Tidak")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahPenerimaSembakoYa, err = c.keluargaService.CountJumlahPenerima(places, kabupatenKota.KabupatenKotaId, "penerimaSembako", "Ya")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahPenerimaSembakoTidak, err = c.keluargaService.CountJumlahPenerima(places, kabupatenKota.KabupatenKotaId, "penerimaSembako", "Tidak")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		kecamatanCountKeluarga, err := c.keluargaService.DistinctCountKecamatan(kabupatenKota.KabupatenKotaId)
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		nestedJSON[kabupatenKota.Nama] = map[string]interface{}{
+			"jumlahKeseluruhan": map[string]int64{
+				"jumlahKeluarga": jumlahKeluarga,
+			},
+			"desilKesejahteraan": map[string]int64{
+				"desil1": jumlahDesil1,
+				"desil2": jumlahDesil2,
+				"desil3": jumlahDesil3,
+				"desil4": jumlahDesil4,
+				"desil5": jumlahDesil5,
+			},
+			"penerimaBantuan": map[string]interface{}{
+				"jumlahPenerimaBPNT": map[string]int64{
+					"ya":    jumlahPenerimaBPNTYa,
+					"tidak": jumlahPenerimaBPNTTidak,
+				},
+				"jumlahPenerimaBPUM": map[string]int64{
+					"ya":    jumlahPenerimaBPUMYa,
+					"tidak": jumlahPenerimaBPUMTidak,
+				},
+				"jumlahPenerimaBST": map[string]int64{
+					"ya":    jumlahPenerimaBSTYa,
+					"tidak": jumlahPenerimaBSTTidak,
+				},
+				"jumlahPenerimaPKH": map[string]int64{
+					"ya":    jumlahPenerimaPKHYa,
+					"tidak": jumlahPenerimaPKHTidak,
+				},
+				"jumlahPenerimaSembako": map[string]int64{
+					"ya":    jumlahPenerimaSembakoYa,
+					"tidak": jumlahPenerimaSembakoTidak,
+				},
+			},
+			"jumlahKeluargaKecamatan": kecamatanCountKeluarga,
+		}
+	}
+
+	cntx.JSON(http.StatusOK, gin.H{
+		"dataHitungKeluargaKabupatenKota": nestedJSON,
+	})
+}
+
+func (c *keluargaController) CountDataKeluargaKecamatan(cntx *gin.Context) {
+	var kabupatenKotaId = cntx.Query("kabupatenkotaid")
+	var err error
+	kecamatanDistinct, err := c.keluargaService.DistinctKecamatanByKabupatenKota(kabupatenKotaId)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	var places = "kecamatanId"
+
+	var jumlahKeluarga, jumlahDesil1, jumlahDesil2, jumlahDesil3, jumlahDesil4, jumlahDesil5, jumlahPenerimaBPNTYa, jumlahPenerimaBPNTTidak, jumlahPenerimaBPUMYa, jumlahPenerimaBPUMTidak, jumlahPenerimaBSTYa, jumlahPenerimaBSTTidak, jumlahPenerimaPKHYa, jumlahPenerimaPKHTidak, jumlahPenerimaSembakoYa, jumlahPenerimaSembakoTidak int64
+
+	var nestedJSON = map[string]map[string]interface{}{}
+
+	for _, kecamatan := range kecamatanDistinct {
+
+		jumlahKeluarga, err = c.keluargaService.CountJumlahKeluarga(places, kecamatan.KecamatanId)
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahDesil1, err = c.keluargaService.CountJumlahDesil(places, kecamatan.KecamatanId, "1")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahDesil2, err = c.keluargaService.CountJumlahDesil(places, kecamatan.KecamatanId, "2")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahDesil3, err = c.keluargaService.CountJumlahDesil(places, kecamatan.KecamatanId, "3")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahDesil4, err = c.keluargaService.CountJumlahDesil(places, kecamatan.KecamatanId, "4")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahDesil5, err = c.keluargaService.CountJumlahDesil(places, kecamatan.KecamatanId, "5")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahPenerimaBPNTYa, err = c.keluargaService.CountJumlahPenerima(places, kecamatan.KecamatanId, "penerimaBPNT", "Ya")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahPenerimaBPNTTidak, err = c.keluargaService.CountJumlahPenerima(places, kecamatan.KecamatanId, "penerimaBPNT", "Tidak")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahPenerimaBPUMYa, err = c.keluargaService.CountJumlahPenerima(places, kecamatan.KecamatanId, "penerimaBPUM", "Ya")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahPenerimaBPUMTidak, err = c.keluargaService.CountJumlahPenerima(places, kecamatan.KecamatanId, "penerimaBPUM", "Tidak")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahPenerimaBSTYa, err = c.keluargaService.CountJumlahPenerima(places, kecamatan.KecamatanId, "penerimaBST", "Ya")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahPenerimaBSTTidak, err = c.keluargaService.CountJumlahPenerima(places, kecamatan.KecamatanId, "penerimaBST", "Tidak")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahPenerimaPKHYa, err = c.keluargaService.CountJumlahPenerima(places, kecamatan.KecamatanId, "penerimaPKH", "Ya")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahPenerimaPKHTidak, err = c.keluargaService.CountJumlahPenerima(places, kecamatan.KecamatanId, "penerimaPKH", "Tidak")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahPenerimaSembakoYa, err = c.keluargaService.CountJumlahPenerima(places, kecamatan.KecamatanId, "penerimaSembako", "Ya")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		jumlahPenerimaSembakoTidak, err = c.keluargaService.CountJumlahPenerima(places, kecamatan.KecamatanId, "penerimaSembako", "Tidak")
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		kelurahanCountKeluarga, err := c.keluargaService.DistinctCountKelurahan(kecamatan.KecamatanId)
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		nestedJSON[kecamatan.Nama] = map[string]interface{}{
+			"jumlahKeseluruhan": map[string]int64{
+				"jumlahKeluarga": jumlahKeluarga,
+			},
+			"desilKesejahteraan": map[string]int64{
+				"desil1": jumlahDesil1,
+				"desil2": jumlahDesil2,
+				"desil3": jumlahDesil3,
+				"desil4": jumlahDesil4,
+				"desil5": jumlahDesil5,
+			},
+			"penerimaBantuan": map[string]interface{}{
+				"jumlahPenerimaBPNT": map[string]int64{
+					"ya":    jumlahPenerimaBPNTYa,
+					"tidak": jumlahPenerimaBPNTTidak,
+				},
+				"jumlahPenerimaBPUM": map[string]int64{
+					"ya":    jumlahPenerimaBPUMYa,
+					"tidak": jumlahPenerimaBPUMTidak,
+				},
+				"jumlahPenerimaBST": map[string]int64{
+					"ya":    jumlahPenerimaBSTYa,
+					"tidak": jumlahPenerimaBSTTidak,
+				},
+				"jumlahPenerimaPKH": map[string]int64{
+					"ya":    jumlahPenerimaPKHYa,
+					"tidak": jumlahPenerimaPKHTidak,
+				},
+				"jumlahPenerimaSembako": map[string]int64{
+					"ya":    jumlahPenerimaSembakoYa,
+					"tidak": jumlahPenerimaSembakoTidak,
+				},
+			},
+			"jumlahKeluargaKelurahan": kelurahanCountKeluarga,
+		}
+	}
+
+	cntx.JSON(http.StatusOK, gin.H{
+		"dataHitungKeluargaKecamatan": nestedJSON,
+	})
+}
+
+// func (c *keluargaController) TestDistinct(cntx *gin.Context) {
+// 	var distinctsKelurahan, err = c.keluargaService.DistinctKelurahan("7205140")
+// 	if err != nil {
+// 		cntx.JSON(http.StatusBadRequest, gin.H{
+// 			"error": cntx.Error(err),
+// 		})
+// 		return
+// 	}
+
+// 	var distinctsKelurahanResponse []responses.DistinctKelurahan
+
+// 	for _, distinctKelurahan := range distinctsKelurahan {
+// 		var distinctKelurahanResponse = helper.ConvertToDistinctKelurahanResponse(distinctKelurahan)
+// 		distinctsKelurahanResponse = append(distinctsKelurahanResponse, distinctKelurahanResponse)
+// 	}
+
+// 	cntx.JSON(http.StatusOK, distinctsKelurahanResponse)
+
+// }

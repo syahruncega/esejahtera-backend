@@ -184,9 +184,13 @@ func (c *userController) LoginUser(cntx *gin.Context) {
 	// Create a new token object, specifying signing method and the claims
 	// you would like it to contain.
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"uId": user.Id,
+		"uId":       user.Id,
+		"uUsername": user.Username,
+		"uEmail":    user.Email,
+		"uNoHP":     user.NoHp,
+		"uRole":     user.Role,
 
-		"exp": time.Now().Add(time.Minute * 15).Unix(),
+		"exp": time.Now().Add(time.Hour * 1).Unix(),
 	})
 
 	// Sign and get the complete encoded token as a string using the secret

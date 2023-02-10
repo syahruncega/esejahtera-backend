@@ -424,3 +424,18 @@ type IndividuVerifikasi struct {
 	CreatedAt          time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt          time.Time `gorm:"column:updatedAt;not null"`
 }
+
+type DistinctKabupatenKota struct {
+	KabupatenKotaId string `gorm:"column:kabupatenKotaId"`
+	Nama            string `gorm:"column:nama"`
+}
+
+type DistinctKecamatan struct {
+	KecamatanId string `gorm:"column:kecamatanId"`
+	Nama        string `gorm:"column:nama"`
+}
+
+type DistinctKelurahan struct {
+	KelurahanId string `gorm:"column:kelurahanId"`
+	Nama        string `gorm:"column:nama"`
+}

@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"fmt"
-	"kemiskinan/config"
 	"kemiskinan/model"
 	"net/http"
 	"os"
@@ -35,11 +34,11 @@ func RequireAuth(cntx *gin.Context) {
 		}
 
 		var user model.User
-		var err = config.DB.Take(&user, claims["uId"]).Error
-
-		if err != nil {
-			cntx.AbortWithStatus(http.StatusUnauthorized)
-		}
+		user.Id = claims["uId"].(int)
+		user.Username = claims["uUsername"].(string)
+		user.Email = claims["uEmail"].(string)
+		user.NoHp = claims["uNoHP"].(string)
+		user.Role = claims["uRole"].(string)
 
 		cntx.Set("user", user)
 	} else {
