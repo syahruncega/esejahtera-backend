@@ -9,6 +9,7 @@ import (
 type AnalisRepository interface {
 	FindAll() ([]model.Analis, error)
 	FindById(id int) (model.Analis, error)
+	FindByUserId(userId int) (model.Analis, error)
 	FindAllRelation() ([]model.Analis, error)
 	Create(analis model.Analis) (model.Analis, error)
 	Update(analis model.Analis) (model.Analis, error)
@@ -35,6 +36,14 @@ func (r *analisRepository) FindById(id int) (model.Analis, error) {
 	var analis model.Analis
 
 	var err = r.db.Take(&analis, id).Error
+
+	return analis, err
+}
+
+func (r *analisRepository) FindByUserId(userId int) (model.Analis, error) {
+	var analis model.Analis
+
+	var err = r.db.Where("userId = ?", userId).Take(&analis).Error
 
 	return analis, err
 }

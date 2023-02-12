@@ -9,6 +9,7 @@ import (
 type PusbangService interface {
 	FindAll() ([]model.Pusbang, error)
 	FindById(id int) (model.Pusbang, error)
+	FindByUserId(userId int) (model.Pusbang, error)
 	FindAllRelation() ([]model.Pusbang, error)
 	Create(pusbangRequest request.CreatePusbangRequest) (model.Pusbang, error)
 	Update(id int, pusbangRequest request.UpdatePusbangRequest) (model.Pusbang, error)
@@ -31,6 +32,12 @@ func (s *pusbangService) FindAll() ([]model.Pusbang, error) {
 
 func (s *pusbangService) FindById(id int) (model.Pusbang, error) {
 	var pusbang, err = s.pusbangRepository.FindById(id)
+
+	return pusbang, err
+}
+
+func (s *pusbangService) FindByUserId(userId int) (model.Pusbang, error) {
+	var pusbang, err = s.pusbangRepository.FindByUserId(userId)
 
 	return pusbang, err
 }

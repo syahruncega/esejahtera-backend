@@ -9,6 +9,7 @@ import (
 type AdminRepository interface {
 	FindAll() ([]model.Admin, error)
 	FindById(id int) (model.Admin, error)
+	FindByUserId(userId int) (model.Admin, error)
 	FindAllRelation() ([]model.Admin, error)
 	Create(admin model.Admin) (model.Admin, error)
 	Update(admin model.Admin) (model.Admin, error)
@@ -35,6 +36,14 @@ func (r *adminRepository) FindById(id int) (model.Admin, error) {
 	var admin model.Admin
 
 	var err = r.db.Take(&admin, id).Error
+
+	return admin, err
+}
+
+func (r *adminRepository) FindByUserId(userId int) (model.Admin, error) {
+	var admin model.Admin
+
+	var err = r.db.Where("userId = ? ", userId).Take(&admin).Error
 
 	return admin, err
 }

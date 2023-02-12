@@ -1,8 +1,6 @@
 package config
 
 import (
-	"fmt"
-
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -15,7 +13,6 @@ func ConnectDB(appConfig AppConfig) {
 
 	// var dsn = "root:root@tcp(127.0.0.1:3306)/kemiskinan?charset=utf8mb4&parseTime=True&loc=Local"
 	var dsn = appConfig.DatabaseUsername + ":" + appConfig.DatabasePassword + "@tcp(127.0.0.1:" + appConfig.DatabasePort + ")/" + appConfig.DatabaseName + "?charset=utf8mb4&parseTime=True&loc=Local"
-	fmt.Print(dsn)
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {

@@ -95,7 +95,7 @@ func (c *keluargaController) GetKeluargaBySearch(cntx *gin.Context) {
 		whereClauseInterface[interfaceKey] = interfaceVal
 	}
 
-	var jumlahData, err = c.keluargaService.CountData(whereClauseInterface)
+	var totalData, err = c.keluargaService.CountData(whereClauseInterface)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),
@@ -104,12 +104,8 @@ func (c *keluargaController) GetKeluargaBySearch(cntx *gin.Context) {
 
 	var offset = limit * (halaman - 1)
 
-	var hasilBagi = float64(jumlahData) / float64(pageRowFloat)
+	var hasilBagi = float64(totalData) / float64(pageRowFloat)
 	var jumlahHalaman = int(math.Ceil(hasilBagi))
-
-	fmt.Println(whereClauseInterface)
-	fmt.Println(jumlahData)
-	fmt.Println(hasilBagi)
 
 	keluargas, err := c.keluargaService.FindBySearch(whereClauseInterface, limit, offset)
 	if err != nil {
@@ -127,6 +123,7 @@ func (c *keluargaController) GetKeluargaBySearch(cntx *gin.Context) {
 
 	cntx.JSON(http.StatusOK, gin.H{
 		"data":          keluargasResponse,
+		"totalData":     totalData,
 		"jumlahHalaman": jumlahHalaman,
 	})
 }

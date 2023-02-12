@@ -9,6 +9,7 @@ import (
 type DosenService interface {
 	FindAll() ([]model.Dosen, error)
 	FindById(id int) (model.Dosen, error)
+	FindByUserId(userId int) (model.Dosen, error)
 	FindAllRelation() ([]model.Dosen, error)
 	Create(dosenRequest request.CreateDosenRequest) (model.Dosen, error)
 	Update(id int, dosenRequest request.UpdateDosenRequest) (model.Dosen, error)
@@ -31,6 +32,12 @@ func (s *dosenService) FindAll() ([]model.Dosen, error) {
 
 func (s *dosenService) FindById(id int) (model.Dosen, error) {
 	var dosen, err = s.dosenRepository.FindById(id)
+
+	return dosen, err
+}
+
+func (s *dosenService) FindByUserId(userId int) (model.Dosen, error) {
+	var dosen, err = s.dosenRepository.FindByUserId(userId)
 
 	return dosen, err
 }

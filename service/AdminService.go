@@ -9,6 +9,7 @@ import (
 type AdminService interface {
 	FindAll() ([]model.Admin, error)
 	FindById(id int) (model.Admin, error)
+	FindByUserId(userId int) (model.Admin, error)
 	FindAllRelation() ([]model.Admin, error)
 	Create(adminRequest request.CreateAdminRequest) (model.Admin, error)
 	Update(id int, adminRequest request.UpdateAdminRequest) (model.Admin, error)
@@ -31,6 +32,12 @@ func (s *adminService) FindAll() ([]model.Admin, error) {
 
 func (s *adminService) FindById(id int) (model.Admin, error) {
 	var admin, err = s.adminRepository.FindById(id)
+
+	return admin, err
+}
+
+func (s *adminService) FindByUserId(userId int) (model.Admin, error) {
+	var admin, err = s.adminRepository.FindByUserId(userId)
 
 	return admin, err
 }

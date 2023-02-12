@@ -9,6 +9,7 @@ import (
 type MahasiswaRepository interface {
 	FindAll() ([]model.Mahasiswa, error)
 	FindById(id int) (model.Mahasiswa, error)
+	FindByUserId(userId int) (model.Mahasiswa, error)
 	FindAllRelation() ([]model.Mahasiswa, error)
 	Create(mahasiswa model.Mahasiswa) (model.Mahasiswa, error)
 	Update(mahasiswa model.Mahasiswa) (model.Mahasiswa, error)
@@ -35,6 +36,14 @@ func (r *mahasiswaRepository) FindById(id int) (model.Mahasiswa, error) {
 	var mahasiswa model.Mahasiswa
 
 	var err = r.db.Take(&mahasiswa, id).Error
+
+	return mahasiswa, err
+}
+
+func (r *mahasiswaRepository) FindByUserId(userId int) (model.Mahasiswa, error) {
+	var mahasiswa model.Mahasiswa
+
+	var err = r.db.Where("userId = ?", userId).Take(&mahasiswa).Error
 
 	return mahasiswa, err
 }

@@ -9,6 +9,7 @@ import (
 type PusbangRepository interface {
 	FindAll() ([]model.Pusbang, error)
 	FindById(id int) (model.Pusbang, error)
+	FindByUserId(userId int) (model.Pusbang, error)
 	FindAllRelation() ([]model.Pusbang, error)
 	Create(pusbang model.Pusbang) (model.Pusbang, error)
 	Update(pusbang model.Pusbang) (model.Pusbang, error)
@@ -35,6 +36,14 @@ func (r *pusbangRepository) FindById(id int) (model.Pusbang, error) {
 	var pusbang model.Pusbang
 
 	var err = r.db.Take(&pusbang, id).Error
+
+	return pusbang, err
+}
+
+func (r *pusbangRepository) FindByUserId(userId int) (model.Pusbang, error) {
+	var pusbang model.Pusbang
+
+	var err = r.db.Where("userId = ?", userId).Take(&pusbang).Error
 
 	return pusbang, err
 }

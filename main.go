@@ -111,10 +111,6 @@ func main() {
 	var monevService = service.NewMonevService(monevRepository)
 	var monevController = controller.NewMonevController(monevService)
 
-	var userRepository = repository.NewUserRepository(config.DB)
-	var userService = service.NewUserService(userRepository)
-	var userController = controller.NewUserController(userService)
-
 	var adminRepository = repository.NewAdminRepository(config.DB)
 	var adminService = service.NewAdminService(adminRepository)
 	var adminController = controller.NewAdminController(adminService)
@@ -134,6 +130,10 @@ func main() {
 	var mahasiswaRepository = repository.NewMahasiswaRepository(config.DB)
 	var mahasiswaService = service.NewMahasiswaService(mahasiswaRepository)
 	var mahasiswaController = controller.NewMahasiswaController(mahasiswaService)
+
+	var userRepository = repository.NewUserRepository(config.DB)
+	var userService = service.NewUserService(userRepository)
+	var userController = controller.NewUserController(userService, adminService, pusbangService, dosenService, analisService, mahasiswaService)
 
 	var lokasiDosenRepository = repository.NewLokasiDosenRepository(config.DB)
 	var lokasiDosenService = service.NewLokasiDosenService(lokasiDosenRepository)
@@ -271,8 +271,10 @@ func main() {
 
 	server.GET("/user", userController.GetUsers)
 	server.GET("/user/:id", userController.GetUser)
-	server.POST("/user/login/", userController.LoginUser)
-	server.GET("/validate", middleware.RequireAuth, userController.Validate)
+	server.GET("/auth/session", middleware.CheckAuth, userController.Validate)
+	server.GET("/auth/profile", middleware.CheckAuth, userController.GetUserProfile)
+	server.POST("/auth/login/", userController.LoginUser)
+	server.POST("/auth/logout/", userController.LogoutUser)
 	server.POST("/user", userController.CreateUser)
 	server.PATCH("/user/:id", userController.UpdateUser)
 	server.DELETE("/user/:id", userController.DeleteUser)

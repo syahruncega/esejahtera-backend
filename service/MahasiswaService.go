@@ -9,6 +9,7 @@ import (
 type MahasiswaService interface {
 	FindAll() ([]model.Mahasiswa, error)
 	FindById(id int) (model.Mahasiswa, error)
+	FindByUserId(userId int) (model.Mahasiswa, error)
 	FindAllRelation() ([]model.Mahasiswa, error)
 	Create(mahasiswaRequest request.CreateMahasiswaRequest) (model.Mahasiswa, error)
 	Update(id int, mahasiswaRequest request.UpdateMahasiswaRequest) (model.Mahasiswa, error)
@@ -31,6 +32,12 @@ func (s *mahasiswaService) FindAll() ([]model.Mahasiswa, error) {
 
 func (s *mahasiswaService) FindById(id int) (model.Mahasiswa, error) {
 	var mahasiswa, err = s.mahasiswaRepository.FindById(id)
+
+	return mahasiswa, err
+}
+
+func (s *mahasiswaService) FindByUserId(userId int) (model.Mahasiswa, error) {
+	var mahasiswa, err = s.mahasiswaRepository.FindByUserId(userId)
 
 	return mahasiswa, err
 }

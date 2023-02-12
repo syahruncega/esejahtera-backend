@@ -18,11 +18,23 @@ import (
 )
 
 type userController struct {
-	userService service.UserService
+	userService      service.UserService
+	adminService     service.AdminService
+	pusbangService   service.PusbangService
+	dosenService     service.DosenService
+	analisService    service.AnalisService
+	mahasiswaService service.MahasiswaService
 }
 
-func NewUserController(userService service.UserService) *userController {
-	return &userController{userService}
+func NewUserController(userService service.UserService, adminService service.AdminService, pusbangService service.PusbangService, dosenService service.DosenService, analisService service.AnalisService, mahasiswaService service.MahasiswaService) *userController {
+	return &userController{
+		userService,
+		adminService,
+		pusbangService,
+		dosenService,
+		analisService,
+		mahasiswaService,
+	}
 }
 
 func (c *userController) GetUsers(cntx *gin.Context) {
@@ -208,8 +220,10 @@ func (c *userController) LoginUser(cntx *gin.Context) {
 	//false on secure (6th parameter) maybe want to change it to "true" when it goes online
 	cntx.SetCookie("Authorization", accessTokenString, 3600*1, "", "", false, true)
 
-	cntx.JSON(http.StatusOK, gin.H{})
+	user.Password = ""
+	var userResponse = helper.ConvertToUserResponse(user)
 
+	cntx.JSON(http.StatusOK, userResponse)
 }
 
 func (r *userController) Validate(cntx *gin.Context) {
@@ -222,4 +236,78 @@ func (r *userController) Validate(cntx *gin.Context) {
 	cntx.JSON(http.StatusOK, gin.H{
 		"user": userResponse,
 	})
+}
+
+func (c *userController) GetUserProfile(cntx *gin.Context) {
+	var user, _ = cntx.Get("user")
+
+	var userId = user.(model.User).Id
+	var userRole = user.(model.User).Role
+
+	if userRole == "admin" {
+		var admin, err = c.adminService.FindByUserId(userId)
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": "Data tidak ditemukan",
+			})
+		}
+
+		var adminResponse = helper.ConvertToAdminResponse(admin)
+
+		cntx.JSON(http.StatusOK, adminResponse)
+
+	} else if userRole == "pusbang" {
+		var pusbang, err = c.pusbangService.FindByUserId(userId)
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": "Data tidak ditemukan",
+			})
+		}
+
+		var pusbangResponse = helper.ConvertToPusbangResponse(pusbang)
+
+		cntx.JSON(http.StatusOK, pusbangResponse)
+
+	} else if userRole == "dosen" {
+		var dosen, err = c.dosenService.FindByUserId(userId)
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": "Data tidak ditemukan",
+			})
+		}
+
+		var dosenResponse = helper.ConvertToDosenResponse(dosen)
+
+		cntx.JSON(http.StatusOK, dosenResponse)
+
+	} else if userRole == "analis" {
+		var analis, err = c.analisService.FindByUserId(userId)
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": "Data tidak ditemukan",
+			})
+		}
+
+		var analisResponse = helper.ConvertToAnalisResponse(analis)
+
+		cntx.JSON(http.StatusOK, analisResponse)
+
+	} else if userRole == "mahasiswa" {
+		var mahasiswa, err = c.mahasiswaService.FindByUserId(userId)
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": "Data tidak ditemukan",
+			})
+		}
+
+		var mahasiswaResponse = helper.ConvertToMahasiswaResponse(mahasiswa)
+
+		cntx.JSON(http.StatusOK, mahasiswaResponse)
+	}
+}
+
+func (c *userController) LogoutUser(cntx *gin.Context) {
+	cntx.SetSameSite(http.SameSiteLaxMode)
+
+	cntx.SetCookie("Authorization", "", -1, "", "", false, true)
 }

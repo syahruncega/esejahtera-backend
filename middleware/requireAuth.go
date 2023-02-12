@@ -11,10 +11,11 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-func RequireAuth(cntx *gin.Context) {
+func CheckAuth(cntx *gin.Context) {
 	var tokenString, err = cntx.Cookie("Authorization")
 	if err != nil {
 		cntx.AbortWithStatus(http.StatusUnauthorized)
+		return
 	}
 
 	// Parse takes the token string and a function for looking up the key.
@@ -31,10 +32,13 @@ func RequireAuth(cntx *gin.Context) {
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		if float64(time.Now().Unix()) > claims["exp"].(float64) {
 			cntx.AbortWithStatus(http.StatusUnauthorized)
+			return
 		}
 
 		var user model.User
-		user.Id = claims["uId"].(int)
+		var idFloat = claims["uId"].(float64)
+
+		user.Id = int(idFloat)
 		user.Username = claims["uUsername"].(string)
 		user.Email = claims["uEmail"].(string)
 		user.NoHp = claims["uNoHP"].(string)
@@ -43,6 +47,7 @@ func RequireAuth(cntx *gin.Context) {
 		cntx.Set("user", user)
 	} else {
 		cntx.AbortWithStatus(http.StatusUnauthorized)
+		return
 	}
 
 	cntx.Next()

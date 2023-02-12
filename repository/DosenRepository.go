@@ -9,6 +9,7 @@ import (
 type DosenRepository interface {
 	FindAll() ([]model.Dosen, error)
 	FindById(id int) (model.Dosen, error)
+	FindByUserId(userId int) (model.Dosen, error)
 	FindAllRelation() ([]model.Dosen, error)
 	Create(dosen model.Dosen) (model.Dosen, error)
 	Update(dosen model.Dosen) (model.Dosen, error)
@@ -35,6 +36,14 @@ func (r *dosenRepository) FindById(id int) (model.Dosen, error) {
 	var dosen model.Dosen
 
 	var err = r.db.Take(&dosen, id).Error
+
+	return dosen, err
+}
+
+func (r *dosenRepository) FindByUserId(userId int) (model.Dosen, error) {
+	var dosen model.Dosen
+
+	var err = r.db.Where("userId = ? ", userId).Take(&dosen).Error
 
 	return dosen, err
 }

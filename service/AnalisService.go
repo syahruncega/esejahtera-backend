@@ -9,6 +9,7 @@ import (
 type AnalisService interface {
 	FindAll() ([]model.Analis, error)
 	FindById(id int) (model.Analis, error)
+	FindByUserId(userId int) (model.Analis, error)
 	FindAllRelation() ([]model.Analis, error)
 	Create(analisRequest request.CreateAnalisRequest) (model.Analis, error)
 	Update(id int, analisRequst request.UpdateAnalisRequest) (model.Analis, error)
@@ -31,6 +32,12 @@ func (s *analisService) FindAll() ([]model.Analis, error) {
 
 func (s *analisService) FindById(id int) (model.Analis, error) {
 	var analis, err = s.analisRepository.FindById(id)
+
+	return analis, err
+}
+
+func (s *analisService) FindByUserId(userId int) (model.Analis, error) {
+	var analis, err = s.analisRepository.FindByUserId(userId)
 
 	return analis, err
 }
