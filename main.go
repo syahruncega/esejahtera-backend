@@ -103,10 +103,6 @@ func main() {
 	var kelurahanService = service.NewKelurahanService(kelurahanRepository)
 	var kelurahanController = controller.NewKelurahanController(kelurahanService)
 
-	var keluargaRepository = repository.NewKeluargaRepository(config.DB)
-	var keluargaService = service.NewKeluargaService(keluargaRepository)
-	var keluargaController = controller.NewKeluargaController(keluargaService)
-
 	var monevRepository = repository.NewMonevRepository(config.DB)
 	var monevService = service.NewMonevService(monevRepository)
 	var monevController = controller.NewMonevController(monevService)
@@ -119,21 +115,9 @@ func main() {
 	var analisService = service.NewAnalisService(analisRepository)
 	var analisController = controller.NewAnalisController(analisService)
 
-	var dosenRepository = repository.NewDosenRepository(config.DB)
-	var dosenService = service.NewDosenService(dosenRepository)
-	var dosenController = controller.NewDosenController(dosenService)
-
 	var pusbangRepository = repository.NewPusbangRepository(config.DB)
 	var pusbangService = service.NewPusbangService(pusbangRepository)
 	var pusbangController = controller.NewPusbangController(pusbangService)
-
-	var mahasiswaRepository = repository.NewMahasiswaRepository(config.DB)
-	var mahasiswaService = service.NewMahasiswaService(mahasiswaRepository)
-	var mahasiswaController = controller.NewMahasiswaController(mahasiswaService)
-
-	var userRepository = repository.NewUserRepository(config.DB)
-	var userService = service.NewUserService(userRepository)
-	var userController = controller.NewUserController(userService, adminService, pusbangService, dosenService, analisService, mahasiswaService)
 
 	var lokasiDosenRepository = repository.NewLokasiDosenRepository(config.DB)
 	var lokasiDosenService = service.NewLokasiDosenService(lokasiDosenRepository)
@@ -147,9 +131,27 @@ func main() {
 	var individuService = service.NewIndividuService(individuRepository)
 	var individuController = controller.NewIndividuController(individuService)
 
+	var keluargaRepository = repository.NewKeluargaRepository(config.DB)
+	var keluargaService = service.NewKeluargaService(keluargaRepository)
+	var keluargaController = controller.NewKeluargaController(keluargaService, individuService)
+
 	var individuVerifikasiRepository = repository.NewIndividuVerifikasiRepository(config.DB)
 	var individuVerifikasiService = service.NewIndividuVerifikasiService(individuVerifikasiRepository)
 	var individuVerifikasiController = controller.NewIndividuVerifikasiController(individuVerifikasiService)
+
+	var mahasiswaRepository = repository.NewMahasiswaRepository(config.DB)
+	var mahasiswaService = service.NewMahasiswaService(mahasiswaRepository)
+	var mahasiswaController = controller.NewMahasiswaController(mahasiswaService, keluargaService, individuService)
+
+	var dosenRepository = repository.NewDosenRepository(config.DB)
+	var dosenService = service.NewDosenService(dosenRepository)
+	var dosenController = controller.NewDosenController(dosenService, mahasiswaService)
+
+	var userRepository = repository.NewUserRepository(config.DB)
+	var userService = service.NewUserService(userRepository)
+	var userController = controller.NewUserController(userService, adminService, pusbangService, dosenService, analisService, mahasiswaService)
+
+	var statistikController = controller.NewStatistikController(keluargaService, individuService)
 
 	var server = gin.Default()
 
@@ -261,9 +263,6 @@ func main() {
 	server.GET("/keluarga/idkeluarga/:idkeluarga", keluargaController.GetKeluargaByIdKeluarga)
 	server.GET("/keluarga/search", keluargaController.GetKeluargaBySearch)
 	server.PATCH("/keluarga/:id", keluargaController.UpdateKeluarga)
-	server.GET("/keluarga/hitungdatakeluargaprovinsi", keluargaController.CountDataKeluargaProvinsi)
-	server.GET("/keluarga/hitungdatakeluargakabupatenkota", keluargaController.CountDataKeluargaKabupatenKota)
-	server.GET("/keluarga/hitungdatakeluargakecamatan", keluargaController.CountDataKeluargaKecamatan)
 	// server.GET("/testdistinct/", keluargaController.TestDistinct)
 
 	server.GET("/monev/:kabupatenkotaid", monevController.GetMonevs)
@@ -273,8 +272,8 @@ func main() {
 	server.GET("/user/:id", userController.GetUser)
 	server.GET("/auth/session", middleware.CheckAuth, userController.Validate)
 	server.GET("/auth/profile", middleware.CheckAuth, userController.GetUserProfile)
-	server.POST("/auth/login/", userController.LoginUser)
-	server.POST("/auth/logout/", userController.LogoutUser)
+	server.POST("/auth/login", userController.LoginUser)
+	server.POST("/auth/logout", userController.LogoutUser)
 	server.POST("/user", userController.CreateUser)
 	server.PATCH("/user/:id", userController.UpdateUser)
 	server.DELETE("/user/:id", userController.DeleteUser)
@@ -296,6 +295,7 @@ func main() {
 	server.GET("/dosen", dosenController.GetDosens)
 	server.GET("/dosen/:id", dosenController.GetDosen)
 	server.GET("/dosenrelasi", dosenController.GetDosenWithRelation)
+	server.GET("/dosen/findmahasiswa", dosenController.GetMahasiswa)
 	server.POST("/dosen", dosenController.CreateDosen)
 	server.PATCH("/dosen/:id", dosenController.UpdateDosen)
 	server.DELETE("/dosen/:id", dosenController.DeleteDosen)
@@ -310,6 +310,7 @@ func main() {
 	server.GET("/mahasiswa", mahasiswaController.GetMahasiswas)
 	server.GET("/mahasiswa/:id", mahasiswaController.GetMahasiswa)
 	server.GET("/mahasiswarelasi", mahasiswaController.GetMahasiswaWithRelation)
+	server.GET("/mahasiswa/verifying", mahasiswaController.GetVerifiedByMahasiswa)
 	server.POST("/mahasiswa", mahasiswaController.CreateMahasiswa)
 	server.PATCH("/mahasiswa/:id", mahasiswaController.UpdateMahasiswa)
 	server.DELETE("/mahasiswa/:id", mahasiswaController.DeleteMahasiswa)
@@ -335,9 +336,6 @@ func main() {
 	server.GET("/individu/idkeluarga/:idkeluarga", individuController.GetIndividuByIdKeluarga)
 	server.GET("/individu/search", individuController.GetIndividuBySearch)
 	server.PATCH("/individu/:id", individuController.UpdateIndividu)
-	server.GET("/individu/hitungdataindividuprovinsi", individuController.CountDataIndividuProvinsi)
-	server.GET("/individu/hitungdataindividukabupatenkota", individuController.CountDataIndividuKabupatenKota)
-	server.GET("/individu/hitungdataindividukecamatan", individuController.CountDataIndividuKecamatan)
 
 	server.GET("/individuverifikasi", individuVerifikasiController.GetIndividuVerifikasis)
 	server.GET("/individuverifikasi/:id", individuVerifikasiController.GetIndividuVerifikasi)
@@ -346,6 +344,11 @@ func main() {
 	server.POST("/individuverifikasi", individuVerifikasiController.CreateIndividuVerifikasi)
 	server.PATCH("/individuverifikasi/:id", individuVerifikasiController.UpdateIndividuVerifikasi)
 	server.DELETE("/individuverifikasi/:id", individuVerifikasiController.DeleteIndividuVerifikasi)
+
+	server.GET("/statistik/provinsi", statistikController.StatistikProvinsi)
+	server.GET("/statistik/kabupatenkota", statistikController.StatistikKabupatenKota)
+	server.GET("/statistik/kecamatan", statistikController.StatistikKecamatan)
+	server.GET("/statistik/kelurahan", statistikController.StatistikKelurahan)
 
 	server.Run(":" + appConfig.AppPort)
 }

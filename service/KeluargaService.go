@@ -16,13 +16,13 @@ type KeluargaService interface {
 	CountJumlahKeluarga(places string, placesId string) (int64, error)
 	CountJumlahDesil(places string, placesId string, desil string) (int64, error)
 	CountJumlahPenerima(places string, placesId string, penerima string, penerimaValue string) (int64, error)
-	DistinctKabupatenKota() ([]model.DistinctKabupatenKota, error)
-	DistinctCountKabupatenKota() (map[string]int64, error)
-	DistinctKecamatan() ([]model.DistinctKecamatan, error)
-	DistinctKecamatanByKabupatenKota(kabupatenKotaId string) ([]model.DistinctKecamatan, error)
-	DistinctCountKecamatan(kabupatenKotaId string) (map[string]int64, error)
-	DistinctKelurahanByKecamatan(kecamatanId string) ([]model.DistinctKelurahan, error)
-	DistinctCountKelurahan(kecamatanId string) (map[string]int64, error)
+	CountVerifiedByMahasiswa(mahasiswaId int) (int64, error)
+	DistinctKabupatenKota(kabupatenKotaId string) ([]model.DistinctKabupatenKota, error)
+	DistinctCountKabupatenKota(kabupatenKotaId string) (map[string]int64, error)
+	DistinctKecamatan(kecamatanId string) ([]model.DistinctKecamatan, error)
+	DistinctCountKecamatan(kecamatanId string) (map[string]int64, error)
+	DistinctKelurahan(kelurahanId string) ([]model.DistinctKelurahan, error)
+	DistinctCountKelurahan(kelurahanId string) (map[string]int64, error)
 }
 
 type keluargaService struct {
@@ -93,44 +93,44 @@ func (s *keluargaService) CountJumlahPenerima(places string, placesId string, pe
 	return jumlah, err
 }
 
-func (s *keluargaService) DistinctKabupatenKota() ([]model.DistinctKabupatenKota, error) {
-	var distinctKabupatenKota, err = s.keluargaRepository.DistinctKabupatenKota()
+func (s *keluargaService) CountVerifiedByMahasiswa(mahasiswaId int) (int64, error) {
+	var jumlah, err = s.keluargaRepository.CountVerifiedByMahasiswa(mahasiswaId)
+
+	return jumlah, err
+}
+
+func (s *keluargaService) DistinctKabupatenKota(kabupatenKotaId string) ([]model.DistinctKabupatenKota, error) {
+	var distinctKabupatenKota, err = s.keluargaRepository.DistinctKabupatenKota(kabupatenKotaId)
 
 	return distinctKabupatenKota, err
 }
 
-func (s *keluargaService) DistinctCountKabupatenKota() (map[string]int64, error) {
-	var distinctCount, err = s.keluargaRepository.DistinctCountKabupatenKota()
+func (s *keluargaService) DistinctCountKabupatenKota(kabupatenKotaId string) (map[string]int64, error) {
+	var distinctCount, err = s.keluargaRepository.DistinctCountKabupatenKota(kabupatenKotaId)
 
 	return distinctCount, err
 }
 
-func (s *keluargaService) DistinctKecamatan() ([]model.DistinctKecamatan, error) {
-	var distinctKecamatan, err = s.keluargaRepository.DistinctKecamatan()
+func (s *keluargaService) DistinctKecamatan(kecamatanId string) ([]model.DistinctKecamatan, error) {
+	var distinctKecamatan, err = s.keluargaRepository.DistinctKecamatan(kecamatanId)
 
 	return distinctKecamatan, err
 }
 
-func (s *keluargaService) DistinctKecamatanByKabupatenKota(kabupatenKotaId string) ([]model.DistinctKecamatan, error) {
-	var distinctKecamatan, err = s.keluargaRepository.DistinctKecamatanByKabupatenKota(kabupatenKotaId)
-
-	return distinctKecamatan, err
-}
-
-func (s *keluargaService) DistinctCountKecamatan(kabupatenKotaId string) (map[string]int64, error) {
-	var distinctCount, err = s.keluargaRepository.DistinctCountKecamatan(kabupatenKotaId)
+func (s *keluargaService) DistinctCountKecamatan(kecamatanId string) (map[string]int64, error) {
+	var distinctCount, err = s.keluargaRepository.DistinctCountKecamatan(kecamatanId)
 
 	return distinctCount, err
 }
 
-func (s *keluargaService) DistinctKelurahanByKecamatan(kecamatanId string) ([]model.DistinctKelurahan, error) {
-	var distinctKelurahan, err = s.keluargaRepository.DistinctKelurahanByKecamatan(kecamatanId)
+func (s *keluargaService) DistinctKelurahan(kelurahanId string) ([]model.DistinctKelurahan, error) {
+	var distinctKelurahan, err = s.keluargaRepository.DistinctKelurahan(kelurahanId)
 
 	return distinctKelurahan, err
 }
 
-func (s *keluargaService) DistinctCountKelurahan(kecamatanId string) (map[string]int64, error) {
-	var distinctCount, err = s.keluargaRepository.DistinctCountKelurahan(kecamatanId)
+func (s *keluargaService) DistinctCountKelurahan(kelurahanId string) (map[string]int64, error) {
+	var distinctCount, err = s.keluargaRepository.DistinctCountKelurahan(kelurahanId)
 
 	return distinctCount, err
 }

@@ -135,9 +135,7 @@ func (c *userController) UpdateUser(cntx *gin.Context) {
 
 	var userResponse = helper.ConvertToUserResponse(user)
 
-	cntx.JSON(http.StatusOK, gin.H{
-		"data": userResponse,
-	})
+	cntx.JSON(http.StatusOK, userResponse)
 }
 
 func (c *userController) DeleteUser(cntx *gin.Context) {
@@ -198,6 +196,7 @@ func (c *userController) LoginUser(cntx *gin.Context) {
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"uId":       user.Id,
 		"uUsername": user.Username,
+		"uPassword": user.Password,
 		"uEmail":    user.Email,
 		"uNoHP":     user.NoHp,
 		"uRole":     user.Role,
@@ -233,9 +232,7 @@ func (r *userController) Validate(cntx *gin.Context) {
 
 	// var userRole = user.(model.User).Role
 
-	cntx.JSON(http.StatusOK, gin.H{
-		"user": userResponse,
-	})
+	cntx.JSON(http.StatusOK, userResponse)
 }
 
 func (c *userController) GetUserProfile(cntx *gin.Context) {
@@ -247,9 +244,8 @@ func (c *userController) GetUserProfile(cntx *gin.Context) {
 	if userRole == "admin" {
 		var admin, err = c.adminService.FindByUserId(userId)
 		if err != nil {
-			cntx.JSON(http.StatusBadRequest, gin.H{
-				"error": "Data tidak ditemukan",
-			})
+			cntx.JSON(http.StatusOK, false)
+			return
 		}
 
 		var adminResponse = helper.ConvertToAdminResponse(admin)
@@ -259,9 +255,8 @@ func (c *userController) GetUserProfile(cntx *gin.Context) {
 	} else if userRole == "pusbang" {
 		var pusbang, err = c.pusbangService.FindByUserId(userId)
 		if err != nil {
-			cntx.JSON(http.StatusBadRequest, gin.H{
-				"error": "Data tidak ditemukan",
-			})
+			cntx.JSON(http.StatusOK, false)
+			return
 		}
 
 		var pusbangResponse = helper.ConvertToPusbangResponse(pusbang)
@@ -271,9 +266,8 @@ func (c *userController) GetUserProfile(cntx *gin.Context) {
 	} else if userRole == "dosen" {
 		var dosen, err = c.dosenService.FindByUserId(userId)
 		if err != nil {
-			cntx.JSON(http.StatusBadRequest, gin.H{
-				"error": "Data tidak ditemukan",
-			})
+			cntx.JSON(http.StatusOK, false)
+			return
 		}
 
 		var dosenResponse = helper.ConvertToDosenResponse(dosen)
@@ -283,9 +277,8 @@ func (c *userController) GetUserProfile(cntx *gin.Context) {
 	} else if userRole == "analis" {
 		var analis, err = c.analisService.FindByUserId(userId)
 		if err != nil {
-			cntx.JSON(http.StatusBadRequest, gin.H{
-				"error": "Data tidak ditemukan",
-			})
+			cntx.JSON(http.StatusOK, false)
+			return
 		}
 
 		var analisResponse = helper.ConvertToAnalisResponse(analis)
@@ -295,9 +288,8 @@ func (c *userController) GetUserProfile(cntx *gin.Context) {
 	} else if userRole == "mahasiswa" {
 		var mahasiswa, err = c.mahasiswaService.FindByUserId(userId)
 		if err != nil {
-			cntx.JSON(http.StatusBadRequest, gin.H{
-				"error": "Data tidak ditemukan",
-			})
+			cntx.JSON(http.StatusOK, false)
+			return
 		}
 
 		var mahasiswaResponse = helper.ConvertToMahasiswaResponse(mahasiswa)

@@ -211,6 +211,8 @@ type KeluargaResponse struct {
 	MahasiswaId            int                    `json:"mahasiswaId"`
 	Mahasiswa              MahasiswaResponse      `json:"mahasiswa"`
 	StatusVerifikasi       int                    `json:"statusVerifikasi"`
+	JumlahIndividu         int                    `json:"jumlahIndividu"`
+	JumlahIndividuVerified int                    `json:"jumlahIndividuVerified"`
 }
 
 type MonevResponse struct {
@@ -325,7 +327,7 @@ type MahasiswaResponse struct {
 	TanggalLahir    string    `json:"tanggalLahir"`
 	KabupatenKotaId string    `json:"kabupatenKotaId"`
 	KecamatanId     string    `json:"kecamatanId"`
-	KelurahanId     string    `json:"KelurahanId"`
+	KelurahanId     string    `json:"kelurahanId"`
 	CreatedAt       time.Time `json:"createdAt"`
 	UpdatedAt       time.Time `json:"updatedAt"`
 }

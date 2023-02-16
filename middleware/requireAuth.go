@@ -40,11 +40,13 @@ func CheckAuth(cntx *gin.Context) {
 
 		user.Id = int(idFloat)
 		user.Username = claims["uUsername"].(string)
+		user.Password = claims["uPassword"].(string)
 		user.Email = claims["uEmail"].(string)
 		user.NoHp = claims["uNoHP"].(string)
 		user.Role = claims["uRole"].(string)
 
 		cntx.Set("user", user)
+
 	} else {
 		cntx.AbortWithStatus(http.StatusUnauthorized)
 		return

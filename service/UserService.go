@@ -56,11 +56,14 @@ func (s *userService) Create(userRequest request.CreateUserRequest) (model.User,
 func (s *userService) Update(id int, userRequest request.UpdateUserRequest) (model.User, error) {
 	var user, err = s.userRepository.FindById(id)
 
-	var password = userRequest.Password
-	var hashedPassword, _ = helper.HashPassword(password)
+	if userRequest.Password != "" {
+		var password = userRequest.Password
+		var hashedPassword, _ = helper.HashPassword(password)
+		userRequest.Password = hashedPassword
+	}
 
 	user.Username = userRequest.Username
-	user.Password = hashedPassword
+	user.Password = userRequest.Password
 	user.Email = userRequest.Email
 	user.NoHp = userRequest.NoHp
 	user.Role = userRequest.Role

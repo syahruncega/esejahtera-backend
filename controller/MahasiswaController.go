@@ -15,10 +15,16 @@ import (
 
 type mahasiswaController struct {
 	mahasiswaService service.MahasiswaService
+	keluargaService  service.KeluargaService
+	individuService  service.IndividuService
 }
 
-func NewMahasiswaController(mahasiswaService service.MahasiswaService) *mahasiswaController {
-	return &mahasiswaController{mahasiswaService}
+func NewMahasiswaController(mahasiswaService service.MahasiswaService, keluargaService service.KeluargaService, individuService service.IndividuService) *mahasiswaController {
+	return &mahasiswaController{
+		mahasiswaService,
+		keluargaService,
+		individuService,
+	}
 }
 
 func (c *mahasiswaController) GetMahasiswas(cntx *gin.Context) {
@@ -74,6 +80,44 @@ func (c *mahasiswaController) GetMahasiswaWithRelation(cntx *gin.Context) {
 	}
 
 	cntx.JSON(http.StatusOK, mahasiswasResponse)
+}
+
+func (c *mahasiswaController) GetVerifiedByMahasiswa(cntx *gin.Context) {
+	var mahasiswaIdString = cntx.Query("mahasiswaid")
+	var mahasiswaId, _ = strconv.Atoi(mahasiswaIdString)
+
+	var mahasiswa, err = c.mahasiswaService.FindById(mahasiswaId)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": "Data tidak ditemukan",
+		})
+		return
+	}
+
+	var mahasiswaResponse = helper.ConvertToMahasiswaResponse(mahasiswa)
+
+	jumlahKeluargaVerified, err := c.keluargaService.CountVerifiedByMahasiswa(mahasiswaId)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	jumlahIndividuVerified, err := c.individuService.CountVerifiedByMahasiswa(mahasiswaId)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	cntx.JSON(http.StatusOK, gin.H{
+		"data":                     mahasiswaResponse,
+		"jumlahVerifikasiKeluarga": jumlahKeluargaVerified,
+		"jumlahVerifikasiIndividu": jumlahIndividuVerified,
+	})
+
 }
 
 func (c *mahasiswaController) CreateMahasiswa(cntx *gin.Context) {

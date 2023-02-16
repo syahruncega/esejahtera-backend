@@ -15,13 +15,14 @@ type IndividuRepository interface {
 	CountJumlahIndividu(places string, placesId string) (int64, error)
 	CountJumlahDesil(places string, placesId string, desil string) (int64, error)
 	CountJumlahPenerima(places string, placesId string, penerima string, penerimaValue string) (int64, error)
-	DistinctKabupatenKota() ([]model.DistinctKabupatenKota, error)
-	DistinctCountKabupatenKota() (map[string]int64, error)
-	DistinctKecamatan() ([]model.DistinctKecamatan, error)
-	DistinctKecamatanByKabupatenKota(kabupatenKotaId string) ([]model.DistinctKecamatan, error)
-	DistinctCountKecamatan(kabupatenKotaId string) (map[string]int64, error)
-	DistinctKelurahanByKecamatan(kecamatanId string) ([]model.DistinctKelurahan, error)
-	DistinctCountKelurahan(kecamatanId string) (map[string]int64, error)
+	CountVerifiedByMahasiswa(mahasiswaId int) (int64, error)
+	DistinctKabupatenKota(kabupatenKotaId string) ([]model.DistinctKabupatenKota, error)
+	DistinctCountKabupatenKota(kabupatenKotaId string) (map[string]int64, error)
+	DistinctKecamatan(kecamatanId string) ([]model.DistinctKecamatan, error)
+	DistinctCountKecamatan(kecamatanId string) (map[string]int64, error)
+	DistinctKelurahan(kelurahanId string) ([]model.DistinctKelurahan, error)
+	DistinctCountKelurahan(kelurahanId string) (map[string]int64, error)
+	CountJumlahIndividuByIdKeluarga(places string, placesId string, idKeluarga string) (int64, int64, error, error)
 }
 
 type individuRepository struct {
@@ -98,16 +99,29 @@ func (r *individuRepository) CountJumlahPenerima(places string, placesId string,
 	return count, err
 }
 
-func (r *individuRepository) DistinctKabupatenKota() ([]model.DistinctKabupatenKota, error) {
-	var distinctKabupatenKota []model.DistinctKabupatenKota
+func (r *individuRepository) CountVerifiedByMahasiswa(mahasiswaId int) (int64, error) {
+	var count int64
 
-	var err = r.db.Distinct("i.kabupatenKotaId, kb.nama").Table("individus as i").Joins("inner join kabupaten_kota as kb on kb.id = i.kabupatenKotaId").Scan(&distinctKabupatenKota).Error
+	var err = r.db.Where("mahasiswaId = ?", mahasiswaId).Table("individus").Select("count(*)").Count(&count).Error
+
+	return count, err
+}
+
+func (r *individuRepository) DistinctKabupatenKota(kabupatenKotaId string) ([]model.DistinctKabupatenKota, error) {
+	var distinctKabupatenKota []model.DistinctKabupatenKota
+	var err error
+
+	if kabupatenKotaId == "" {
+		err = r.db.Distinct("i.kabupatenKotaId, kb.nama").Table("individus as i").Joins("inner join kabupaten_kota as kb on kb.id = i.kabupatenKotaId").Scan(&distinctKabupatenKota).Error
+	} else {
+		err = r.db.Distinct("i.kabupatenKotaId, kb.nama").Table("individus as i").Joins("inner join kabupaten_kota as kb on kb.id = i.kabupatenKotaId").Where("kabupatenKotaId = ?", kabupatenKotaId).Scan(&distinctKabupatenKota).Error
+	}
 
 	return distinctKabupatenKota, err
 }
 
-func (r *individuRepository) DistinctCountKabupatenKota() (map[string]int64, error) {
-	var distinctsKabupatenKota, err = r.DistinctKabupatenKota()
+func (r *individuRepository) DistinctCountKabupatenKota(kabupatenKotaId string) (map[string]int64, error) {
+	var distinctsKabupatenKota, err = r.DistinctKabupatenKota(kabupatenKotaId)
 
 	var jumlah = make(map[string]int64)
 
@@ -120,24 +134,16 @@ func (r *individuRepository) DistinctCountKabupatenKota() (map[string]int64, err
 	return jumlah, err
 }
 
-func (r *individuRepository) DistinctKecamatan() ([]model.DistinctKecamatan, error) {
+func (r *individuRepository) DistinctKecamatan(kecamatanId string) ([]model.DistinctKecamatan, error) {
 	var distinctsKecamatan []model.DistinctKecamatan
 
-	var err = r.db.Distinct("i.kecamatanId, kc.nama").Table("individus as i").Joins("inner join kecamatans as kc on kc.id = i.kecamatanId").Scan(&distinctsKecamatan).Error
+	var err = r.db.Distinct("i.kecamatanId, kc.nama").Table("individus as i").Joins("inner join kecamatans as kc on kc.id = i.kecamatanId").Where("i.kecamatanId = ?", kecamatanId).Scan(&distinctsKecamatan).Error
 
 	return distinctsKecamatan, err
 }
 
-func (r *individuRepository) DistinctKecamatanByKabupatenKota(kabupatenKotaId string) ([]model.DistinctKecamatan, error) {
-	var distinctsKecamatan []model.DistinctKecamatan
-
-	var err = r.db.Distinct("i.kecamatanId, kc.nama").Table("individus as i").Joins("inner join kecamatans as kc on kc.id = i.kecamatanId").Where("i.kabupatenKotaId = ?", kabupatenKotaId).Scan(&distinctsKecamatan).Error
-
-	return distinctsKecamatan, err
-}
-
-func (r *individuRepository) DistinctCountKecamatan(kabupatenKotaId string) (map[string]int64, error) {
-	var distinctsKecamatan, err = r.DistinctKecamatanByKabupatenKota(kabupatenKotaId)
+func (r *individuRepository) DistinctCountKecamatan(kecamatanId string) (map[string]int64, error) {
+	var distinctsKecamatan, err = r.DistinctKecamatan(kecamatanId)
 
 	var jumlah = make(map[string]int64)
 
@@ -150,16 +156,16 @@ func (r *individuRepository) DistinctCountKecamatan(kabupatenKotaId string) (map
 	return jumlah, err
 }
 
-func (r *individuRepository) DistinctKelurahanByKecamatan(kecamatanId string) ([]model.DistinctKelurahan, error) {
+func (r *individuRepository) DistinctKelurahan(kelurahanId string) ([]model.DistinctKelurahan, error) {
 	var distinctsKelurahan []model.DistinctKelurahan
 
-	var err = r.db.Distinct("i.kelurahanId, kl.nama").Table("individus as i").Joins("inner join kelurahans as kl on kl.id = i.kelurahanId").Where("i.kecamatanId = ?", kecamatanId).Scan(&distinctsKelurahan).Error
+	var err = r.db.Distinct("i.kelurahanId, kl.nama").Table("individus as i").Joins("inner join kelurahans as kl on kl.id = i.kelurahanId").Where("i.kelurahanId = ?", kelurahanId).Scan(&distinctsKelurahan).Error
 
 	return distinctsKelurahan, err
 }
 
-func (r *individuRepository) DistinctCountKelurahan(kecamatanId string) (map[string]int64, error) {
-	var distinctsKelurahan, err = r.DistinctKelurahanByKecamatan(kecamatanId)
+func (r *individuRepository) DistinctCountKelurahan(kelurahanId string) (map[string]int64, error) {
+	var distinctsKelurahan, err = r.DistinctKelurahan(kelurahanId)
 
 	var jumlah = make(map[string]int64)
 
@@ -170,4 +176,15 @@ func (r *individuRepository) DistinctCountKelurahan(kecamatanId string) (map[str
 	}
 
 	return jumlah, err
+}
+
+func (r *individuRepository) CountJumlahIndividuByIdKeluarga(places string, placesId string, idKeluarga string) (int64, int64, error, error) {
+	var jumlahIndividu, jumlahIndividuVerified int64
+	var err1, err2 error
+
+	err1 = r.db.Where(places+"= ? and idKeluarga = ?", placesId, idKeluarga).Table("individus").Select("count(*)").Count(&jumlahIndividu).Error
+
+	err2 = r.db.Where(places+"= ? and idKeluarga = ? and statusVerifikasi = 1", placesId, idKeluarga).Table("individus").Select("count(*)").Count(&jumlahIndividuVerified).Error
+
+	return jumlahIndividu, jumlahIndividuVerified, err1, err2
 }

@@ -14,11 +14,15 @@ import (
 )
 
 type dosenController struct {
-	dosenService service.DosenService
+	dosenService     service.DosenService
+	mahasiswaService service.MahasiswaService
 }
 
-func NewDosenController(dosenService service.DosenService) *dosenController {
-	return &dosenController{dosenService}
+func NewDosenController(dosenService service.DosenService, mahasiswaService service.MahasiswaService) *dosenController {
+	return &dosenController{
+		dosenService,
+		mahasiswaService,
+	}
 }
 
 func (c *dosenController) GetDosens(cntx *gin.Context) {
@@ -160,4 +164,40 @@ func (c *dosenController) DeleteDosen(cntx *gin.Context) {
 	cntx.JSON(http.StatusOK, gin.H{
 		"status": "Data berhasil dihapus",
 	})
+}
+
+func (c *dosenController) GetMahasiswa(cntx *gin.Context) {
+	var dosenIdString = cntx.Query("dosenid")
+	var dosenId, _ = strconv.Atoi(dosenIdString)
+
+	var distinctLokasiDosens, err = c.dosenService.DistinctLokasiDosen(dosenId)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	var mahasiswass = map[string]interface{}{}
+
+	for _, distinctLokasi := range distinctLokasiDosens {
+		var mahasiswas, err = c.dosenService.FindMahasiswa(distinctLokasi.KelurahanId)
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+			return
+		}
+
+		var mahasiswasResponse []responses.MahasiswaResponse
+
+		for _, mahasiswa := range mahasiswas {
+			var mahasiswaResponse = helper.ConvertToMahasiswaResponse(mahasiswa)
+			mahasiswasResponse = append(mahasiswasResponse, mahasiswaResponse)
+		}
+
+		mahasiswass[distinctLokasi.KelurahanId] = mahasiswasResponse
+	}
+
+	cntx.JSON(http.StatusOK, mahasiswass)
 }

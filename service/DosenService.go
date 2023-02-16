@@ -11,6 +11,8 @@ type DosenService interface {
 	FindById(id int) (model.Dosen, error)
 	FindByUserId(userId int) (model.Dosen, error)
 	FindAllRelation() ([]model.Dosen, error)
+	DistinctLokasiDosen(dosenId int) ([]model.Lokasi_Dosen, error)
+	FindMahasiswa(kelurahanId string) ([]model.Mahasiswa, error)
 	Create(dosenRequest request.CreateDosenRequest) (model.Dosen, error)
 	Update(id int, dosenRequest request.UpdateDosenRequest) (model.Dosen, error)
 	Delete(id int) (model.Dosen, error)
@@ -46,6 +48,18 @@ func (s *dosenService) FindAllRelation() ([]model.Dosen, error) {
 	var dosens, err = s.dosenRepository.FindAllRelation()
 
 	return dosens, err
+}
+
+func (s *dosenService) DistinctLokasiDosen(dosenId int) ([]model.Lokasi_Dosen, error) {
+	var lokasiDosens, err = s.dosenRepository.DistinctLokasiDosen(dosenId)
+
+	return lokasiDosens, err
+}
+
+func (s *dosenService) FindMahasiswa(kelurahanId string) ([]model.Mahasiswa, error) {
+	var mahasiswas, err = s.dosenRepository.FindMahasiswa(kelurahanId)
+
+	return mahasiswas, err
 }
 
 func (s *dosenService) Create(dosenRequest request.CreateDosenRequest) (model.Dosen, error) {
