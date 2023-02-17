@@ -81,7 +81,7 @@ func (s *dosenService) Update(id int, dosenRequest request.UpdateDosenRequest) (
 	dosen.NamaLengkap = dosenRequest.NamaLengkap
 	dosen.Universitas = dosenRequest.Universitas
 
-	updatedDosen, err := s.dosenRepository.Create(dosen)
+	updatedDosen, err := s.dosenRepository.Update(dosen)
 
 	return updatedDosen, err
 }

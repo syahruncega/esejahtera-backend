@@ -144,9 +144,7 @@ func (c *dosenController) UpdateDosen(cntx *gin.Context) {
 
 	var dosenResponse = helper.ConvertToDosenResponse(dosen)
 
-	cntx.JSON(http.StatusOK, gin.H{
-		"data": dosenResponse,
-	})
+	cntx.JSON(http.StatusOK, dosenResponse)
 }
 
 func (c *dosenController) DeleteDosen(cntx *gin.Context) {
