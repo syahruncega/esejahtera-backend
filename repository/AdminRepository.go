@@ -64,8 +64,9 @@ func (r *adminRepository) Create(admin model.Admin) (model.Admin, error) {
 
 func (r *adminRepository) Update(admin model.Admin) (model.Admin, error) {
 	var err = r.db.Model(&admin).Updates(model.Admin{
-		UserId:      admin.UserId,
-		NamaLengkap: admin.NamaLengkap,
+		UserId:        admin.UserId,
+		NamaLengkap:   admin.NamaLengkap,
+		UrlFotoProfil: admin.UrlFotoProfil,
 	}).Error
 
 	return admin, err

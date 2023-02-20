@@ -245,77 +245,85 @@ type UserResponse struct {
 }
 
 type AdminResponse struct {
-	Id          int       `json:"id"`
-	UserId      int       `json:"userId"`
-	NamaLengkap string    `json:"namaLengkap"`
-	CreatedAt   time.Time `json:"createdAt"`
-	UpdatedAt   time.Time `json:"updatedAt"`
+	Id            int       `json:"id"`
+	UserId        int       `json:"userId"`
+	NamaLengkap   string    `json:"namaLengkap"`
+	UrlFotoProfil string    `json:"urlFotoProfil"`
+	CreatedAt     time.Time `json:"createdAt"`
+	UpdatedAt     time.Time `json:"updatedAt"`
 }
 
 type AdminWithRelationResponse struct {
-	Id          int          `json:"id"`
-	UserId      int          `json:"userId"`
-	User        UserResponse `json:"user"`
-	NamaLengkap string       `json:"namaLengkap"`
-	CreatedAt   time.Time    `json:"createdAt"`
-	UpdatedAt   time.Time    `json:"updatedAt"`
+	Id            int          `json:"id"`
+	UserId        int          `json:"userId"`
+	User          UserResponse `json:"user"`
+	NamaLengkap   string       `json:"namaLengkap"`
+	UrlFotoProfil string       `json:"urlFotoProfil"`
+	CreatedAt     time.Time    `json:"createdAt"`
+	UpdatedAt     time.Time    `json:"updatedAt"`
 }
 
 type AnalisResponse struct {
-	Id          int       `json:"id"`
-	UserId      int       `json:"userId"`
-	NamaLengkap string    `json:"namaLengkap"`
-	Universitas string    `json:"universitas"`
-	CreatedAt   time.Time `json:"createdAt"`
-	UpdatedAt   time.Time `json:"updatedAt"`
+	Id            int       `json:"id"`
+	UserId        int       `json:"userId"`
+	NamaLengkap   string    `json:"namaLengkap"`
+	Universitas   string    `json:"universitas"`
+	UrlFotoProfil string    `json:"urlFotoProfil"`
+	CreatedAt     time.Time `json:"createdAt"`
+	UpdatedAt     time.Time `json:"updatedAt"`
 }
 
 type AnalisWithRelationResponse struct {
-	Id          int          `json:"id"`
-	UserId      int          `json:"userId"`
-	User        UserResponse `json:"user"`
-	NamaLengkap string       `json:"namaLengkap"`
-	Universitas string       `json:"universitas"`
-	CreatedAt   time.Time    `json:"createdAt"`
-	UpdatedAt   time.Time    `json:"updatedAt"`
+	Id            int          `json:"id"`
+	UserId        int          `json:"userId"`
+	User          UserResponse `json:"user"`
+	NamaLengkap   string       `json:"namaLengkap"`
+	Universitas   string       `json:"universitas"`
+	UrlFotoProfil string       `json:"urlFotoProfil"`
+	CreatedAt     time.Time    `json:"createdAt"`
+	UpdatedAt     time.Time    `json:"updatedAt"`
 }
 
 type PusbangResponse struct {
-	Id          int       `json:"id"`
-	UserId      int       `json:"userId"`
-	NamaLengkap string    `json:"namaLengkap"`
-	Universitas string    `json:"universitas"`
-	CreatedAt   time.Time `json:"createdAt"`
-	UpdatedAt   time.Time `json:"updatedAt"`
+	Id            int       `json:"id"`
+	UserId        int       `json:"userId"`
+	NamaLengkap   string    `json:"namaLengkap"`
+	Universitas   string    `json:"universitas"`
+	UrlFotoProfil string    `json:"urlFotoProfil"`
+	CreatedAt     time.Time `json:"createdAt"`
+	UpdatedAt     time.Time `json:"updatedAt"`
 }
 
 type PusbangWithRelationResponse struct {
-	Id          int          `json:"id"`
-	UserId      int          `json:"userId"`
-	User        UserResponse `json:"user"`
-	NamaLengkap string       `json:"namaLengkap"`
-	Universitas string       `json:"universitas"`
-	CreatedAt   time.Time    `json:"createdAt"`
-	UpdatedAt   time.Time    `json:"updatedAt"`
+	Id            int          `json:"id"`
+	UserId        int          `json:"userId"`
+	User          UserResponse `json:"user"`
+	NamaLengkap   string       `json:"namaLengkap"`
+	Universitas   string       `json:"universitas"`
+	UrlFotoProfil string       `json:"urlFotoProfil"`
+	CreatedAt     time.Time    `json:"createdAt"`
+	UpdatedAt     time.Time    `json:"updatedAt"`
 }
 
 type DosenResponse struct {
-	Id          int       `json:"id"`
-	UserId      int       `json:"userId"`
-	NamaLengkap string    `json:"namaLengkap"`
-	Universitas string    `json:"universitas"`
-	CreatedAt   time.Time `json:"createdAt"`
-	UpdatedAt   time.Time `json:"updatedAt"`
+	Id            int       `json:"id"`
+	UserId        int       `json:"userId"`
+	NamaLengkap   string    `json:"namaLengkap"`
+	Universitas   string    `json:"universitas"`
+	UrlFotoProfil string    `json:"urlFotoProfil"`
+	CreatedAt     time.Time `json:"createdAt"`
+	UpdatedAt     time.Time `json:"updatedAt"`
 }
 
 type DosenWithRelationResponse struct {
-	Id          int          `json:"id"`
-	UserId      int          `json:"userId"`
-	User        UserResponse `json:"user,omitempty"`
-	NamaLengkap string       `json:"namaLengkap"`
-	Universitas string       `json:"universitas"`
-	CreatedAt   time.Time    `json:"createdAt"`
-	UpdatedAt   time.Time    `json:"updatedAt"`
+	Id            int          `json:"id"`
+	UserId        int          `json:"userId"`
+	User          UserResponse `json:"user,omitempty"`
+	NamaLengkap   string       `json:"namaLengkap"`
+	Universitas   string       `json:"universitas"`
+	UrlFotoProfil string       `json:"urlFotoProfil"`
+	CreatedAt     time.Time    `json:"createdAt"`
+	UpdatedAt     time.Time    `json:"updatedAt"`
 }
 
 type MahasiswaResponse struct {
@@ -328,6 +336,7 @@ type MahasiswaResponse struct {
 	KabupatenKotaId string    `json:"kabupatenKotaId"`
 	KecamatanId     string    `json:"kecamatanId"`
 	KelurahanId     string    `json:"kelurahanId"`
+	UrlFotoProfil   string    `json:"urlFotoProfil"`
 	CreatedAt       time.Time `json:"createdAt"`
 	UpdatedAt       time.Time `json:"updatedAt"`
 }
@@ -346,6 +355,7 @@ type MahasiswaWithRelationResponse struct {
 	Kecamatan       KecamatanResponse      `json:"kecamatan"`
 	KelurahanId     string                 `json:"kelurahanId"`
 	Kelurahan       KelurahanResponse      `json:"kelurahan"`
+	UrlFotoProfil   string                 `json:"urlFotoProfil"`
 	CreatedAt       time.Time              `json:"createdAt"`
 	UpdatedAt       time.Time              `json:"updatedAt"`
 }
@@ -414,6 +424,7 @@ type KeluargaVerifikasiResponse struct {
 	MahasiswaId            int                    `json:"mahasiswaId"`
 	Mahasiswa              MahasiswaResponse      `json:"mahasiswa"`
 	Kelurahan              KelurahanResponse      `json:"kelurahan"`
+	UrlBukti               string                 `json:"urlBukti"`
 	CreatedAt              time.Time              `json:"createdAt"`
 	UpdatedAt              time.Time              `json:"updatedAt"`
 }
@@ -489,6 +500,7 @@ type IndividuVerifikasiResponse struct {
 	User               UserResponse           `json:"user"`
 	MahasiswaId        int                    `json:"mahasiswaId"`
 	Mahasiswa          MahasiswaResponse      `json:"mahasiswa"`
+	UrlBukti           string                 `json:"urlBukti"`
 	CreatedAt          time.Time              `json:"createdAt"`
 	UpdatedAt          time.Time              `json:"updatedAt"`
 }

@@ -9,6 +9,7 @@ type CreateMahasiswaRequest struct {
 	KabupatenKotaId string `json:"kabupatenKotaId" binding:"required"`
 	KecamatanId     string `json:"kecamatanid" binding:"required"`
 	KelurahanId     string `json:"kelurahanId" binding:"required"`
+	UrlFotoProfil   string `json:"urlFotoProfil"`
 }
 
 type UpdateMahasiswaRequest struct {
@@ -20,4 +21,5 @@ type UpdateMahasiswaRequest struct {
 	KabupatenKotaId string `json:"kabupatenKotaId"`
 	KecamatanId     string `json:"kecamatanid"`
 	KelurahanId     string `json:"kelurahanId"`
+	UrlFotoProfil   string `json:"urlFotoProfil"`
 }

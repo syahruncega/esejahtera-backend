@@ -34,6 +34,7 @@ type CreateKeluargaVerifikasiRequest struct {
 	StatusResponden        string `json:"statusResponden" binding:"required"`
 	UserId                 int    `json:"userId" binding:"required"`
 	MahasiswaId            int    `json:"mahasiswaid" binding:"required"`
+	UrlBukti               string `json:"urlBukti" binding:"required"`
 }
 
 type UpdateKeluargaVerifikasiRequest struct {
@@ -70,4 +71,5 @@ type UpdateKeluargaVerifikasiRequest struct {
 	StatusResponden        string `json:"statusResponded"`
 	UserId                 int    `json:"userId"`
 	MahasiswaId            int    `json:"mahasiswaId"`
+	UrlBukti               string `json:"urlBukti"`
 }

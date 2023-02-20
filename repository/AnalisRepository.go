@@ -64,9 +64,10 @@ func (r *analisRepository) Create(analis model.Analis) (model.Analis, error) {
 
 func (r *analisRepository) Update(analis model.Analis) (model.Analis, error) {
 	var err = r.db.Model(&analis).Updates(model.Analis{
-		UserId:      analis.UserId,
-		NamaLengkap: analis.NamaLengkap,
-		Universitas: analis.Universitas,
+		UserId:        analis.UserId,
+		NamaLengkap:   analis.NamaLengkap,
+		Universitas:   analis.Universitas,
+		UrlFotoProfil: analis.UrlFotoProfil,
 	}).Error
 
 	return analis, err

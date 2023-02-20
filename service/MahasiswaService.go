@@ -58,6 +58,7 @@ func (s *mahasiswaService) Create(mahasiswaRequest request.CreateMahasiswaReques
 		KabupatenKotaId: mahasiswaRequest.KabupatenKotaId,
 		KecamatanId:     mahasiswaRequest.KecamatanId,
 		KelurahanId:     mahasiswaRequest.KelurahanId,
+		UrlFotoProfil:   mahasiswaRequest.UrlFotoProfil,
 	}
 
 	newMahasiswa, err := s.mahasiswaRepository.Create(mahasiswa)
@@ -76,6 +77,7 @@ func (s *mahasiswaService) Update(id int, mahasiswaRequest request.UpdateMahasis
 	mahasiswa.KabupatenKotaId = mahasiswaRequest.KabupatenKotaId
 	mahasiswa.KecamatanId = mahasiswaRequest.KecamatanId
 	mahasiswa.KelurahanId = mahasiswaRequest.KelurahanId
+	mahasiswa.UrlFotoProfil = mahasiswaRequest.UrlFotoProfil
 
 	updatedMahasiswa, err := s.mahasiswaRepository.Update(mahasiswa)
 

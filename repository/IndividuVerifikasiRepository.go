@@ -91,6 +91,7 @@ func (r *individuVerifikasiRepository) Update(individuVerifikasi model.IndividuV
 		StatusResponden:    individuVerifikasi.StatusResponden,
 		UserId:             individuVerifikasi.UserId,
 		MahasiswaId:        individuVerifikasi.MahasiswaId,
+		UrlBukti:           individuVerifikasi.UrlBukti,
 	}).Error
 
 	return individuVerifikasi, err

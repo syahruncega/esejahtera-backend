@@ -72,6 +72,7 @@ func (r *mahasiswaRepository) Update(mahasiswa model.Mahasiswa) (model.Mahasiswa
 		KabupatenKotaId: mahasiswa.KabupatenKotaId,
 		KecamatanId:     mahasiswa.KecamatanId,
 		KelurahanId:     mahasiswa.KelurahanId,
+		UrlFotoProfil:   mahasiswa.UrlFotoProfil,
 	}).Error
 
 	return mahasiswa, err

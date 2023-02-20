@@ -64,9 +64,10 @@ func (r *pusbangRepository) Create(pusbang model.Pusbang) (model.Pusbang, error)
 
 func (r *pusbangRepository) Update(pusbang model.Pusbang) (model.Pusbang, error) {
 	var err = r.db.Model(&pusbang).Updates(model.Pusbang{
-		UserId:      pusbang.UserId,
-		NamaLengkap: pusbang.NamaLengkap,
-		Universitas: pusbang.Universitas,
+		UserId:        pusbang.UserId,
+		NamaLengkap:   pusbang.NamaLengkap,
+		Universitas:   pusbang.Universitas,
+		UrlFotoProfil: pusbang.UrlFotoProfil,
 	}).Error
 
 	return pusbang, err

@@ -71,9 +71,10 @@ func (s *dosenService) FindMahasiswa(kelurahanId string) ([]model.Mahasiswa, err
 
 func (s *dosenService) Create(dosenRequest request.CreateDosenRequest) (model.Dosen, error) {
 	var dosen = model.Dosen{
-		UserId:      dosenRequest.UserId,
-		NamaLengkap: dosenRequest.NamaLengkap,
-		Universitas: dosenRequest.Universitas,
+		UserId:        dosenRequest.UserId,
+		NamaLengkap:   dosenRequest.NamaLengkap,
+		Universitas:   dosenRequest.Universitas,
+		UrlFotoProfil: dosenRequest.UrlFotoProfil,
 	}
 
 	newDosen, err := s.dosenRepository.Create(dosen)
@@ -87,6 +88,7 @@ func (s *dosenService) Update(id int, dosenRequest request.UpdateDosenRequest) (
 	dosen.UserId = dosenRequest.UserId
 	dosen.NamaLengkap = dosenRequest.NamaLengkap
 	dosen.Universitas = dosenRequest.Universitas
+	dosen.UrlFotoProfil = dosenRequest.UrlFotoProfil
 
 	updatedDosen, err := s.dosenRepository.Update(dosen)
 

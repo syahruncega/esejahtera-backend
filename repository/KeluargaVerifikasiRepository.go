@@ -96,6 +96,7 @@ func (r *keluargaVerifikasiRepository) Update(keluargaVerifikasi model.KeluargaV
 		StatusResponden:        keluargaVerifikasi.StatusResponden,
 		UserId:                 keluargaVerifikasi.UserId,
 		MahasiswaId:            keluargaVerifikasi.MahasiswaId,
+		UrlBukti:               keluargaVerifikasi.UrlBukti,
 	}).Error
 
 	return keluargaVerifikasi, err

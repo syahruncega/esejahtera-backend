@@ -50,8 +50,9 @@ func (s *adminService) FindAllRelation() ([]model.Admin, error) {
 
 func (s *adminService) Create(adminRequest request.CreateAdminRequest) (model.Admin, error) {
 	var admin = model.Admin{
-		UserId:      adminRequest.UserId,
-		NamaLengkap: adminRequest.NamaLengkap,
+		UserId:        adminRequest.UserId,
+		NamaLengkap:   adminRequest.NamaLengkap,
+		UrlFotoProfil: adminRequest.UrlFotoProfil,
 	}
 
 	var newAdmin, err = s.adminRepository.Create(admin)

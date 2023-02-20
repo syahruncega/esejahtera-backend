@@ -96,9 +96,10 @@ func (r *dosenRepository) Create(dosen model.Dosen) (model.Dosen, error) {
 
 func (r *dosenRepository) Update(dosen model.Dosen) (model.Dosen, error) {
 	var err = r.db.Model(&dosen).Updates(model.Dosen{
-		UserId:      dosen.UserId,
-		NamaLengkap: dosen.NamaLengkap,
-		Universitas: dosen.Universitas,
+		UserId:        dosen.UserId,
+		NamaLengkap:   dosen.NamaLengkap,
+		Universitas:   dosen.Universitas,
+		UrlFotoProfil: dosen.UrlFotoProfil,
 	}).Error
 
 	return dosen, err

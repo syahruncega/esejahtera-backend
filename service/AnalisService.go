@@ -50,9 +50,10 @@ func (s *analisService) FindAllRelation() ([]model.Analis, error) {
 
 func (s *analisService) Create(analisRequest request.CreateAnalisRequest) (model.Analis, error) {
 	var analis = model.Analis{
-		UserId:      analisRequest.UserId,
-		NamaLengkap: analisRequest.NamaLengkap,
-		Universitas: analisRequest.Universitas,
+		UserId:        analisRequest.UserId,
+		NamaLengkap:   analisRequest.NamaLengkap,
+		Universitas:   analisRequest.Universitas,
+		UrlFotoProfil: analisRequest.UrlFotoProfil,
 	}
 
 	newAnalis, err := s.analisRepository.Create(analis)
@@ -66,6 +67,7 @@ func (s *analisService) Update(id int, analisRequest request.UpdateAnalisRequest
 	analis.UserId = analisRequest.UserId
 	analis.NamaLengkap = analisRequest.NamaLengkap
 	analis.Universitas = analisRequest.Universitas
+	analis.UrlFotoProfil = analisRequest.UrlFotoProfil
 
 	updatedAnalis, err := s.analisRepository.Update(analis)
 

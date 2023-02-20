@@ -457,11 +457,12 @@ func ConvertToUserResponse(u model.User) responses.UserResponse {
 
 func ConvertToAdminResponse(a model.Admin) responses.AdminResponse {
 	return responses.AdminResponse{
-		Id:          a.Id,
-		UserId:      a.UserId,
-		NamaLengkap: a.NamaLengkap,
-		CreatedAt:   a.CreatedAt,
-		UpdatedAt:   a.UpdatedAt,
+		Id:            a.Id,
+		UserId:        a.UserId,
+		NamaLengkap:   a.NamaLengkap,
+		UrlFotoProfil: a.UrlFotoProfil,
+		CreatedAt:     a.CreatedAt,
+		UpdatedAt:     a.UpdatedAt,
 	}
 }
 
@@ -479,20 +480,22 @@ func ConvertToAdminWithRelationResponse(a model.Admin) responses.AdminWithRelati
 			CreatedAt: a.User.CreatedAt,
 			UpdatedAt: a.User.UpdatedAt,
 		},
-		NamaLengkap: a.NamaLengkap,
-		CreatedAt:   a.CreatedAt,
-		UpdatedAt:   a.UpdatedAt,
+		NamaLengkap:   a.NamaLengkap,
+		UrlFotoProfil: a.UrlFotoProfil,
+		CreatedAt:     a.CreatedAt,
+		UpdatedAt:     a.UpdatedAt,
 	}
 }
 
 func ConvertToAnalisResponse(a model.Analis) responses.AnalisResponse {
 	return responses.AnalisResponse{
-		Id:          a.Id,
-		UserId:      a.UserId,
-		NamaLengkap: a.NamaLengkap,
-		Universitas: a.Universitas,
-		CreatedAt:   a.CreatedAt,
-		UpdatedAt:   a.UpdatedAt,
+		Id:            a.Id,
+		UserId:        a.UserId,
+		NamaLengkap:   a.NamaLengkap,
+		Universitas:   a.Universitas,
+		UrlFotoProfil: a.UrlFotoProfil,
+		CreatedAt:     a.CreatedAt,
+		UpdatedAt:     a.UpdatedAt,
 	}
 }
 
@@ -510,21 +513,23 @@ func ConvertToAnalisWithRelationResponse(a model.Analis) responses.AnalisWithRel
 			CreatedAt: a.User.CreatedAt,
 			UpdatedAt: a.User.UpdatedAt,
 		},
-		NamaLengkap: a.NamaLengkap,
-		Universitas: a.Universitas,
-		CreatedAt:   a.CreatedAt,
-		UpdatedAt:   a.UpdatedAt,
+		NamaLengkap:   a.NamaLengkap,
+		Universitas:   a.Universitas,
+		UrlFotoProfil: a.UrlFotoProfil,
+		CreatedAt:     a.CreatedAt,
+		UpdatedAt:     a.UpdatedAt,
 	}
 }
 
 func ConvertToPusbangResponse(p model.Pusbang) responses.PusbangResponse {
 	return responses.PusbangResponse{
-		Id:          p.Id,
-		UserId:      p.UserId,
-		NamaLengkap: p.NamaLengkap,
-		Universitas: p.Universitas,
-		CreatedAt:   p.CreatedAt,
-		UpdatedAt:   p.UpdatedAt,
+		Id:            p.Id,
+		UserId:        p.UserId,
+		NamaLengkap:   p.NamaLengkap,
+		Universitas:   p.Universitas,
+		UrlFotoProfil: p.UrlFotoProfil,
+		CreatedAt:     p.CreatedAt,
+		UpdatedAt:     p.UpdatedAt,
 	}
 }
 
@@ -542,21 +547,23 @@ func ConvertToPusbangWithRelationResponse(p model.Pusbang) responses.PusbangWith
 			CreatedAt: p.User.CreatedAt,
 			UpdatedAt: p.User.UpdatedAt,
 		},
-		NamaLengkap: p.NamaLengkap,
-		Universitas: p.Universitas,
-		CreatedAt:   p.CreatedAt,
-		UpdatedAt:   p.UpdatedAt,
+		NamaLengkap:   p.NamaLengkap,
+		Universitas:   p.Universitas,
+		UrlFotoProfil: p.UrlFotoProfil,
+		CreatedAt:     p.CreatedAt,
+		UpdatedAt:     p.UpdatedAt,
 	}
 }
 
 func ConvertToDosenResponse(d model.Dosen) responses.DosenResponse {
 	return responses.DosenResponse{
-		Id:          d.Id,
-		UserId:      d.UserId,
-		NamaLengkap: d.NamaLengkap,
-		Universitas: d.Universitas,
-		CreatedAt:   d.CreatedAt,
-		UpdatedAt:   d.UpdatedAt,
+		Id:            d.Id,
+		UserId:        d.UserId,
+		NamaLengkap:   d.NamaLengkap,
+		Universitas:   d.Universitas,
+		UrlFotoProfil: d.UrlFotoProfil,
+		CreatedAt:     d.CreatedAt,
+		UpdatedAt:     d.UpdatedAt,
 	}
 }
 
@@ -574,10 +581,11 @@ func ConvertToDosenWithRelationResponse(d model.Dosen) responses.DosenWithRelati
 			CreatedAt: d.User.CreatedAt,
 			UpdatedAt: d.User.UpdatedAt,
 		},
-		NamaLengkap: d.NamaLengkap,
-		Universitas: d.Universitas,
-		CreatedAt:   d.CreatedAt,
-		UpdatedAt:   d.UpdatedAt,
+		NamaLengkap:   d.NamaLengkap,
+		Universitas:   d.Universitas,
+		UrlFotoProfil: d.UrlFotoProfil,
+		CreatedAt:     d.CreatedAt,
+		UpdatedAt:     d.UpdatedAt,
 	}
 }
 
@@ -592,6 +600,7 @@ func ConvertToMahasiswaResponse(m model.Mahasiswa) responses.MahasiswaResponse {
 		KabupatenKotaId: m.KabupatenKotaId,
 		KecamatanId:     m.KecamatanId,
 		KelurahanId:     m.KelurahanId,
+		UrlFotoProfil:   m.UrlFotoProfil,
 		CreatedAt:       m.CreatedAt,
 		UpdatedAt:       m.UpdatedAt,
 	}
@@ -633,8 +642,9 @@ func ConvertToMahasiswaWithRelationResponse(m model.Mahasiswa) responses.Mahasis
 			KecamatanId: m.Kelurahan.KecamatanId,
 			Nama:        m.Kelurahan.Nama,
 		},
-		CreatedAt: m.CreatedAt,
-		UpdatedAt: m.UpdatedAt,
+		UrlFotoProfil: m.UrlFotoProfil,
+		CreatedAt:     m.CreatedAt,
+		UpdatedAt:     m.UpdatedAt,
 	}
 }
 
@@ -764,6 +774,8 @@ func ConvertToKeluargaVerifikasiResponse(k model.KeluargaVerifikasi) responses.K
 			KecamatanId: k.Kelurahan.KecamatanId,
 			Nama:        k.Kelurahan.Nama,
 		},
+
+		UrlBukti: k.UrlBukti,
 
 		CreatedAt: k.CreatedAt,
 		UpdatedAt: k.UpdatedAt,
@@ -931,6 +943,7 @@ func ConvertToIndividuVerifikasiResponse(i model.IndividuVerifikasi) responses.I
 			CreatedAt:       i.Mahasiswa.CreatedAt,
 			UpdatedAt:       i.Mahasiswa.UpdatedAt,
 		},
+		UrlBukti: i.UrlBukti,
 
 		CreatedAt: i.CreatedAt,
 		UpdatedAt: i.UpdatedAt,

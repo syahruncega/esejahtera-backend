@@ -83,6 +83,7 @@ func (s *keluargaVerifikasiService) Create(keluargaVerifikasiRequest request.Cre
 		StatusResponden:        keluargaVerifikasiRequest.StatusResponden,
 		UserId:                 keluargaVerifikasiRequest.UserId,
 		MahasiswaId:            keluargaVerifikasiRequest.MahasiswaId,
+		UrlBukti:               keluargaVerifikasiRequest.UrlBukti,
 	}
 
 	newKeluargaVerifikasi, err := s.keluargaVerifikasiRepository.Create(keluargaVerifikasi)
@@ -125,6 +126,7 @@ func (s *keluargaVerifikasiService) Update(id int, keluargaVerifikasiRequest req
 	keluargaVerifikasi.StatusResponden = keluargaVerifikasiRequest.StatusResponden
 	keluargaVerifikasi.UserId = keluargaVerifikasiRequest.UserId
 	keluargaVerifikasi.MahasiswaId = keluargaVerifikasiRequest.MahasiswaId
+	keluargaVerifikasi.UrlBukti = keluargaVerifikasiRequest.UrlBukti
 
 	updatedKeluargaVerifikasi, err := s.keluargaVerifikasiRepository.Update(keluargaVerifikasi)
 

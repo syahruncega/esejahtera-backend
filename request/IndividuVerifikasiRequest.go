@@ -29,6 +29,7 @@ type CreateIndividuVerifikasiRequest struct {
 	StatusResponden    string `json:"statusResponden" binding:"required"`
 	UserId             int    `json:"userId" binding:"required"`
 	MahasiswaId        int    `json:"mahasiswaId" binding:"required"`
+	UrlBukti           string `json:"urlBukti" binding:"required"`
 }
 
 type UpdateIndividuVerifikasiRequest struct {
@@ -59,4 +60,5 @@ type UpdateIndividuVerifikasiRequest struct {
 	StatusResponden    string `json:"statusResponden"`
 	UserId             int    `json:"userId"`
 	MahasiswaId        int    `json:"mahasiswaId"`
+	UrlBukti           string `json:"urlBukti"`
 }

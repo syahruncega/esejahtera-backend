@@ -78,6 +78,7 @@ func (s *individuVerifikasiService) Create(individuVerifikasiRequest request.Cre
 		StatusResponden:    individuVerifikasiRequest.StatusResponden,
 		UserId:             individuVerifikasiRequest.UserId,
 		MahasiswaId:        individuVerifikasiRequest.MahasiswaId,
+		UrlBukti:           individuVerifikasiRequest.UrlBukti,
 	}
 
 	newIndividuVerifikasi, err := s.individuVerifikasiRepository.Create(individuVerifikasi)
@@ -115,6 +116,7 @@ func (s *individuVerifikasiService) Update(id int, individuVerifikasiRequest req
 	individuVerifikasi.StatusResponden = individuVerifikasiRequest.StatusResponden
 	individuVerifikasi.UserId = individuVerifikasiRequest.UserId
 	individuVerifikasi.MahasiswaId = individuVerifikasiRequest.MahasiswaId
+	individuVerifikasi.UrlBukti = individuVerifikasiRequest.UrlBukti
 
 	updatedIndividuVerifikasi, err := s.individuVerifikasiRepository.Update(individuVerifikasi)
 

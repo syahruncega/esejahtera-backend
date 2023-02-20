@@ -50,9 +50,10 @@ func (s *pusbangService) FindAllRelation() ([]model.Pusbang, error) {
 
 func (s *pusbangService) Create(pusbangRequest request.CreatePusbangRequest) (model.Pusbang, error) {
 	var pusbang = model.Pusbang{
-		UserId:      pusbangRequest.UserId,
-		NamaLengkap: pusbangRequest.NamaLengkap,
-		Universitas: pusbangRequest.Universitas,
+		UserId:        pusbangRequest.UserId,
+		NamaLengkap:   pusbangRequest.NamaLengkap,
+		Universitas:   pusbangRequest.Universitas,
+		UrlFotoProfil: pusbangRequest.UrlFotoProfil,
 	}
 
 	newDosen, err := s.pusbangRepository.Create(pusbang)
@@ -66,6 +67,7 @@ func (s *pusbangService) Update(id int, pusbangRequest request.UpdatePusbangRequ
 	pusbang.UserId = pusbangRequest.UserId
 	pusbang.NamaLengkap = pusbangRequest.NamaLengkap
 	pusbang.Universitas = pusbangRequest.Universitas
+	pusbang.UrlFotoProfil = pusbangRequest.UrlFotoProfil
 
 	updatedPusbang, err := s.pusbangRepository.Update(pusbang)
 
