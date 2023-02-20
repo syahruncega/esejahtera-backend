@@ -638,17 +638,19 @@ func ConvertToMahasiswaWithRelationResponse(m model.Mahasiswa) responses.Mahasis
 	}
 }
 
-func ConvertToLokasiDosenResponse(l model.Lokasi_Dosen) responses.LokasiDosenResponse {
+func ConvertToLokasiDosenResponse(l model.LokasiDosen) responses.LokasiDosenResponse {
 	return responses.LokasiDosenResponse{
-		Id:          l.Id,
-		DosenId:     l.DosenId,
-		KelurahanId: l.KelurahanId,
-		CreatedAt:   l.CreatedAt,
-		UpdatedAt:   l.UpdatedAt,
+		Id:              l.Id,
+		DosenId:         l.DosenId,
+		KabupatenKotaId: l.KabupatenKotaId,
+		KecamatanId:     l.KecamatanId,
+		KelurahanId:     l.KelurahanId,
+		CreatedAt:       l.CreatedAt,
+		UpdatedAt:       l.UpdatedAt,
 	}
 }
 
-func ConvertToLokasiDosenWithRelationResponse(l model.Lokasi_Dosen) responses.LokasiDosenWithRelationResponse {
+func ConvertToLokasiDosenWithRelationResponse(l model.LokasiDosen) responses.LokasiDosenWithRelationResponse {
 	return responses.LokasiDosenWithRelationResponse{
 		Id:      l.Id,
 		DosenId: l.DosenId,
@@ -659,6 +661,18 @@ func ConvertToLokasiDosenWithRelationResponse(l model.Lokasi_Dosen) responses.Lo
 			Universitas: l.Dosen.Universitas,
 			CreatedAt:   l.Dosen.CreatedAt,
 			UpdatedAt:   l.Dosen.UpdatedAt,
+		},
+		KabupatenKotaId: l.KabupatenKotaId,
+		KabupatenKota: responses.Kabupaten_KotaResponse{
+			Id:         l.KabupatenKota.Id,
+			ProvinsiId: l.KabupatenKota.ProvinsiId,
+			Nama:       l.KabupatenKota.Nama,
+		},
+		KecamatanId: l.KecamatanId,
+		Kecamatan: responses.KecamatanResponse{
+			Id:              l.Kecamatan.Id,
+			KabupatenKotaId: l.Kecamatan.KabupatenKotaId,
+			Nama:            l.Kecamatan.Nama,
 		},
 		KelurahanId: l.KelurahanId,
 		Kelurahan: responses.KelurahanResponse{

@@ -15,6 +15,7 @@ type IndividuService interface {
 	CountJumlahIndividu(places string, placesId string) (int64, error)
 	CountJumlahDesil(places string, placesId string, desil string) (int64, error)
 	CountJumlahPenerima(places string, placesId string, penerima string, penerimaValue string) (int64, error)
+	CountVerified(places string, placesId string, statusVerified int) (int64, error)
 	CountVerifiedByMahasiswa(mahasiswaId int) (int64, error)
 	DistinctKabupatenKota(kabupatenKotaId string) ([]model.DistinctKabupatenKota, error)
 	DistinctCountKabupatenKota(kabupatenKotaId string) (map[string]int64, error)
@@ -22,7 +23,6 @@ type IndividuService interface {
 	DistinctCountKecamatan(kecamatanId string) (map[string]int64, error)
 	DistinctKelurahan(kelurahanId string) ([]model.DistinctKelurahan, error)
 	DistinctCountKelurahan(kelurahanId string) (map[string]int64, error)
-	CountJumlahIndividuByIdKeluarga(places string, placesId string, idKeluarga string) (int64, int64, error, error)
 }
 
 type individuService struct {
@@ -87,6 +87,12 @@ func (s *individuService) CountJumlahPenerima(places string, placesId string, pe
 	return jumlah, err
 }
 
+func (s *individuService) CountVerified(places string, placesId string, statusVerified int) (int64, error) {
+	var jumlah, err = s.individuRepository.CountVerified(places, placesId, statusVerified)
+
+	return jumlah, err
+}
+
 func (s *individuService) CountVerifiedByMahasiswa(mahasiswaId int) (int64, error) {
 	var jumlah, err = s.individuRepository.CountVerifiedByMahasiswa(mahasiswaId)
 
@@ -127,10 +133,4 @@ func (s *individuService) DistinctCountKelurahan(kelurahanId string) (map[string
 	var distinctCount, err = s.individuRepository.DistinctCountKelurahan(kelurahanId)
 
 	return distinctCount, err
-}
-
-func (s *individuService) CountJumlahIndividuByIdKeluarga(places string, placesId string, idKeluarga string) (int64, int64, error, error) {
-	var jumlahIndividu, jumlahIndividuVerified, err1, err2 = s.individuRepository.CountJumlahIndividuByIdKeluarga(places, placesId, idKeluarga)
-
-	return jumlahIndividu, jumlahIndividuVerified, err1, err2
 }

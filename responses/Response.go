@@ -311,7 +311,7 @@ type DosenResponse struct {
 type DosenWithRelationResponse struct {
 	Id          int          `json:"id"`
 	UserId      int          `json:"userId"`
-	User        UserResponse `json:"user"`
+	User        UserResponse `json:"user,omitempty"`
 	NamaLengkap string       `json:"namaLengkap"`
 	Universitas string       `json:"universitas"`
 	CreatedAt   time.Time    `json:"createdAt"`
@@ -351,21 +351,27 @@ type MahasiswaWithRelationResponse struct {
 }
 
 type LokasiDosenResponse struct {
-	Id          int       `json:"id"`
-	DosenId     int       `json:"dosenId"`
-	KelurahanId string    `json:"kelurahanId"`
-	CreatedAt   time.Time `json:"createdAt"`
-	UpdatedAt   time.Time `json:"updatedAt"`
+	Id              int       `json:"id"`
+	DosenId         int       `json:"dosenId"`
+	KabupatenKotaId string    `json:"kabupatenKotaId"`
+	KecamatanId     string    `json:"kecamatanId"`
+	KelurahanId     string    `json:"kelurahanId"`
+	CreatedAt       time.Time `json:"createdAt"`
+	UpdatedAt       time.Time `json:"updatedAt"`
 }
 
 type LokasiDosenWithRelationResponse struct {
-	Id          int               `json:"id"`
-	DosenId     int               `json:"dosenId"`
-	Dosen       DosenResponse     `json:"dosen"`
-	KelurahanId string            `json:"kelurahanId"`
-	Kelurahan   KelurahanResponse `json:"kelurahan"`
-	CreatedAt   time.Time         `json:"createdAt"`
-	UpdatedAt   time.Time         `json:"updatedAt"`
+	Id              int                    `json:"id"`
+	DosenId         int                    `json:"dosenId"`
+	Dosen           DosenResponse          `json:"dosen"`
+	KabupatenKotaId string                 `json:"kabupatenKotaId"`
+	KabupatenKota   Kabupaten_KotaResponse `json:"kabupatenKota"`
+	KecamatanId     string                 `json:"kecamatanId"`
+	Kecamatan       KecamatanResponse      `json:"kecamatan"`
+	KelurahanId     string                 `json:"kelurahanId"`
+	Kelurahan       KelurahanResponse      `json:"kelurahan"`
+	CreatedAt       time.Time              `json:"createdAt"`
+	UpdatedAt       time.Time              `json:"updatedAt"`
 }
 
 type KeluargaVerifikasiResponse struct {

@@ -125,14 +125,6 @@ func (c *keluargaController) GetKeluargaBySearch(cntx *gin.Context) {
 		keluargasResponse = append(keluargasResponse, keluargaResponse)
 	}
 
-	for i := 0; i < len(keluargasResponse); i++ {
-		jumlahIndividu, jumlahIndividuVerified, _, _ := c.individuService.CountJumlahIndividuByIdKeluarga("kelurahanId", keluargasResponse[i].KelurahanId, keluargasResponse[i].IdKeluarga)
-
-		keluargasResponse[i].JumlahIndividu = int(jumlahIndividu)
-		keluargasResponse[i].JumlahIndividuVerified = int(jumlahIndividuVerified)
-
-	}
-
 	cntx.JSON(http.StatusOK, gin.H{
 		"data":          keluargasResponse,
 		"totalData":     totalData,

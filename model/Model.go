@@ -296,14 +296,18 @@ type Mahasiswa struct {
 	UpdatedAt       time.Time `gorm:"column:updatedAt;not null"`
 }
 
-type Lokasi_Dosen struct {
-	Id          int `gorm:"column:id;primaryKey;not null; autoIncrement"`
-	DosenId     int `gorm:"column:dosenId;not null"`
-	Dosen       Dosen
-	KelurahanId string `gorm:"column:kelurahanId;not null"`
-	Kelurahan   Kelurahan
-	CreatedAt   time.Time `gorm:"column:createdAt;not null"`
-	UpdatedAt   time.Time `gorm:"column:updatedAt;not null"`
+type LokasiDosen struct {
+	Id              int `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	DosenId         int `gorm:"column:dosenId;not null"`
+	Dosen           Dosen
+	KabupatenKotaId string `gorm:"column:kabupatenKotaId;not null"`
+	KabupatenKota   Kabupaten_Kota
+	KecamatanId     string `gorm:"column:kecamatanId;not null"`
+	Kecamatan       Kecamatan
+	KelurahanId     string `gorm:"column:kelurahanId;not null"`
+	Kelurahan       Kelurahan
+	CreatedAt       time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt       time.Time `gorm:"column:updatedAt;not null"`
 }
 
 type KeluargaVerifikasi struct {

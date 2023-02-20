@@ -11,7 +11,8 @@ type DosenRepository interface {
 	FindById(id int) (model.Dosen, error)
 	FindByUserId(userId int) (model.Dosen, error)
 	FindAllRelation() ([]model.Dosen, error)
-	DistinctLokasiDosen(dosenId int) ([]model.Lokasi_Dosen, error)
+	DistinctDosen(kelurahanId string) ([]model.LokasiDosen, error)
+	DistinctLokasiDosen(dosenId int) ([]model.LokasiDosen, error)
 	FindMahasiswa(kelurahanId string) ([]model.Mahasiswa, error)
 	Create(dosen model.Dosen) (model.Dosen, error)
 	Update(dosen model.Dosen) (model.Dosen, error)
@@ -58,10 +59,23 @@ func (r *dosenRepository) FindAllRelation() ([]model.Dosen, error) {
 	return dosens, err
 }
 
-func (r *dosenRepository) DistinctLokasiDosen(dosenId int) ([]model.Lokasi_Dosen, error) {
-	var lokasiDosens []model.Lokasi_Dosen
+func (r *dosenRepository) DistinctDosen(kelurahanId string) ([]model.LokasiDosen, error) {
+	var lokasiDosens []model.LokasiDosen
 
-	var err = r.db.Distinct("dosenId, kelurahanId").Table("lokasi_dosens").Where("dosenId = ?", dosenId).Find(&lokasiDosens).Error
+	var err = r.db.Distinct("dosenId").Table("lokasi_dosens").Where("kelurahanId = ?", kelurahanId).Find(&lokasiDosens).Error
+
+	return lokasiDosens, err
+}
+
+func (r *dosenRepository) DistinctLokasiDosen(dosenId int) ([]model.LokasiDosen, error) {
+	var lokasiDosens []model.LokasiDosen
+	var err error
+
+	if dosenId == 0 {
+		err = r.db.Distinct("kelurahanId").Table("lokasi_dosens").Find(&lokasiDosens).Error
+	} else {
+		err = r.db.Distinct("dosenId, kelurahanId").Table("lokasi_dosens").Where("dosenId = ?", dosenId).Find(&lokasiDosens).Error
+	}
 
 	return lokasiDosens, err
 }

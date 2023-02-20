@@ -16,6 +16,7 @@ type KeluargaRepository interface {
 	CountJumlahKeluarga(places string, placesId string) (int64, error)
 	CountJumlahDesil(places string, placesId string, desil string) (int64, error)
 	CountJumlahPenerima(places string, placesId string, penerima string, penerimaValue string) (int64, error)
+	CountVerified(places string, placesId string, statusVerified int) (int64, error)
 	CountVerifiedByMahasiswa(mahasiswaId int) (int64, error)
 	DistinctKabupatenKota(kabupatenKotaId string) ([]model.DistinctKabupatenKota, error)
 	DistinctCountKabupatenKota(kabupatenKotaId string) (map[string]int64, error)
@@ -104,6 +105,14 @@ func (r *keluargaRepository) CountJumlahPenerima(places string, placesId string,
 	var count int64
 
 	var err = r.db.Where(places+"= ? and "+penerima+" = ?", placesId, penerimaValue).Table("keluargas").Select("count(*)").Count(&count).Error
+
+	return count, err
+}
+
+func (r *keluargaRepository) CountVerified(places string, placesId string, statusVerified int) (int64, error) {
+	var count int64
+
+	var err = r.db.Where(places+"= ? and statusVerifikasi = ?", placesId, statusVerified).Table("keluargas").Select("count(*)").Count(&count).Error
 
 	return count, err
 }

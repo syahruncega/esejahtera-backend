@@ -115,10 +115,6 @@ func main() {
 	var analisService = service.NewAnalisService(analisRepository)
 	var analisController = controller.NewAnalisController(analisService)
 
-	var pusbangRepository = repository.NewPusbangRepository(config.DB)
-	var pusbangService = service.NewPusbangService(pusbangRepository)
-	var pusbangController = controller.NewPusbangController(pusbangService)
-
 	var lokasiDosenRepository = repository.NewLokasiDosenRepository(config.DB)
 	var lokasiDosenService = service.NewLokasiDosenService(lokasiDosenRepository)
 	var lokasiDosenController = controller.NewLokasiDosenController(lokasiDosenService)
@@ -147,6 +143,10 @@ func main() {
 	var dosenService = service.NewDosenService(dosenRepository)
 	var dosenController = controller.NewDosenController(dosenService, mahasiswaService)
 
+	var pusbangRepository = repository.NewPusbangRepository(config.DB)
+	var pusbangService = service.NewPusbangService(pusbangRepository)
+	var pusbangController = controller.NewPusbangController(pusbangService, dosenService, keluargaService, individuService)
+
 	var userRepository = repository.NewUserRepository(config.DB)
 	var userService = service.NewUserService(userRepository)
 	var userController = controller.NewUserController(userService, adminService, pusbangService, dosenService, analisService, mahasiswaService)
@@ -156,7 +156,7 @@ func main() {
 	var server = gin.Default()
 
 	server.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:4003", "http://localhost:3003"},
+		AllowOrigins:     []string{"http://localhost:4003"},
 		AllowCredentials: true,
 		AllowMethods:     []string{"POST", "PUT", "DELETE", "GET", "PATCH"},
 		AllowHeaders:     []string{"Access-Control-Allow-Headers", "Access-Control-Allow-Origin", "access-control-allow-origin, access-control-allow-headers", "Content-Type", "Accept", "Origin", "Authorization"},
@@ -303,6 +303,8 @@ func main() {
 	server.GET("/pusbang", pusbangController.GetPusbangs)
 	server.GET("/pusbang/:id", pusbangController.GetPusbang)
 	server.GET("/pusbangrelasi", pusbangController.GetPusbangWithRelation)
+	server.GET("/pusbang/dosen", pusbangController.GetDistinctDosen)
+	server.GET("/pusbang/lokasidosen", pusbangController.GetDistinctLokasiDosen)
 	server.POST("/pusbang", pusbangController.CreatePusbang)
 	server.PATCH("/pusbang:id", pusbangController.UpdatePusbang)
 	server.DELETE("/pusbang/:id", pusbangController.DeletePusbang)
@@ -328,8 +330,8 @@ func main() {
 	server.GET("/keluargaverifikasi/idkeluarga/:idkeluarga", keluargaVerifikasiController.GetKeluargaVerifikasiByIdKeluarga)
 	server.GET("/keluargaverifikasi/search", keluargaVerifikasiController.GetKeluargaVerifikasiBySearch)
 	server.POST("/keluargaverifikasi", keluargaVerifikasiController.CreateKeluargaVerifikasi)
-	server.PATCH("/keluargaverifikasi/:kabupatenkotaid/:id", keluargaVerifikasiController.UpdateKeluargaVerifikasi)
-	server.DELETE("/keluargaverifikasi/:kabupatenkotaid/:id", keluargaVerifikasiController.DeleteKeluargaVerifikasi)
+	server.PATCH("/keluargaverifikasi/:id", keluargaVerifikasiController.UpdateKeluargaVerifikasi)
+	server.DELETE("/keluargaverifikasi/:id", keluargaVerifikasiController.DeleteKeluargaVerifikasi)
 
 	server.GET("/individu/", individuController.GetIndividus)
 	server.GET("/individu/:id", individuController.GetIndividu)

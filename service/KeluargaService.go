@@ -16,6 +16,7 @@ type KeluargaService interface {
 	CountJumlahKeluarga(places string, placesId string) (int64, error)
 	CountJumlahDesil(places string, placesId string, desil string) (int64, error)
 	CountJumlahPenerima(places string, placesId string, penerima string, penerimaValue string) (int64, error)
+	CountVerified(places string, placesId string, status int) (int64, error)
 	CountVerifiedByMahasiswa(mahasiswaId int) (int64, error)
 	DistinctKabupatenKota(kabupatenKotaId string) ([]model.DistinctKabupatenKota, error)
 	DistinctCountKabupatenKota(kabupatenKotaId string) (map[string]int64, error)
@@ -89,6 +90,12 @@ func (s *keluargaService) CountJumlahDesil(places string, placesId string, desil
 
 func (s *keluargaService) CountJumlahPenerima(places string, placesId string, penerima string, penerimaValue string) (int64, error) {
 	var jumlah, err = s.keluargaRepository.CountJumlahPenerima(places, placesId, penerima, penerimaValue)
+
+	return jumlah, err
+}
+
+func (s *keluargaService) CountVerified(places string, placesId string, statusVerified int) (int64, error) {
+	var jumlah, err = s.keluargaRepository.CountVerified(places, placesId, statusVerified)
 
 	return jumlah, err
 }

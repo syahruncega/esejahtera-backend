@@ -15,6 +15,7 @@ type IndividuRepository interface {
 	CountJumlahIndividu(places string, placesId string) (int64, error)
 	CountJumlahDesil(places string, placesId string, desil string) (int64, error)
 	CountJumlahPenerima(places string, placesId string, penerima string, penerimaValue string) (int64, error)
+	CountVerified(places string, placesId string, statusVerified int) (int64, error)
 	CountVerifiedByMahasiswa(mahasiswaId int) (int64, error)
 	DistinctKabupatenKota(kabupatenKotaId string) ([]model.DistinctKabupatenKota, error)
 	DistinctCountKabupatenKota(kabupatenKotaId string) (map[string]int64, error)
@@ -22,7 +23,6 @@ type IndividuRepository interface {
 	DistinctCountKecamatan(kecamatanId string) (map[string]int64, error)
 	DistinctKelurahan(kelurahanId string) ([]model.DistinctKelurahan, error)
 	DistinctCountKelurahan(kelurahanId string) (map[string]int64, error)
-	CountJumlahIndividuByIdKeluarga(places string, placesId string, idKeluarga string) (int64, int64, error, error)
 }
 
 type individuRepository struct {
@@ -95,6 +95,14 @@ func (r *individuRepository) CountJumlahPenerima(places string, placesId string,
 	var count int64
 
 	var err = r.db.Where(places+"= ? and "+penerima+" = ?", placesId, penerimaValue).Table("individus").Select("count(*)").Count(&count).Error
+
+	return count, err
+}
+
+func (r *individuRepository) CountVerified(places string, placesId string, statusVerified int) (int64, error) {
+	var count int64
+
+	var err = r.db.Where(places+"= ? and statusVerifikasi = ?", placesId, statusVerified).Table("individus").Select("count(*)").Count(&count).Error
 
 	return count, err
 }
@@ -176,15 +184,4 @@ func (r *individuRepository) DistinctCountKelurahan(kelurahanId string) (map[str
 	}
 
 	return jumlah, err
-}
-
-func (r *individuRepository) CountJumlahIndividuByIdKeluarga(places string, placesId string, idKeluarga string) (int64, int64, error, error) {
-	var jumlahIndividu, jumlahIndividuVerified int64
-	var err1, err2 error
-
-	err1 = r.db.Where(places+"= ? and idKeluarga = ?", placesId, idKeluarga).Table("individus").Select("count(*)").Count(&jumlahIndividu).Error
-
-	err2 = r.db.Where(places+"= ? and idKeluarga = ? and statusVerifikasi = 1", placesId, idKeluarga).Table("individus").Select("count(*)").Count(&jumlahIndividuVerified).Error
-
-	return jumlahIndividu, jumlahIndividuVerified, err1, err2
 }

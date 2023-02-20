@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"kemiskinan/helper"
+	"kemiskinan/model"
 	"kemiskinan/request"
 	"kemiskinan/responses"
 	"kemiskinan/service"
@@ -14,11 +15,19 @@ import (
 )
 
 type pusbangController struct {
-	pusbangService service.PusbangService
+	pusbangService  service.PusbangService
+	dosenService    service.DosenService
+	keluargaService service.KeluargaService
+	individuService service.IndividuService
 }
 
-func NewPusbangController(pusbangService service.PusbangService) *pusbangController {
-	return &pusbangController{pusbangService}
+func NewPusbangController(pusbangService service.PusbangService, dosenService service.DosenService, keluargaService service.KeluargaService, individuService service.IndividuService) *pusbangController {
+	return &pusbangController{
+		pusbangService,
+		dosenService,
+		keluargaService,
+		individuService,
+	}
 }
 
 func (c *pusbangController) GetPusbangs(cntx *gin.Context) {
@@ -74,6 +83,124 @@ func (c *pusbangController) GetPusbangWithRelation(cntx *gin.Context) {
 	}
 
 	cntx.JSON(http.StatusOK, pusbangsResponse)
+}
+
+func (c *pusbangController) GetDistinctDosen(cntx *gin.Context) {
+	var kelurahanId = cntx.Query("kelurahanid")
+	var places = "kelurahanId"
+	var statusVerified = 1
+
+	var distinctDosen, err = c.dosenService.DistinctDosen(kelurahanId)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	jumlahKeluarga, err := c.keluargaService.CountJumlahKeluarga(places, kelurahanId)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	jumlahKeluargaVerified, err := c.keluargaService.CountVerified(places, kelurahanId, statusVerified)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	jumlahIndividu, err := c.individuService.CountJumlahIndividu(places, kelurahanId)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	jumlahIndividuVerified, err := c.individuService.CountVerified(places, kelurahanId, statusVerified)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	if len(distinctDosen) > 1 {
+		var arrDosenId = []int{}
+
+		for _, dosen := range distinctDosen {
+			arrDosenId = append(arrDosenId, dosen.DosenId)
+		}
+
+		var dosens []model.Dosen
+
+		for _, v := range arrDosenId {
+			var dosen, _ = c.dosenService.FindById(v)
+			dosens = append(dosens, dosen)
+		}
+
+		var dosensResponse []responses.DosenResponse
+
+		for _, dosen := range dosens {
+			var dosenResponse = helper.ConvertToDosenResponse(dosen)
+			dosensResponse = append(dosensResponse, dosenResponse)
+		}
+
+		cntx.JSON(http.StatusOK, gin.H{
+			"data": dosensResponse,
+			"keluarga": gin.H{
+				"jumlahKeluarga":         jumlahKeluarga,
+				"jumlahKeluargaVerified": jumlahKeluargaVerified,
+			},
+			"individu": gin.H{
+				"jumlahIndividu":         jumlahIndividu,
+				"jumlahIndividuVerified": jumlahIndividuVerified,
+			},
+		})
+
+	} else {
+		var dosen, _ = c.dosenService.FindById(distinctDosen[0].DosenId)
+
+		var dosenResponse = helper.ConvertToDosenResponse(dosen)
+
+		cntx.JSON(http.StatusOK, gin.H{
+			"data": dosenResponse,
+			"keluarga": gin.H{
+				"jumlahKeluarga":         jumlahKeluarga,
+				"jumlahKeluargaVerified": jumlahKeluargaVerified,
+			},
+			"individu": gin.H{
+				"jumlahIndividu":         jumlahIndividu,
+				"jumlahIndividuVerified": jumlahIndividuVerified,
+			},
+		})
+	}
+
+}
+
+func (c *pusbangController) GetDistinctLokasiDosen(cntx *gin.Context) {
+	var dosenId = 0
+
+	var distinctLokasiDosen, err = c.dosenService.DistinctLokasiDosen(dosenId)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	var arrLokasi = []string{}
+
+	for _, lokasi := range distinctLokasiDosen {
+		arrLokasi = append(arrLokasi, lokasi.KelurahanId)
+	}
+
+	cntx.JSON(http.StatusOK, arrLokasi)
 }
 
 func (c *pusbangController) CreatePusbang(cntx *gin.Context) {
