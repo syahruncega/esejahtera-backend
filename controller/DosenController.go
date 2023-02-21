@@ -165,37 +165,25 @@ func (c *dosenController) DeleteDosen(cntx *gin.Context) {
 }
 
 func (c *dosenController) GetMahasiswa(cntx *gin.Context) {
-	var dosenIdString = cntx.Query("dosenid")
-	var dosenId, _ = strconv.Atoi(dosenIdString)
+	var kelurahanId = cntx.Query("kelurahanid")
 
-	var distinctLokasiDosens, err = c.dosenService.DistinctLokasiDosen(dosenId)
+	var mahasiswas, err = c.dosenService.FindMahasiswa(kelurahanId)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
+			"error": "Data tidak ditemukan",
 		})
 		return
 	}
 
-	var mahasiswass = map[string]interface{}{}
+	var mahasiswasResponse []responses.MahasiswaWithVerifiedCountResponse
 
-	for _, distinctLokasi := range distinctLokasiDosens {
-		var mahasiswas, err = c.dosenService.FindMahasiswa(distinctLokasi.KelurahanId)
-		if err != nil {
-			cntx.JSON(http.StatusBadRequest, gin.H{
-				"error": cntx.Error(err),
-			})
-			return
-		}
+	for _, mahasiswa := range mahasiswas {
+		var jumlahVerifiedIndividu, _ = c.mahasiswaService.CountVerifiedIndividu(mahasiswa.Id)
+		var jumlahVerifiedKeluarga, _ = c.mahasiswaService.CountVerifiedKeluarga(mahasiswa.Id)
 
-		var mahasiswasResponse []responses.MahasiswaResponse
-
-		for _, mahasiswa := range mahasiswas {
-			var mahasiswaResponse = helper.ConvertToMahasiswaResponse(mahasiswa)
-			mahasiswasResponse = append(mahasiswasResponse, mahasiswaResponse)
-		}
-
-		mahasiswass[distinctLokasi.KelurahanId] = mahasiswasResponse
+		var mahasiswaResponse = helper.ConvertToMahasiswaWithVerifiedCountResponse(mahasiswa, jumlahVerifiedIndividu, jumlahVerifiedKeluarga)
+		mahasiswasResponse = append(mahasiswasResponse, mahasiswaResponse)
 	}
 
-	cntx.JSON(http.StatusOK, mahasiswass)
+	cntx.JSON(http.StatusOK, mahasiswasResponse)
 }

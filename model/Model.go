@@ -293,7 +293,7 @@ type Mahasiswa struct {
 	KabupatenKota   Kabupaten_Kota
 	KecamatanId     string `gorm:"column:kecamatanId;not null"`
 	Kecamatan       Kecamatan
-	KelurahanId     string `gorm:"column:kelurahanIdlnot null"`
+	KelurahanId     string `gorm:"column:kelurahanId;not null"`
 	Kelurahan       Kelurahan
 	UrlFotoProfil   string    `gorm:"column:urlFotoProfil"`
 	CreatedAt       time.Time `gorm:"column:createdAt;not null"`

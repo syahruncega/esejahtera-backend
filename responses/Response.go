@@ -360,6 +360,27 @@ type MahasiswaWithRelationResponse struct {
 	UpdatedAt       time.Time              `json:"updatedAt"`
 }
 
+type MahasiswaWithVerifiedCountResponse struct {
+	Id                     int                    `json:"id"`
+	UserId                 int                    `json:"userId"`
+	User                   UserResponse           `json:"user"`
+	NamaLengkap            string                 `json:"namaLengkap"`
+	Universitas            string                 `json:"universitas"`
+	JenisKelamin           string                 `json:"jenisKelamin"`
+	TanggalLahir           string                 `json:"tanggalLahir"`
+	KabupatenKotaId        string                 `json:"kabupatenKotaId"`
+	KabupatenKota          Kabupaten_KotaResponse `json:"kabupatenKota"`
+	KecamatanId            string                 `json:"kecamatanId"`
+	Kecamatan              KecamatanResponse      `json:"kecamatan"`
+	KelurahanId            string                 `json:"kelurahanId"`
+	Kelurahan              KelurahanResponse      `json:"kelurahan"`
+	JumlahIndividuVerified int64                  `json:"jumlahIndividuVerified"`
+	JumlahKeluargaVerified int64                  `json:"jumlahKeluargaVerified"`
+	UrlFotoProfil          string                 `json:"urlFotoProfil"`
+	CreatedAt              time.Time              `json:"createdAt"`
+	UpdatedAt              time.Time              `json:"updatedAt"`
+}
+
 type LokasiDosenResponse struct {
 	Id              int       `json:"id"`
 	DosenId         int       `json:"dosenId"`

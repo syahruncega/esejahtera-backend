@@ -83,7 +83,7 @@ func (r *dosenRepository) DistinctLokasiDosen(dosenId int) ([]model.LokasiDosen,
 func (r *dosenRepository) FindMahasiswa(kelurahanId string) ([]model.Mahasiswa, error) {
 	var mahasiswas []model.Mahasiswa
 
-	var err = r.db.Where("kelurahanId = ?", kelurahanId).Model(&mahasiswas).Find(&mahasiswas).Error
+	var err = r.db.Where("kelurahanId = ?", kelurahanId).Model(&mahasiswas).Preload("User").Preload("KabupatenKota").Preload("Kecamatan").Preload("Kelurahan").Find(&mahasiswas).Error
 
 	return mahasiswas, err
 }

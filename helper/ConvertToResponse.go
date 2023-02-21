@@ -648,6 +648,50 @@ func ConvertToMahasiswaWithRelationResponse(m model.Mahasiswa) responses.Mahasis
 	}
 }
 
+func ConvertToMahasiswaWithVerifiedCountResponse(m model.Mahasiswa, jumlahVerifiedIndividu int64, jumlahVerifiedKeluarga int64) responses.MahasiswaWithVerifiedCountResponse {
+	return responses.MahasiswaWithVerifiedCountResponse{
+		Id:     m.Id,
+		UserId: m.UserId,
+		User: responses.UserResponse{
+			Id:        m.User.Id,
+			Username:  m.User.Username,
+			Password:  m.User.Password,
+			Email:     m.User.Email,
+			NoHp:      m.User.NoHp,
+			Role:      m.User.Role,
+			CreatedAt: m.User.CreatedAt,
+			UpdatedAt: m.User.UpdatedAt,
+		},
+		NamaLengkap:     m.NamaLengkap,
+		Universitas:     m.Universitas,
+		JenisKelamin:    m.JenisKelamin,
+		TanggalLahir:    m.TanggalLahir,
+		KabupatenKotaId: m.KabupatenKotaId,
+		KabupatenKota: responses.Kabupaten_KotaResponse{
+			Id:         m.KabupatenKota.Id,
+			ProvinsiId: m.KabupatenKota.ProvinsiId,
+			Nama:       m.KabupatenKota.Nama,
+		},
+		KecamatanId: m.KecamatanId,
+		Kecamatan: responses.KecamatanResponse{
+			Id:              m.Kecamatan.Id,
+			KabupatenKotaId: m.Kecamatan.KabupatenKotaId,
+			Nama:            m.KabupatenKota.Nama,
+		},
+		KelurahanId: m.KelurahanId,
+		Kelurahan: responses.KelurahanResponse{
+			Id:          m.Kelurahan.Id,
+			KecamatanId: m.Kelurahan.KecamatanId,
+			Nama:        m.Kelurahan.Nama,
+		},
+		JumlahIndividuVerified: jumlahVerifiedIndividu,
+		JumlahKeluargaVerified: jumlahVerifiedKeluarga,
+		UrlFotoProfil:          m.UrlFotoProfil,
+		CreatedAt:              m.CreatedAt,
+		UpdatedAt:              m.UpdatedAt,
+	}
+}
+
 func ConvertToLokasiDosenResponse(l model.LokasiDosen) responses.LokasiDosenResponse {
 	return responses.LokasiDosenResponse{
 		Id:              l.Id,

@@ -11,6 +11,8 @@ type MahasiswaService interface {
 	FindById(id int) (model.Mahasiswa, error)
 	FindByUserId(userId int) (model.Mahasiswa, error)
 	FindAllRelation() ([]model.Mahasiswa, error)
+	CountVerifiedIndividu(id int) (int64, error)
+	CountVerifiedKeluarga(id int) (int64, error)
 	Create(mahasiswaRequest request.CreateMahasiswaRequest) (model.Mahasiswa, error)
 	Update(id int, mahasiswaRequest request.UpdateMahasiswaRequest) (model.Mahasiswa, error)
 	Delete(id int) (model.Mahasiswa, error)
@@ -46,6 +48,18 @@ func (s *mahasiswaService) FindAllRelation() ([]model.Mahasiswa, error) {
 	var mahasiswas, err = s.mahasiswaRepository.FindAllRelation()
 
 	return mahasiswas, err
+}
+
+func (s *mahasiswaService) CountVerifiedIndividu(id int) (int64, error) {
+	var jumlah, err = s.mahasiswaRepository.CountVerifiedIndividu(id)
+
+	return jumlah, err
+}
+
+func (s *mahasiswaService) CountVerifiedKeluarga(id int) (int64, error) {
+	var jumlah, err = s.mahasiswaRepository.CountVerifiedKeluarga(id)
+
+	return jumlah, err
 }
 
 func (s *mahasiswaService) Create(mahasiswaRequest request.CreateMahasiswaRequest) (model.Mahasiswa, error) {
