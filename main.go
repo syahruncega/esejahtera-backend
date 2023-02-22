@@ -28,6 +28,7 @@ func main() {
 	appConfig.DatabasePort = os.Getenv("APP_DATABASE_PORT")
 	appConfig.DatabaseName = os.Getenv("APP_DATABASE_NAME")
 	appConfig.DatabaseHost = os.Getenv("APP_DATABASE_HOST")
+	appConfig.CorsOrigin = os.Getenv("CORS_ORIGIN")
 	appConfig.AppPort = os.Getenv("APP_PORT")
 
 	config.ConnectDB(appConfig)
@@ -157,7 +158,7 @@ func main() {
 	var server = gin.Default()
 
 	server.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:4003"},
+		AllowOrigins:     []string{"https://" + appConfig.CorsOrigin + ", http://localhost:4003"},
 		AllowCredentials: true,
 		AllowMethods:     []string{"POST", "PUT", "DELETE", "GET", "PATCH"},
 		AllowHeaders:     []string{"Access-Control-Allow-Headers", "Access-Control-Allow-Origin", "access-control-allow-origin, access-control-allow-headers", "Content-Type", "Accept", "Origin", "Authorization"},

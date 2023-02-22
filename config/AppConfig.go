@@ -6,6 +6,7 @@ type AppConfig struct {
 	DatabasePort     string
 	DatabaseName     string
 	DatabaseHost     string
+	CorsOrigin       string
 	AppPort          string
 	SecretKey        string
 }
