@@ -11,8 +11,8 @@ type MahasiswaRepository interface {
 	FindById(id int) (model.Mahasiswa, error)
 	FindByUserId(userId int) (model.Mahasiswa, error)
 	FindAllRelation() ([]model.Mahasiswa, error)
-	CountVerifiedKeluarga(id int) (int64, error)
-	CountVerifiedIndividu(id int) (int64, error)
+	CountVerifiedKeluarga(id int, kelurahanId string) (int64, error)
+	CountVerifiedIndividu(id int, kelurahanId string) (int64, error)
 	Create(mahasiswa model.Mahasiswa) (model.Mahasiswa, error)
 	Update(mahasiswa model.Mahasiswa) (model.Mahasiswa, error)
 	Delete(mahasiswa model.Mahasiswa) (model.Mahasiswa, error)
@@ -58,18 +58,18 @@ func (r *mahasiswaRepository) FindAllRelation() ([]model.Mahasiswa, error) {
 	return mahasiswas, err
 }
 
-func (r *mahasiswaRepository) CountVerifiedIndividu(id int) (int64, error) {
+func (r *mahasiswaRepository) CountVerifiedIndividu(id int, kelurahanId string) (int64, error) {
 	var count int64
 
-	var err = r.db.Where("mahasiswaId = ?", id).Table("individus").Select("count(*)").Count(&count).Error
+	var err = r.db.Where("mahasiswaId = ? and kelurahanId = ?", id, kelurahanId).Table("individus").Select("count(*)").Count(&count).Error
 
 	return count, err
 }
 
-func (r *mahasiswaRepository) CountVerifiedKeluarga(id int) (int64, error) {
+func (r *mahasiswaRepository) CountVerifiedKeluarga(id int, kelurahanId string) (int64, error) {
 	var count int64
 
-	var err = r.db.Where("mahasiswaId = ?", id).Table("keluargas").Select("count(*)").Count(&count).Error
+	var err = r.db.Where("mahasiswaId = ? and kelurahanId = ?", id, kelurahanId).Table("keluargas").Select("count(*)").Count(&count).Error
 
 	return count, err
 }

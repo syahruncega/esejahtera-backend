@@ -178,8 +178,8 @@ func (c *dosenController) GetMahasiswa(cntx *gin.Context) {
 	var mahasiswasResponse []responses.MahasiswaWithVerifiedCountResponse
 
 	for _, mahasiswa := range mahasiswas {
-		var jumlahVerifiedIndividu, _ = c.mahasiswaService.CountVerifiedIndividu(mahasiswa.Id)
-		var jumlahVerifiedKeluarga, _ = c.mahasiswaService.CountVerifiedKeluarga(mahasiswa.Id)
+		var jumlahVerifiedIndividu, _ = c.mahasiswaService.CountVerifiedIndividu(mahasiswa.Id, kelurahanId)
+		var jumlahVerifiedKeluarga, _ = c.mahasiswaService.CountVerifiedKeluarga(mahasiswa.Id, kelurahanId)
 
 		var mahasiswaResponse = helper.ConvertToMahasiswaWithVerifiedCountResponse(mahasiswa, jumlahVerifiedIndividu, jumlahVerifiedKeluarga)
 		mahasiswasResponse = append(mahasiswasResponse, mahasiswaResponse)
