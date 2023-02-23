@@ -10,6 +10,7 @@ type IndividuService interface {
 	FindAll() ([]model.Individu, error)
 	FindById(id int) (model.Individu, error)
 	FindByIdKeluarga(idKeluarga string) ([]model.Individu, error)
+	CountData(whereClause map[string]interface{}) (int64, error)
 	FindBySearch(whereClause map[string]interface{}) ([]model.Individu, error)
 	Update(id int, individuReqeust request.UpdateIndividuRequest) (model.Individu, error)
 	CountJumlahIndividu(places string, placesId string) (int64, error)
@@ -49,6 +50,12 @@ func (s *individuService) FindByIdKeluarga(idKeluarga string) ([]model.Individu,
 	var individus, err = s.individuRepository.FindByIdKeluarga(idKeluarga)
 
 	return individus, err
+}
+
+func (s *individuService) CountData(whereClause map[string]interface{}) (int64, error) {
+	var jumlah, err = s.individuRepository.CountData(whereClause)
+
+	return jumlah, err
 }
 
 func (s *individuService) FindBySearch(whereClause map[string]interface{}) ([]model.Individu, error) {

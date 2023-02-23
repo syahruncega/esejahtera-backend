@@ -1494,3 +1494,38 @@ func (c *statistikController) StatistikKelurahan(cntx *gin.Context) {
 	})
 
 }
+
+func (c *statistikController) StatistikSearch(cntx *gin.Context) {
+	var whereClauseString = cntx.Request.URL.Query()
+	var whereClauseInterface = make(map[string]interface{})
+
+	for k, v := range whereClauseString {
+		if k == "halaman" || k == "pagerow" {
+			continue
+		}
+
+		interfaceKey := k
+		interfaceVal := v
+
+		whereClauseInterface[interfaceKey] = interfaceVal
+	}
+
+	jumlahDataKeluarga, err := c.keluargaService.CountData(whereClauseInterface)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	jumlahDataIndividu, err := c.individuService.CountData(whereClauseInterface)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	cntx.JSON(http.StatusOK, gin.H{
+		"keluarga": jumlahDataKeluarga,
+		"individu": jumlahDataIndividu,
+	})
+}

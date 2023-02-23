@@ -352,6 +352,7 @@ func main() {
 	server.GET("/statistik/kabupatenkota", statistikController.StatistikKabupatenKota)
 	server.GET("/statistik/kecamatan", statistikController.StatistikKecamatan)
 	server.GET("/statistik/kelurahan", statistikController.StatistikKelurahan)
+	server.GET("/statistik/kelurahan/hitung", statistikController.StatistikSearch)
 
 	server.Run(":" + appConfig.AppPort)
 }

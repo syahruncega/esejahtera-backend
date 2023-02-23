@@ -10,6 +10,7 @@ type IndividuRepository interface {
 	FindAll() ([]model.Individu, error)
 	FindById(id int) (model.Individu, error)
 	FindByIdKeluarga(idKeluarga string) ([]model.Individu, error)
+	CountData(whereClause map[string]interface{}) (int64, error)
 	FindBySearch(whereClause map[string]interface{}) ([]model.Individu, error)
 	Update(individu model.Individu) (model.Individu, error)
 	CountJumlahIndividu(places string, placesId string) (int64, error)
@@ -55,6 +56,14 @@ func (r *individuRepository) FindByIdKeluarga(idKeluarga string) ([]model.Indivi
 	var err = r.db.Where("idKeluarga = ? ", idKeluarga).Model(&individus).Preload("Provinsi").Preload("KabupatenKota").Preload("Kecamatan").Preload("Kelurahan").Preload("User").Preload("Mahasiswa").Find(&individus).Error
 
 	return individus, err
+}
+
+func (r *individuRepository) CountData(whereClause map[string]interface{}) (int64, error) {
+	var count int64
+
+	var err = r.db.Where(whereClause).Table("individus").Select("count(*)").Count(&count).Error
+
+	return count, err
 }
 
 func (r *individuRepository) FindBySearch(whereClause map[string]interface{}) ([]model.Individu, error) {
