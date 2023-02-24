@@ -78,8 +78,9 @@ func ConvertToDetailProgramResponse(d model.DetailProgram) responses.DetailProgr
 			CreatedAt:   d.Program.CreatedAt,
 			UpdatedAt:   d.UpdatedAt,
 		},
-		CreatedAt: d.CreatedAt,
-		UpdatedAt: d.UpdatedAt,
+		PaguProgram: d.PaguProgram,
+		CreatedAt:   d.CreatedAt,
+		UpdatedAt:   d.UpdatedAt,
 	}
 }
 
@@ -141,8 +142,9 @@ func ConvertToDetailKegiatanResponse(d model.DetailKegiatan) responses.DetailKeg
 			CreatedAt:    d.Kegiatan.CreatedAt,
 			UpdatedAt:    d.Kegiatan.UpdatedAt,
 		},
-		CreatedAt: d.CreatedAt,
-		UpdatedAt: d.UpdatedAt,
+		PaguKegiatan: d.PaguKegiatan,
+		CreatedAt:    d.CreatedAt,
+		UpdatedAt:    d.UpdatedAt,
 	}
 }
 
@@ -201,8 +203,9 @@ func ConvertToDetailSubKegiatanResponse(d model.DetailSubKegiatan) responses.Det
 			CreatedAt:       d.SubKegiatan.CreatedAt,
 			UpdatedAt:       d.SubKegiatan.UpdatedAt,
 		},
-		CreatedAt: d.CreatedAt,
-		UpdatedAt: d.UpdatedAt,
+		PaguSubKegiatan: d.PaguSubKegiatan,
+		CreatedAt:       d.CreatedAt,
+		UpdatedAt:       d.UpdatedAt,
 	}
 }
 

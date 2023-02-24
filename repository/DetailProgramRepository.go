@@ -55,8 +55,9 @@ func (r *detailProgramRepository) Create(detailProgram model.DetailProgram) (mod
 
 func (r *detailProgramRepository) Update(detailProgram model.DetailProgram) (model.DetailProgram, error) {
 	var err = r.db.Model(&detailProgram).Updates(model.DetailProgram{
-		InstansiId: detailProgram.InstansiId,
-		ProgramId:  detailProgram.ProgramId,
+		InstansiId:  detailProgram.InstansiId,
+		ProgramId:   detailProgram.ProgramId,
+		PaguProgram: detailProgram.PaguProgram,
 	}).Error
 
 	return detailProgram, err

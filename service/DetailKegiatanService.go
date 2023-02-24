@@ -43,8 +43,9 @@ func (s *detailKegiatanService) FindByProgramId(programId string) ([]model.Detai
 
 func (s *detailKegiatanService) Create(detailKegiatanRequest request.CreateDetailKegiatanRequest) (model.DetailKegiatan, error) {
 	var detailKegiatan = model.DetailKegiatan{
-		ProgramId:  detailKegiatanRequest.ProgramId,
-		KegiatanId: detailKegiatanRequest.KegiatanId,
+		ProgramId:    detailKegiatanRequest.ProgramId,
+		KegiatanId:   detailKegiatanRequest.KegiatanId,
+		PaguKegiatan: detailKegiatanRequest.PaguKegiatan,
 	}
 
 	newDetailKegiatan, err := s.detailKegiatanRepository.Create(detailKegiatan)
@@ -57,6 +58,7 @@ func (s *detailKegiatanService) Update(id int, detailKegiatanRequest request.Upd
 
 	detailKegiatan.ProgramId = detailKegiatanRequest.ProgramId
 	detailKegiatan.KegiatanId = detailKegiatanRequest.KegiatanId
+	detailKegiatan.PaguKegiatan = detailKegiatanRequest.PaguKegiatan
 
 	updatedDetailKegiatan, err := s.detailKegiatanRepository.Update(detailKegiatan)
 

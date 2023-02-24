@@ -43,8 +43,9 @@ func (s *detailProgramService) FindByInstansiId(instansiId string) ([]model.Deta
 
 func (s *detailProgramService) Create(detailProgramRequest request.CreateDetailProgramRequest) (model.DetailProgram, error) {
 	var detailProgram = model.DetailProgram{
-		InstansiId: detailProgramRequest.InstansiId,
-		ProgramId:  detailProgramRequest.ProgramId,
+		InstansiId:  detailProgramRequest.InstansiId,
+		ProgramId:   detailProgramRequest.ProgramId,
+		PaguProgram: detailProgramRequest.PaguProgram,
 	}
 
 	newDetailProgram, err := s.detailProgramRepository.Create(detailProgram)
@@ -57,6 +58,7 @@ func (s *detailProgramService) Update(id int, detailProgramRequest request.Updat
 
 	detailProgram.InstansiId = detailProgramRequest.InstansiId
 	detailProgram.ProgramId = detailProgramRequest.ProgramId
+	detailProgram.PaguProgram = detailProgramRequest.PaguProgram
 
 	updatedDetailProgram, err := s.detailProgramRepository.Update(detailProgram)
 

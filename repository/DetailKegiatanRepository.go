@@ -55,8 +55,9 @@ func (r *detailKegiatanRepository) Create(detailKegiatan model.DetailKegiatan) (
 
 func (r *detailKegiatanRepository) Update(detailKegiatan model.DetailKegiatan) (model.DetailKegiatan, error) {
 	var err = r.db.Model(&detailKegiatan).Updates(model.DetailKegiatan{
-		ProgramId:  detailKegiatan.ProgramId,
-		KegiatanId: detailKegiatan.KegiatanId,
+		ProgramId:    detailKegiatan.ProgramId,
+		KegiatanId:   detailKegiatan.KegiatanId,
+		PaguKegiatan: detailKegiatan.PaguKegiatan,
 	}).Error
 
 	return detailKegiatan, err

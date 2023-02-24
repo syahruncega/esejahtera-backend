@@ -37,13 +37,14 @@ type Program struct {
 }
 
 type DetailProgram struct {
-	Id         int    `gorm:"column:id;primaryKey;not null;autoIncrement"`
-	InstansiId string `gorm:"column:instansiId;not null"`
-	Instansi   Instansi
-	ProgramId  string `gorm:"column:programId;not null"`
-	Program    Program
-	CreatedAt  time.Time `gorm:"column:createdAt;not null"`
-	UpdatedAt  time.Time `gorm:"column:updatedAt;not null"`
+	Id          int    `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	InstansiId  string `gorm:"column:instansiId;not null"`
+	Instansi    Instansi
+	ProgramId   string `gorm:"column:programId;not null"`
+	Program     Program
+	PaguProgram int64     `gorm:"column:paguProgram;not null"`
+	CreatedAt   time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt   time.Time `gorm:"column:updatedAt;not null"`
 }
 
 type IndikatorProgram struct {
@@ -70,13 +71,14 @@ type Kegiatan struct {
 }
 
 type DetailKegiatan struct {
-	Id         int    `gorm:"column:id;primaryKey;not null;autoIncrement"`
-	ProgramId  string `gorm:"column:programId;not null"`
-	Program    Program
-	KegiatanId string `gorm:"column:kegiatanId;not null"`
-	Kegiatan   Kegiatan
-	CreatedAt  time.Time `gorm:"column:createdAt;not null"`
-	UpdatedAt  time.Time `gorm:"column:updatedAt;not null"`
+	Id           int    `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	ProgramId    string `gorm:"column:programId;not null"`
+	Program      Program
+	KegiatanId   string `gorm:"column:kegiatanId;not null"`
+	Kegiatan     Kegiatan
+	PaguKegiatan int64     `gorm:"column:paguKegiatan;not null"`
+	CreatedAt    time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt    time.Time `gorm:"column:updatedAt;not null"`
 }
 
 type IndikatorKegiatan struct {
@@ -112,13 +114,14 @@ type IndikatorSubKegiatan struct {
 }
 
 type DetailSubKegiatan struct {
-	Id            int    `gorm:"column:id;primaryKey;not null;autoIncrement"`
-	KegiatanId    string `gorm:"column:kegiatanId;not null"`
-	Kegiatan      Kegiatan
-	SubKegiatanId string `gorm:"column:subKegiatanId;not null"`
-	SubKegiatan   SubKegiatan
-	CreatedAt     time.Time `gorm:"column:createdAt;not null"`
-	UpdatedAt     time.Time `gorm:"column:updatedAt;not null"`
+	Id              int    `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	KegiatanId      string `gorm:"column:kegiatanId;not null"`
+	Kegiatan        Kegiatan
+	SubKegiatanId   string `gorm:"column:subKegiatanId;not null"`
+	SubKegiatan     SubKegiatan
+	PaguSubKegiatan int64     `gorm:"column:paguSubKegiatan;not null"`
+	CreatedAt       time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt       time.Time `gorm:"column:updatedAt;not null"`
 }
 
 type FokusBelanja struct {

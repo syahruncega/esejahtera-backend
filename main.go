@@ -157,7 +157,7 @@ func main() {
 	var server = gin.Default()
 
 	server.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3003", "http://localhost:3003", "https://e-sejahtera.vercel.app"},
+		AllowOrigins:     []string{"http://localhost:3003", "http://localhost:3003", "https://www.e-sejahtera.info", "https://e-sejahtera.info"},
 		AllowCredentials: true,
 		AllowMethods:     []string{"POST", "PUT", "DELETE", "GET", "PATCH"},
 		AllowHeaders:     []string{"Access-Control-Allow-Headers", "Access-Control-Allow-Origin", "access-control-allow-origin, access-control-allow-headers", "Content-Type", "Accept", "Origin", "Authorization"},
