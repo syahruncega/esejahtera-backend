@@ -34,6 +34,7 @@ func (r *bidangUrusanRepository) FindById(id int) (model.BidangUrusan, error) {
 	var bidangUrusan model.BidangUrusan
 
 	var err = r.db.Take(&bidangUrusan, id).Error
+	// var err = r.db.Model(model.BidangUrusan{Id: id}).First(&bidangUrusan).Error
 
 	return bidangUrusan, err
 }
