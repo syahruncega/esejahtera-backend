@@ -9,7 +9,7 @@ import (
 type DetailProgramService interface {
 	FindAll() ([]model.DetailProgram, error)
 	FindById(id int) (model.DetailProgram, error)
-	FindByInstansiId(instansiId string) ([]model.DetailProgram, error)
+	FindByInstansi(instansiId int) ([]model.DetailProgram, error)
 	Create(detailProgramRequest request.CreateDetailProgramRequest) (model.DetailProgram, error)
 	Update(id int, detailProgramRequest request.UpdateDetailProgramRequest) (model.DetailProgram, error)
 	Delete(id int) (model.DetailProgram, error)
@@ -35,8 +35,8 @@ func (s *detailProgramService) FindById(id int) (model.DetailProgram, error) {
 	return detailProgram, err
 }
 
-func (s *detailProgramService) FindByInstansiId(instansiId string) ([]model.DetailProgram, error) {
-	var detailPrograms, err = s.detailProgramRepository.FindByInstansiId(instansiId)
+func (s *detailProgramService) FindByInstansi(instansiId int) ([]model.DetailProgram, error) {
+	var detailPrograms, err = s.detailProgramRepository.FindByInstansi(instansiId)
 
 	return detailPrograms, err
 }

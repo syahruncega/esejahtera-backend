@@ -9,7 +9,7 @@ import (
 type DetailSubKegiatanService interface {
 	FindAll() ([]model.DetailSubKegiatan, error)
 	FindById(id int) (model.DetailSubKegiatan, error)
-	FindByKegiatanId(kegiatanId string) ([]model.DetailSubKegiatan, error)
+	FindByKegiatanId(kegiatanId int) ([]model.DetailSubKegiatan, error)
 	Create(detailSubKegiatanRequest request.CreateDetailSubKegiatanRequest) (model.DetailSubKegiatan, error)
 	Update(id int, detailSubKegiatanRequest request.UpdateDetailSubKegiatanRequest) (model.DetailSubKegiatan, error)
 	Delete(id int) (model.DetailSubKegiatan, error)
@@ -35,7 +35,7 @@ func (s *detailSubKegiatanService) FindById(id int) (model.DetailSubKegiatan, er
 	return detailSubKegiatan, err
 }
 
-func (s *detailSubKegiatanService) FindByKegiatanId(kegiatanId string) ([]model.DetailSubKegiatan, error) {
+func (s *detailSubKegiatanService) FindByKegiatanId(kegiatanId int) ([]model.DetailSubKegiatan, error) {
 	var detailSubKegiatans, err = s.detailSubKegiatanRepository.FindByKegiatanId(kegiatanId)
 
 	return detailSubKegiatans, err

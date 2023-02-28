@@ -23,12 +23,13 @@ func NewDetailKegiatanController(detailKegiatanService service.DetailKegiatanSer
 }
 
 func (c *detailKegiatanController) GetDetailKegiatans(cntx *gin.Context) {
-	var programId = cntx.Query("progamid")
+	var programIdString = cntx.Query("programid")
 
 	var detailKegiatans []model.DetailKegiatan
 	var err error
 
-	if programId != "" {
+	if programIdString != "" {
+		var programId, _ = strconv.Atoi(programIdString)
 		detailKegiatans, err = c.detailKegiatanService.FindByProgramId(programId)
 	} else {
 		detailKegiatans, err = c.detailKegiatanService.FindAll()

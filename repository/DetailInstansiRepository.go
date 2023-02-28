@@ -9,7 +9,8 @@ import (
 type DetailInstansiRepository interface {
 	FindAll() ([]model.DetailInstansi, error)
 	FindById(id int) (model.DetailInstansi, error)
-	FindByInstansiId(instansiId string) ([]model.DetailInstansi, error)
+	FindByBidangUrusan(bidangUrusanId int) ([]model.DetailInstansi, error)
+	FindByInstansiId(instansiId int) ([]model.DetailInstansi, error)
 	Create(detailInstansi model.DetailInstansi) (model.DetailInstansi, error)
 	Update(detailInstansi model.DetailInstansi) (model.DetailInstansi, error)
 	Delete(detailInstansi model.DetailInstansi) (model.DetailInstansi, error)
@@ -41,7 +42,15 @@ func (r *detailInstansiRepository) FindById(id int) (model.DetailInstansi, error
 	return detailInstansi, err
 }
 
-func (r *detailInstansiRepository) FindByInstansiId(instansiId string) ([]model.DetailInstansi, error) {
+func (r *detailInstansiRepository) FindByBidangUrusan(bidangUrusanId int) ([]model.DetailInstansi, error) {
+	var detailInstansis []model.DetailInstansi
+
+	var err = r.db.Where("bidangUrusanId = ?", bidangUrusanId).Model(&detailInstansis).Preload("Instansi").Preload("BidangUrusan").Find(&detailInstansis).Error
+
+	return detailInstansis, err
+}
+
+func (r *detailInstansiRepository) FindByInstansiId(instansiId int) ([]model.DetailInstansi, error) {
 	var detailInstansis []model.DetailInstansi
 
 	var err = r.db.Where("instansiId = ? ", instansiId).Model(&detailInstansis).Preload("Instansi").Preload("BidangUrusan").Find(&detailInstansis).Error

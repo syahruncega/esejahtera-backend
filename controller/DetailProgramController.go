@@ -23,13 +23,14 @@ func NewDetailProgramController(detailProgramService service.DetailProgramServic
 }
 
 func (c *detailProgramController) GetDetailPrograms(cntx *gin.Context) {
-	var instansiId = cntx.Query("instansiid")
+	var instansiIdString = cntx.Query("instansiid")
 
 	var detailPrograms []model.DetailProgram
 	var err error
 
-	if instansiId != "" {
-		detailPrograms, err = c.detailProgramService.FindByInstansiId(instansiId)
+	if instansiIdString != "" {
+		var instansiId, _ = strconv.Atoi(instansiIdString)
+		detailPrograms, err = c.detailProgramService.FindByInstansi(instansiId)
 	} else {
 		detailPrograms, err = c.detailProgramService.FindAll()
 	}

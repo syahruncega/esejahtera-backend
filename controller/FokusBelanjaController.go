@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"kemiskinan/helper"
+	"kemiskinan/model"
 	"kemiskinan/request"
 	"kemiskinan/responses"
 	"kemiskinan/service"
@@ -22,7 +23,18 @@ func NewFokusBelanjaController(fokusBelanjaService service.FokusBelanjaService) 
 }
 
 func (c *fokusBelanjaController) GetFokusBelanjas(cntx *gin.Context) {
-	var fokusBelanjas, err = c.fokusBelanjaService.FindAll()
+	var subKegiatanIdString = cntx.Query("subkegiatanid")
+
+	var fokusBelanjas []model.FokusBelanja
+	var err error
+
+	if subKegiatanIdString != "" {
+		var subKegiatanId, _ = strconv.Atoi(subKegiatanIdString)
+		fokusBelanjas, err = c.fokusBelanjaService.FindBySubKegiatanId(subKegiatanId)
+	} else {
+		fokusBelanjas, err = c.fokusBelanjaService.FindAll()
+	}
+
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),

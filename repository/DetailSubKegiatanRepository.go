@@ -9,7 +9,7 @@ import (
 type DetailSubKegiatanRepository interface {
 	FindAll() ([]model.DetailSubKegiatan, error)
 	FindById(id int) (model.DetailSubKegiatan, error)
-	FindByKegiatanId(kegiatanId string) ([]model.DetailSubKegiatan, error)
+	FindByKegiatanId(kegiatanId int) ([]model.DetailSubKegiatan, error)
 	Create(detailSubKegiatan model.DetailSubKegiatan) (model.DetailSubKegiatan, error)
 	Update(detailSubKegiatan model.DetailSubKegiatan) (model.DetailSubKegiatan, error)
 	Delete(detailSubKegiatan model.DetailSubKegiatan) (model.DetailSubKegiatan, error)
@@ -39,7 +39,7 @@ func (r *detailSubKegiatanRepository) FindById(id int) (model.DetailSubKegiatan,
 	return detailSubKegiatan, err
 }
 
-func (r *detailSubKegiatanRepository) FindByKegiatanId(kegiatanId string) ([]model.DetailSubKegiatan, error) {
+func (r *detailSubKegiatanRepository) FindByKegiatanId(kegiatanId int) ([]model.DetailSubKegiatan, error) {
 	var detailSubKegiatans []model.DetailSubKegiatan
 
 	var err = r.db.Where("kegiatanId = ? ", kegiatanId).Model(&detailSubKegiatans).Preload("Kegiatan").Preload("SubKegiatan").Find(&detailSubKegiatans).Error

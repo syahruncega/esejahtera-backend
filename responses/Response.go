@@ -20,9 +20,9 @@ type InstansiResponse struct {
 
 type DetailInstansiResponse struct {
 	Id             int                  `json:"id"`
-	InstansiId     string               `json:"instansiId"`
+	InstansiId     int                  `json:"instansiId"`
 	Instansi       InstansiResponse     `json:"instansi"`
-	BidangUrusanId string               `json:"bidangUrusanId"`
+	BidangUrusanId int                  `json:"bidangUrusanId"`
 	BidangUrusan   BidangUrusanResponse `json:"bidangUrusan"`
 	CreatedAt      time.Time            `json:"createdAt"`
 	UpdatedAt      time.Time            `json:"updatedAt"`
@@ -38,9 +38,9 @@ type ProgramResponse struct {
 
 type DetailProgramResponse struct {
 	Id          int              `json:"id"`
-	InstansiId  string           `json:"instansiId"`
+	InstansiId  int              `json:"instansiId"`
 	Instansi    InstansiResponse `json:"instansi"`
-	ProgramId   string           `json:"programId"`
+	ProgramId   int              `json:"programId"`
 	Program     ProgramResponse
 	PaguProgram int64     `json:"paguProgram"`
 	CreatedAt   time.Time `json:"createdAt"`
@@ -72,9 +72,9 @@ type KegiatanResponse struct {
 
 type DetailKegiatanResponse struct {
 	Id           int             `json:"id"`
-	ProgramId    string          `json:"programId"`
+	ProgramId    int             `json:"programId"`
 	Program      ProgramResponse `json:"program"`
-	KegiatanId   string          `json:"kegiatanId"`
+	KegiatanId   int             `json:"kegiatanId"`
 	Kegiatan     KegiatanResponse
 	PaguKegiatan int64     `json:"paguKegiatan"`
 	CreatedAt    time.Time `json:"createdAt"`
@@ -103,9 +103,9 @@ type SubKegiatanResponse struct {
 
 type DetailSubKegiatanResponse struct {
 	Id              int                 `json:"id"`
-	KegiatanId      string              `json:"kegiatanId"`
+	KegiatanId      int                 `json:"kegiatanId"`
 	Kegiatan        KegiatanResponse    `json:"kegiatan"`
-	SubKegiatanId   string              `json:"subKegiatanId"`
+	SubKegiatanId   int                 `json:"subKegiatanId"`
 	SubKegiatan     SubKegiatanResponse `json:"subKegiatan"`
 	PaguSubKegiatan int64               `json:"paguSubKegiatan"`
 	CreatedAt       time.Time           `json:"createdAt"`
@@ -126,7 +126,7 @@ type IndikatorSubKegiatanResponse struct {
 
 type FokusBelanjaResponse struct {
 	Id               int                 `json:"id"`
-	SubKegiatanId    string              `json:"subKegiatanId"`
+	SubKegiatanId    int                 `json:"subKegiatanId"`
 	SubKegiatan      SubKegiatanResponse `json:"subKegiatan"`
 	FokusBelanja     string              `json:"fokusBelanja"`
 	Indikator        string              `json:"indikator"`

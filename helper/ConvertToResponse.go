@@ -198,7 +198,7 @@ func ConvertToDetailSubKegiatanResponse(d model.DetailSubKegiatan) responses.Det
 		SubKegiatanId: d.SubKegiatanId,
 		SubKegiatan: responses.SubKegiatanResponse{
 			Id:              d.SubKegiatan.Id,
-			SubKegiatanId:   d.SubKegiatanId,
+			SubKegiatanId:   d.SubKegiatan.SubKegiatanId,
 			NamaSubKegiatan: d.SubKegiatan.NamaSubKegiatan,
 			CreatedAt:       d.SubKegiatan.CreatedAt,
 			UpdatedAt:       d.SubKegiatan.UpdatedAt,
@@ -241,7 +241,7 @@ func ConvertToFokusBelanjaResponse(f model.FokusBelanja) responses.FokusBelanjaR
 		SubKegiatanId: f.SubKegiatanId,
 		SubKegiatan: responses.SubKegiatanResponse{
 			Id:              f.SubKegiatan.Id,
-			SubKegiatanId:   f.SubKegiatanId,
+			SubKegiatanId:   f.SubKegiatan.SubKegiatanId,
 			NamaSubKegiatan: f.SubKegiatan.NamaSubKegiatan,
 			CreatedAt:       f.SubKegiatan.CreatedAt,
 			UpdatedAt:       f.SubKegiatan.UpdatedAt,

@@ -23,15 +23,20 @@ func NewDetailInstansiController(detailInstansiService service.DetailInstansiSer
 }
 
 func (c *detailInstansiController) GetDetailInstansis(cntx *gin.Context) {
-	var instansiId = cntx.Query("instansiid")
+	var instansiIdString = cntx.Query("instansiid")
+	var bidangUrusanIdString = cntx.Query("bidangurusanid")
 
 	var detailInstansis []model.DetailInstansi
 	var err error
 
 	var detailInstansisResponse []responses.DetailInstansiResponse
 
-	if instansiId != "" {
+	if instansiIdString != "" {
+		var instansiId, _ = strconv.Atoi(instansiIdString)
 		detailInstansis, err = c.detailInstansiService.FindByInstansiId(instansiId)
+	} else if bidangUrusanIdString != "" {
+		var bidangUrusanId, _ = strconv.Atoi(bidangUrusanIdString)
+		detailInstansis, err = c.detailInstansiService.FindByBidangUrusan(bidangUrusanId)
 	} else {
 		detailInstansis, err = c.detailInstansiService.FindAll()
 	}

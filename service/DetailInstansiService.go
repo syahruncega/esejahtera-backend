@@ -9,7 +9,8 @@ import (
 type DetailInstansiService interface {
 	FindAll() ([]model.DetailInstansi, error)
 	FindById(id int) (model.DetailInstansi, error)
-	FindByInstansiId(instansiId string) ([]model.DetailInstansi, error)
+	FindByBidangUrusan(bidangUrusanId int) ([]model.DetailInstansi, error)
+	FindByInstansiId(instansiId int) ([]model.DetailInstansi, error)
 	Create(detailInstansiRequest request.CreateDetailInstansiRequest) (model.DetailInstansi, error)
 	Update(id int, detailInstansiRequest request.UpdateDetailInstansiRequest) (model.DetailInstansi, error)
 	Delete(id int) (model.DetailInstansi, error)
@@ -35,7 +36,13 @@ func (s *detailInstansiService) FindById(id int) (model.DetailInstansi, error) {
 	return detailInstansi, err
 }
 
-func (s *detailInstansiService) FindByInstansiId(instansiId string) ([]model.DetailInstansi, error) {
+func (s *detailInstansiService) FindByBidangUrusan(bidangUrusanId int) ([]model.DetailInstansi, error) {
+	var detailInstansis, err = s.detailInstansiRepository.FindByBidangUrusan(bidangUrusanId)
+
+	return detailInstansis, err
+}
+
+func (s *detailInstansiService) FindByInstansiId(instansiId int) ([]model.DetailInstansi, error) {
 	var detailInstansis, err = s.detailInstansiRepository.FindByInstansiId(instansiId)
 
 	return detailInstansis, err

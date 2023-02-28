@@ -1,11 +1,11 @@
 package request
 
 type CreateDetailInstansiRequest struct {
-	InstansiId     string `json:"instansiId" binding:"required"`
-	BidangUrusanId string `json:"bidangUrusanId" binding:"required"`
+	InstansiId     int `json:"instansiId" binding:"required"`
+	BidangUrusanId int `json:"bidangUrusanId" binding:"required"`
 }
 
 type UpdateDetailInstansiRequest struct {
-	InstansiId     string `json:"instansiId"`
-	BidangUrusanId string `json:"bidangUrusanId"`
+	InstansiId     int `json:"instansiId"`
+	BidangUrusanId int `json:"bidangUrusanId"`
 }
