@@ -56,6 +56,10 @@ func main() {
 	var indikatorSasaranService = service.NewIndikatorSasaranService(indikatorSasaranRepository)
 	var indikatorSasaranController = controller.NewIndikatorSasaranController(indikatorSasaranService)
 
+	var kebijakanRepository = repository.NewKebijakanRepository(config.DB)
+	var kebijakanService = service.NewKebijakanService(kebijakanRepository)
+	var kebijakanController = controller.NewKebijakanController(kebijakanService)
+
 	var kegiatanRepository = repository.NewKegiatanRepository(config.DB)
 	var kegiatanService = service.NewKegiatanService(kegiatanRepository)
 	var kegiatanController = controller.NewKegiatanController(kegiatanService)
@@ -67,10 +71,6 @@ func main() {
 	var subKegiatanRepository = repository.NewSubKegiatanRepository(config.DB)
 	var subKegiatanService = service.NewSubKegiatanService(subKegiatanRepository)
 	var subKegiatanController = controller.NewSubKegiatanController(subKegiatanService)
-
-	var indikatorSubKegiatanRepository = repository.NewIndikatorSubKegiatanRepository(config.DB)
-	var indikatorSubKegiatanService = service.NewIndikatorSubKegiatanService(indikatorSubKegiatanRepository)
-	var indikatorSubKegiatanController = controller.NewIndikatorSubKegiatanController(indikatorSubKegiatanService)
 
 	var detailSubKegiatanRepository = repository.NewDetailSubKegiatanRepository(config.DB)
 	var detailSubKegiatanService = service.NewDetailSubKegiatanService(detailSubKegiatanRepository)
@@ -195,17 +195,17 @@ func main() {
 	server.PATCH("/indikatorsasaran/:id", indikatorSasaranController.UpdateIndikatorSasaran)
 	server.DELETE("/indikatorsasaran/:id", indikatorSasaranController.DeleteIndikatorSasaran)
 
+	server.GET("/kebijakan", kebijakanController.GetKebijakans)
+	server.GET("/kebijakan/:id", kebijakanController.GetKebijakan)
+	server.POST("/kebijakan", kebijakanController.CreateKebijakan)
+	server.PATCH("/kebijakan/:id", kebijakanController.UpdateKebijakan)
+	server.DELETE("/kebijakan/:id", kebijakanController.DeleteKebijakan)
+
 	server.GET("/kegiatan", kegiatanController.GetKegiatans)
 	server.GET("/kegiatan/:id", kegiatanController.GetKegiatan)
 	server.POST("/kegiatan", kegiatanController.CreateKegiatan)
 	server.PATCH("/kegiatan/:id", kegiatanController.UpdateKegiatan)
 	server.DELETE("/kegiatan/:id", kegiatanController.DeleteKegiatan)
-
-	server.GET("/indikatorsubkegiatan", indikatorSubKegiatanController.GetIndikatorSubKegiatans)
-	server.GET("/indikatorsubkegiatan/:id", indikatorSubKegiatanController.GetIndikatorSubKegiatan)
-	server.POST("/indikatorsubkegiatan", indikatorSubKegiatanController.CreateIndikatorSubKegiatan)
-	server.PATCH("/indikatorsubkegiatan/:id", indikatorSubKegiatanController.UpdateIndikatorSubKegiatan)
-	server.DELETE("/indikatorsubkegiatan/:id", indikatorSubKegiatanController.DeleteIndikatorSubKegiatan)
 
 	server.GET("/detailkegiatan", detailKegiatanController.GetDetailKegiatans)
 	server.GET("/detailkegiatan/:id", detailKegiatanController.GetDetailKegiatan)
