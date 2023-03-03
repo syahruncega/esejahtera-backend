@@ -9,7 +9,6 @@ import (
 type DetailSubKegiatanRepository interface {
 	FindAll() ([]model.DetailSubKegiatan, error)
 	FindById(id int) (model.DetailSubKegiatan, error)
-	FindByKegiatanId(kegiatanId int) ([]model.DetailSubKegiatan, error)
 	Create(detailSubKegiatan model.DetailSubKegiatan) (model.DetailSubKegiatan, error)
 	Update(detailSubKegiatan model.DetailSubKegiatan) (model.DetailSubKegiatan, error)
 	Delete(detailSubKegiatan model.DetailSubKegiatan) (model.DetailSubKegiatan, error)
@@ -26,7 +25,7 @@ func NewDetailSubKegiatanRepository(db *gorm.DB) *detailSubKegiatanRepository {
 func (r *detailSubKegiatanRepository) FindAll() ([]model.DetailSubKegiatan, error) {
 	var detailSubKegiatans []model.DetailSubKegiatan
 
-	var err = r.db.Model(&detailSubKegiatans).Preload("Kegiatan").Preload("SubKegiatan").Find(&detailSubKegiatans).Error
+	var err = r.db.Model(&detailSubKegiatans).Preload("SubKegiatan").Find(&detailSubKegiatans).Error
 
 	return detailSubKegiatans, err
 }
@@ -34,17 +33,9 @@ func (r *detailSubKegiatanRepository) FindAll() ([]model.DetailSubKegiatan, erro
 func (r *detailSubKegiatanRepository) FindById(id int) (model.DetailSubKegiatan, error) {
 	var detailSubKegiatan model.DetailSubKegiatan
 
-	var err = r.db.Model(&detailSubKegiatan).Preload("Kegiatan").Preload("SubKegiatan").Take(&detailSubKegiatan, id).Error
+	var err = r.db.Model(&detailSubKegiatan).Preload("SubKegiatan").Take(&detailSubKegiatan, id).Error
 
 	return detailSubKegiatan, err
-}
-
-func (r *detailSubKegiatanRepository) FindByKegiatanId(kegiatanId int) ([]model.DetailSubKegiatan, error) {
-	var detailSubKegiatans []model.DetailSubKegiatan
-
-	var err = r.db.Where("kegiatanId = ? ", kegiatanId).Model(&detailSubKegiatans).Preload("Kegiatan").Preload("SubKegiatan").Find(&detailSubKegiatans).Error
-
-	return detailSubKegiatans, err
 }
 
 func (r *detailSubKegiatanRepository) Create(detailSubKegiatan model.DetailSubKegiatan) (model.DetailSubKegiatan, error) {
@@ -55,9 +46,9 @@ func (r *detailSubKegiatanRepository) Create(detailSubKegiatan model.DetailSubKe
 
 func (r *detailSubKegiatanRepository) Update(detailSubKegiatan model.DetailSubKegiatan) (model.DetailSubKegiatan, error) {
 	var err = r.db.Model(&detailSubKegiatan).Updates(model.DetailSubKegiatan{
-		KegiatanId:      detailSubKegiatan.KegiatanId,
 		SubKegiatanId:   detailSubKegiatan.SubKegiatanId,
 		PaguSubKegiatan: detailSubKegiatan.PaguSubKegiatan,
+		Tipe:            detailSubKegiatan.Tipe,
 	}).Error
 
 	return detailSubKegiatan, err

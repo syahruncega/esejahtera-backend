@@ -36,7 +36,9 @@ func (s *programService) FindById(id int) (model.Program, error) {
 
 func (s *programService) Create(programRequest request.CreateProgramRequest) (model.Program, error) {
 	var program = model.Program{
-		ProgramId:   programRequest.ProgramId,
+		InstansiId:  programRequest.InstansiId,
+		Tahun:       programRequest.Tahun,
+		KodeProgram: programRequest.KodeProgram,
 		NamaProgram: programRequest.NamaProgram,
 	}
 
@@ -48,7 +50,9 @@ func (s *programService) Create(programRequest request.CreateProgramRequest) (mo
 func (s *programService) Update(id int, programRequest request.UpdateProgramRequest) (model.Program, error) {
 	var program, err = s.programRepository.FindById(id)
 
-	program.ProgramId = programRequest.ProgramId
+	program.InstansiId = programRequest.InstansiId
+	program.Tahun = programRequest.Tahun
+	program.KodeProgram = programRequest.KodeProgram
 	program.NamaProgram = programRequest.NamaProgram
 
 	updatedProgram, err := s.programRepository.Update(program)

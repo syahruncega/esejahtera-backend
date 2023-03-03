@@ -9,7 +9,6 @@ import (
 type DetailSubKegiatanService interface {
 	FindAll() ([]model.DetailSubKegiatan, error)
 	FindById(id int) (model.DetailSubKegiatan, error)
-	FindByKegiatanId(kegiatanId int) ([]model.DetailSubKegiatan, error)
 	Create(detailSubKegiatanRequest request.CreateDetailSubKegiatanRequest) (model.DetailSubKegiatan, error)
 	Update(id int, detailSubKegiatanRequest request.UpdateDetailSubKegiatanRequest) (model.DetailSubKegiatan, error)
 	Delete(id int) (model.DetailSubKegiatan, error)
@@ -35,17 +34,11 @@ func (s *detailSubKegiatanService) FindById(id int) (model.DetailSubKegiatan, er
 	return detailSubKegiatan, err
 }
 
-func (s *detailSubKegiatanService) FindByKegiatanId(kegiatanId int) ([]model.DetailSubKegiatan, error) {
-	var detailSubKegiatans, err = s.detailSubKegiatanRepository.FindByKegiatanId(kegiatanId)
-
-	return detailSubKegiatans, err
-}
-
 func (s *detailSubKegiatanService) Create(detailSubKegiatanRequest request.CreateDetailSubKegiatanRequest) (model.DetailSubKegiatan, error) {
 	var detailSubKegiatan = model.DetailSubKegiatan{
-		KegiatanId:      detailSubKegiatanRequest.KegiatanId,
 		SubKegiatanId:   detailSubKegiatanRequest.SubKegiatanId,
 		PaguSubKegiatan: detailSubKegiatanRequest.PaguSubKegiatan,
+		Tipe:            detailSubKegiatanRequest.Tipe,
 	}
 
 	newDetailSubKegiatan, err := s.detailSubKegiatanRepository.Create(detailSubKegiatan)
@@ -56,9 +49,9 @@ func (s *detailSubKegiatanService) Create(detailSubKegiatanRequest request.Creat
 func (s *detailSubKegiatanService) Update(id int, detailSubKegiatanRequest request.UpdateDetailSubKegiatanRequest) (model.DetailSubKegiatan, error) {
 	var detailSubKegiatan, err = s.detailSubKegiatanRepository.FindById(id)
 
-	detailSubKegiatan.KegiatanId = detailSubKegiatanRequest.KegiatanId
 	detailSubKegiatan.SubKegiatanId = detailSubKegiatanRequest.SubKegiatanId
 	detailSubKegiatan.PaguSubKegiatan = detailSubKegiatanRequest.PaguSubKegiatan
+	detailSubKegiatan.Tipe = detailSubKegiatanRequest.Tipe
 
 	updatedDetailSubKegiatan, err := s.detailSubKegiatanRepository.Update(detailSubKegiatan)
 

@@ -56,7 +56,7 @@ func (r *fokusBelanjaRepository) Create(fokusBelanja model.FokusBelanja) (model.
 func (r *fokusBelanjaRepository) Update(fokusBelanja model.FokusBelanja) (model.FokusBelanja, error) {
 	var err = r.db.Model(&fokusBelanja).Select("SubKegiatanId", "FokusBelanja", "Indikator", "Target", "Satuan", "PaguFokusBelanja", "Keterangan").Updates(model.FokusBelanja{
 		SubKegiatanId:    fokusBelanja.SubKegiatanId,
-		FokusBelanja:     fokusBelanja.FokusBelanja,
+		NamaFokusBelanja: fokusBelanja.NamaFokusBelanja,
 		Indikator:        fokusBelanja.Indikator,
 		Target:           fokusBelanja.Target,
 		Satuan:           fokusBelanja.Satuan,

@@ -9,7 +9,6 @@ import (
 type DetailProgramService interface {
 	FindAll() ([]model.DetailProgram, error)
 	FindById(id int) (model.DetailProgram, error)
-	FindByInstansi(instansiId int) ([]model.DetailProgram, error)
 	Create(detailProgramRequest request.CreateDetailProgramRequest) (model.DetailProgram, error)
 	Update(id int, detailProgramRequest request.UpdateDetailProgramRequest) (model.DetailProgram, error)
 	Delete(id int) (model.DetailProgram, error)
@@ -35,17 +34,11 @@ func (s *detailProgramService) FindById(id int) (model.DetailProgram, error) {
 	return detailProgram, err
 }
 
-func (s *detailProgramService) FindByInstansi(instansiId int) ([]model.DetailProgram, error) {
-	var detailPrograms, err = s.detailProgramRepository.FindByInstansi(instansiId)
-
-	return detailPrograms, err
-}
-
 func (s *detailProgramService) Create(detailProgramRequest request.CreateDetailProgramRequest) (model.DetailProgram, error) {
 	var detailProgram = model.DetailProgram{
-		InstansiId:  detailProgramRequest.InstansiId,
 		ProgramId:   detailProgramRequest.ProgramId,
 		PaguProgram: detailProgramRequest.PaguProgram,
+		Tipe:        detailProgramRequest.Tipe,
 	}
 
 	newDetailProgram, err := s.detailProgramRepository.Create(detailProgram)
@@ -56,9 +49,9 @@ func (s *detailProgramService) Create(detailProgramRequest request.CreateDetailP
 func (s *detailProgramService) Update(id int, detailProgramRequest request.UpdateDetailProgramRequest) (model.DetailProgram, error) {
 	var detailProgram, err = s.detailProgramRepository.FindById(id)
 
-	detailProgram.InstansiId = detailProgramRequest.InstansiId
 	detailProgram.ProgramId = detailProgramRequest.ProgramId
 	detailProgram.PaguProgram = detailProgramRequest.PaguProgram
+	detailProgram.Tipe = detailProgramRequest.Tipe
 
 	updatedDetailProgram, err := s.detailProgramRepository.Update(detailProgram)
 

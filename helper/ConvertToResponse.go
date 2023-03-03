@@ -8,7 +8,7 @@ import (
 func ConvertToBidangUrusanResponse(b model.BidangUrusan) responses.BidangUrusanResponse {
 	return responses.BidangUrusanResponse{
 		Id:               b.Id,
-		BidangUrusanId:   b.BidangUrusanId,
+		KodeBidangUrusan: b.KodeBidangUrusan,
 		NamaBidangUrusan: b.NamaBidangUrusan,
 		CreatedAt:        b.CreatedAt,
 		UpdatedAt:        b.UpdatedAt,
@@ -17,42 +17,35 @@ func ConvertToBidangUrusanResponse(b model.BidangUrusan) responses.BidangUrusanR
 
 func ConvertToInstansiResponse(i model.Instansi) responses.InstansiResponse {
 	return responses.InstansiResponse{
-		Id:           i.Id,
-		InstansiId:   i.InstansiId,
+		Id:             i.Id,
+		BidangUrusanId: i.BidangUrusanId,
+		BidangUrusan: responses.BidangUrusanResponse{
+			Id:               i.BidangUrusan.Id,
+			KodeBidangUrusan: i.BidangUrusan.KodeBidangUrusan,
+			NamaBidangUrusan: i.BidangUrusan.NamaBidangUrusan,
+			CreatedAt:        i.BidangUrusan.CreatedAt,
+			UpdatedAt:        i.BidangUrusan.UpdatedAt,
+		},
+		KodeInstansi: i.KodeInstansi,
 		NamaInstansi: i.NamaInstansi,
 		CreatedAt:    i.CreatedAt,
 		UpdatedAt:    i.UpdatedAt,
 	}
 }
 
-func ConvertToDetailInstansiResponse(d model.DetailInstansi) responses.DetailInstansiResponse {
-	return responses.DetailInstansiResponse{
-		Id:         d.Id,
-		InstansiId: d.InstansiId,
-		Instansi: responses.InstansiResponse{
-			Id:           d.Instansi.Id,
-			InstansiId:   d.Instansi.InstansiId,
-			NamaInstansi: d.Instansi.NamaInstansi,
-			CreatedAt:    d.Instansi.CreatedAt,
-			UpdatedAt:    d.Instansi.UpdatedAt,
-		},
-		BidangUrusanId: d.BidangUrusanId,
-		BidangUrusan: responses.BidangUrusanResponse{
-			Id:               d.BidangUrusan.Id,
-			BidangUrusanId:   d.BidangUrusan.BidangUrusanId,
-			NamaBidangUrusan: d.BidangUrusan.NamaBidangUrusan,
-			CreatedAt:        d.BidangUrusan.CreatedAt,
-			UpdatedAt:        d.BidangUrusan.UpdatedAt,
-		},
-		CreatedAt: d.CreatedAt,
-		UpdatedAt: d.UpdatedAt,
-	}
-}
-
 func ConvertToProgramResponse(p model.Program) responses.ProgramResponse {
 	return responses.ProgramResponse{
-		Id:          p.Id,
-		ProgramId:   p.ProgramId,
+		Id:         p.Id,
+		InstansiId: p.InstansiId,
+		Instansi: responses.InstansiResponse{
+			Id:             p.Instansi.Id,
+			BidangUrusanId: p.Instansi.BidangUrusanId,
+			KodeInstansi:   p.Instansi.KodeInstansi,
+			NamaInstansi:   p.Instansi.NamaInstansi,
+			CreatedAt:      p.CreatedAt,
+			UpdatedAt:      p.UpdatedAt,
+		},
+		KodeProgram: p.KodeProgram,
 		NamaProgram: p.NamaProgram,
 		CreatedAt:   p.CreatedAt,
 		UpdatedAt:   p.UpdatedAt,
@@ -61,19 +54,13 @@ func ConvertToProgramResponse(p model.Program) responses.ProgramResponse {
 
 func ConvertToDetailProgramResponse(d model.DetailProgram) responses.DetailProgramResponse {
 	return responses.DetailProgramResponse{
-		Id:         d.Id,
-		InstansiId: d.InstansiId,
-		Instansi: responses.InstansiResponse{
-			Id:           d.Instansi.Id,
-			InstansiId:   d.Instansi.InstansiId,
-			NamaInstansi: d.Instansi.NamaInstansi,
-			CreatedAt:    d.Instansi.CreatedAt,
-			UpdatedAt:    d.Instansi.UpdatedAt,
-		},
+		Id:        d.Id,
 		ProgramId: d.ProgramId,
 		Program: responses.ProgramResponse{
 			Id:          d.Program.Id,
-			ProgramId:   d.Program.ProgramId,
+			InstansiId:  d.Program.InstansiId,
+			Tahun:       d.Program.Tahun,
+			KodeProgram: d.Program.KodeProgram,
 			NamaProgram: d.Program.NamaProgram,
 			CreatedAt:   d.Program.CreatedAt,
 			UpdatedAt:   d.UpdatedAt,
@@ -84,39 +71,40 @@ func ConvertToDetailProgramResponse(d model.DetailProgram) responses.DetailProgr
 	}
 }
 
-func ConvertToIndikatorProgramResponse(p model.IndikatorProgram) responses.IndikatorProgramResponse {
-	return responses.IndikatorProgramResponse{
-		Id:         p.Id,
-		InstansiId: p.InstansiId,
-		Instansi: responses.InstansiResponse{
-			Id:           p.Instansi.Id,
-			InstansiId:   p.Instansi.InstansiId,
-			NamaInstansi: p.Instansi.NamaInstansi,
-			CreatedAt:    p.Instansi.CreatedAt,
-			UpdatedAt:    p.Instansi.UpdatedAt,
-		},
-		ProgramId: p.ProgramId,
+func ConvertToIndikatorSasaranResponse(i model.IndikatorSasaran) responses.IndikatorSasaranResponse {
+	return responses.IndikatorSasaranResponse{
+		Id:        i.Id,
+		ProgramId: i.ProgramId,
 		Program: responses.ProgramResponse{
-			Id:          p.Program.Id,
-			ProgramId:   p.Program.ProgramId,
-			NamaProgram: p.Program.NamaProgram,
-			CreatedAt:   p.Program.CreatedAt,
-			UpdatedAt:   p.Program.UpdatedAt,
+			Id:          i.Program.Id,
+			InstansiId:  i.Program.InstansiId,
+			Tahun:       i.Program.Tahun,
+			KodeProgram: i.Program.KodeProgram,
+			NamaProgram: i.Program.NamaProgram,
+			CreatedAt:   i.Program.CreatedAt,
+			UpdatedAt:   i.Program.UpdatedAt,
 		},
-		Sasaran:                 p.Sasaran,
-		IndikatorSasaran:        p.IndikatorSasaran,
-		Kebijakan:               p.Kebijakan,
-		IndikatorKinerjaProgram: p.IndikatorKinerjaProgram,
-		PaguProgram:             p.PaguProgram,
-		CreatedAt:               p.CreatedAt,
-		UpdatedAt:               p.UpdatedAt,
+		NamaIndikatorSasaran: i.NamaIndikatorSasaran,
+		CreatedAt:            i.CreatedAt,
+		UpdatedAt:            i.UpdatedAt,
 	}
 }
 
 func ConvertToKegiatanResponse(k model.Kegiatan) responses.KegiatanResponse {
 	return responses.KegiatanResponse{
-		Id:           k.Id,
-		KegiatanId:   k.KegiatanId,
+		Id:        k.Id,
+		ProgramId: k.ProgramId,
+		Program: responses.ProgramResponse{
+			Id:          k.Program.Id,
+			InstansiId:  k.Program.InstansiId,
+			Tahun:       k.Program.Tahun,
+			KodeProgram: k.Program.KodeProgram,
+			NamaProgram: k.Program.NamaProgram,
+			CreatedAt:   k.Program.CreatedAt,
+			UpdatedAt:   k.Program.UpdatedAt,
+		},
+		Tahun:        k.Tahun,
+		KodeKegiatan: k.KodeKegiatan,
 		NamaKegiatan: k.NamaKegiatan,
 		CreatedAt:    k.CreatedAt,
 		UpdatedAt:    k.UpdatedAt,
@@ -125,19 +113,13 @@ func ConvertToKegiatanResponse(k model.Kegiatan) responses.KegiatanResponse {
 
 func ConvertToDetailKegiatanResponse(d model.DetailKegiatan) responses.DetailKegiatanResponse {
 	return responses.DetailKegiatanResponse{
-		Id:        d.Id,
-		ProgramId: d.ProgramId,
-		Program: responses.ProgramResponse{
-			Id:          d.Program.Id,
-			ProgramId:   d.Program.ProgramId,
-			NamaProgram: d.Program.NamaProgram,
-			CreatedAt:   d.Program.CreatedAt,
-			UpdatedAt:   d.Program.UpdatedAt,
-		},
+		Id:         d.Id,
 		KegiatanId: d.KegiatanId,
 		Kegiatan: responses.KegiatanResponse{
 			Id:           d.Kegiatan.Id,
-			KegiatanId:   d.Kegiatan.KegiatanId,
+			ProgramId:    d.Kegiatan.ProgramId,
+			Tahun:        d.Kegiatan.Tahun,
+			KodeKegiatan: d.Kegiatan.KodeKegiatan,
 			NamaKegiatan: d.Kegiatan.NamaKegiatan,
 			CreatedAt:    d.Kegiatan.CreatedAt,
 			UpdatedAt:    d.Kegiatan.UpdatedAt,
@@ -148,36 +130,39 @@ func ConvertToDetailKegiatanResponse(d model.DetailKegiatan) responses.DetailKeg
 	}
 }
 
-func ConvertToIndikatorKegiatanResponse(i model.IndikatorKegiatan) responses.IndikatorKegiatanResponse {
-	return responses.IndikatorKegiatanResponse{
-		Id:        i.Id,
-		ProgramId: i.ProgramId,
+func ConvertToSasaranResponse(s model.Sasaran) responses.SasaranResponse {
+	return responses.SasaranResponse{
+		Id:        s.Id,
+		ProgramId: s.ProgramId,
 		Program: responses.ProgramResponse{
-			Id:          i.Program.Id,
-			ProgramId:   i.Program.ProgramId,
-			NamaProgram: i.Program.NamaProgram,
-			CreatedAt:   i.Program.CreatedAt,
-			UpdatedAt:   i.Program.UpdatedAt,
+			Id:          s.Program.Id,
+			InstansiId:  s.Program.InstansiId,
+			Tahun:       s.Program.Tahun,
+			KodeProgram: s.Program.KodeProgram,
+			NamaProgram: s.Program.NamaProgram,
+			CreatedAt:   s.Program.CreatedAt,
+			UpdatedAt:   s.Program.UpdatedAt,
 		},
-		KegiatanId: i.KegiatanId,
-		Kegiatan: responses.KegiatanResponse{
-			Id:           i.Kegiatan.Id,
-			KegiatanId:   i.Kegiatan.KegiatanId,
-			NamaKegiatan: i.Kegiatan.NamaKegiatan,
-			CreatedAt:    i.Kegiatan.CreatedAt,
-			UpdatedAt:    i.Kegiatan.UpdatedAt,
-		},
-		IndikatorKinerjaKegiatan: i.IndikatorKinerjaKegiatan,
-		PaguKegiatan:             i.PaguKegiatan,
-		CreatedAt:                i.CreatedAt,
-		UpdatedAt:                i.UpdatedAt,
+		NamaSasaran: s.NamaSasaran,
+		CreatedAt:   s.CreatedAt,
+		UpdatedAt:   s.UpdatedAt,
 	}
 }
 
 func ConvertToSubKegiatanResponse(s model.SubKegiatan) responses.SubKegiatanResponse {
 	return responses.SubKegiatanResponse{
-		Id:              s.Id,
-		SubKegiatanId:   s.SubKegiatanId,
+		Id:         s.Id,
+		KegiatanId: s.KegiatanId,
+		Kegiatan: responses.KegiatanResponse{
+			Id:           s.Kegiatan.Id,
+			ProgramId:    s.Kegiatan.ProgramId,
+			Tahun:        s.Kegiatan.Tahun,
+			KodeKegiatan: s.Kegiatan.KodeKegiatan,
+			NamaKegiatan: s.Kegiatan.NamaKegiatan,
+			CreatedAt:    s.Kegiatan.CreatedAt,
+			UpdatedAt:    s.Kegiatan.UpdatedAt,
+		},
+		KodeSubKegiatan: s.KodeSubKegiatan,
 		NamaSubKegiatan: s.NamaSubKegiatan,
 		CreatedAt:       s.CreatedAt,
 		UpdatedAt:       s.UpdatedAt,
@@ -186,19 +171,13 @@ func ConvertToSubKegiatanResponse(s model.SubKegiatan) responses.SubKegiatanResp
 
 func ConvertToDetailSubKegiatanResponse(d model.DetailSubKegiatan) responses.DetailSubKegiatanResponse {
 	return responses.DetailSubKegiatanResponse{
-		Id:         d.Id,
-		KegiatanId: d.KegiatanId,
-		Kegiatan: responses.KegiatanResponse{
-			Id:           d.Kegiatan.Id,
-			KegiatanId:   d.Kegiatan.KegiatanId,
-			NamaKegiatan: d.Kegiatan.NamaKegiatan,
-			CreatedAt:    d.Kegiatan.CreatedAt,
-			UpdatedAt:    d.Kegiatan.UpdatedAt,
-		},
+		Id:            d.Id,
 		SubKegiatanId: d.SubKegiatanId,
 		SubKegiatan: responses.SubKegiatanResponse{
 			Id:              d.SubKegiatan.Id,
-			SubKegiatanId:   d.SubKegiatan.SubKegiatanId,
+			KegiatanId:      d.SubKegiatan.KegiatanId,
+			Tahun:           d.SubKegiatan.Tahun,
+			KodeSubKegiatan: d.SubKegiatan.KodeSubKegiatan,
 			NamaSubKegiatan: d.SubKegiatan.NamaSubKegiatan,
 			CreatedAt:       d.SubKegiatan.CreatedAt,
 			UpdatedAt:       d.SubKegiatan.UpdatedAt,
@@ -209,29 +188,22 @@ func ConvertToDetailSubKegiatanResponse(d model.DetailSubKegiatan) responses.Det
 	}
 }
 
-func ConvertToIndikatorSubKegiatanResponse(i model.IndikatorSubKegiatan) responses.IndikatorSubKegiatanResponse {
-	return responses.IndikatorSubKegiatanResponse{
-		Id:         i.Id,
-		KegiatanId: i.KegiatanId,
-		Kegiatan: responses.KegiatanResponse{
-			Id:           i.Kegiatan.Id,
-			KegiatanId:   i.Kegiatan.KegiatanId,
-			NamaKegiatan: i.Kegiatan.NamaKegiatan,
-			CreatedAt:    i.CreatedAt,
-			UpdatedAt:    i.UpdatedAt,
+func ConvertToKebijakanResponse(k model.Kebijakan) responses.KebijakanResponse {
+	return responses.KebijakanResponse{
+		Id:        k.Id,
+		ProgramId: k.ProgramId,
+		Program: responses.ProgramResponse{
+			Id:          k.Id,
+			InstansiId:  k.Program.InstansiId,
+			Tahun:       k.Program.Tahun,
+			KodeProgram: k.Program.KodeProgram,
+			NamaProgram: k.Program.NamaProgram,
+			CreatedAt:   k.Program.CreatedAt,
+			UpdatedAt:   k.Program.UpdatedAt,
 		},
-		SubKegiatanId: i.SubKegiatanId,
-		SubKegiatan: responses.SubKegiatanResponse{
-			Id:              i.SubKegiatan.Id,
-			SubKegiatanId:   i.SubKegiatanId,
-			NamaSubKegiatan: i.SubKegiatan.NamaSubKegiatan,
-			CreatedAt:       i.SubKegiatan.CreatedAt,
-			UpdatedAt:       i.SubKegiatan.UpdatedAt,
-		},
-		IndikatorKinerjaSubKegiatan: i.IndikatorKinerjaSubKegiatan,
-		PaguSubKegiatan:             i.PaguSubKegiatan,
-		CreatedAt:                   i.CreatedAt,
-		UpdatedAt:                   i.UpdatedAt,
+		NamaKebijakan: k.NamaKebijakan,
+		CreatedAt:     k.CreatedAt,
+		UpdatedAt:     k.UpdatedAt,
 	}
 }
 
@@ -241,12 +213,14 @@ func ConvertToFokusBelanjaResponse(f model.FokusBelanja) responses.FokusBelanjaR
 		SubKegiatanId: f.SubKegiatanId,
 		SubKegiatan: responses.SubKegiatanResponse{
 			Id:              f.SubKegiatan.Id,
-			SubKegiatanId:   f.SubKegiatan.SubKegiatanId,
+			KegiatanId:      f.SubKegiatan.KegiatanId,
+			Tahun:           f.SubKegiatan.Tahun,
+			KodeSubKegiatan: f.SubKegiatan.KodeSubKegiatan,
 			NamaSubKegiatan: f.SubKegiatan.NamaSubKegiatan,
 			CreatedAt:       f.SubKegiatan.CreatedAt,
 			UpdatedAt:       f.SubKegiatan.UpdatedAt,
 		},
-		FokusBelanja:     f.FokusBelanja,
+		NamaFokusBelanja: f.NamaFokusBelanja,
 		Indikator:        f.Indikator,
 		Target:           f.Target,
 		Satuan:           f.Satuan,
@@ -264,7 +238,7 @@ func ConvertToDetailLokasiResponse(d model.Detail_Lokasi) responses.Detail_Lokas
 		FokusBelanja: responses.FokusBelanjaResponse{
 			Id:               d.FokusBelanja.Id,
 			SubKegiatanId:    d.FokusBelanja.SubKegiatanId,
-			FokusBelanja:     d.FokusBelanja.FokusBelanja,
+			NamaFokusBelanja: d.FokusBelanja.NamaFokusBelanja,
 			Indikator:        d.FokusBelanja.Indikator,
 			Target:           d.FokusBelanja.Target,
 			Satuan:           d.FokusBelanja.Satuan,

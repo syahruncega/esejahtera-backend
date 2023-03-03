@@ -44,7 +44,7 @@ func (s *fokusBelanjaService) FindBySubKegiatanId(subKegiatanId int) ([]model.Fo
 func (s *fokusBelanjaService) Create(fokusBelanjaRequest request.CreateFokusBelanjaRequest) (model.FokusBelanja, error) {
 	var detailSubKegiatan = model.FokusBelanja{
 		SubKegiatanId:    fokusBelanjaRequest.SubKegiatanId,
-		FokusBelanja:     fokusBelanjaRequest.FokusBelanja,
+		NamaFokusBelanja: fokusBelanjaRequest.NamaFokusBelanja,
 		Indikator:        fokusBelanjaRequest.Indikator,
 		Target:           fokusBelanjaRequest.Target,
 		Satuan:           fokusBelanjaRequest.Satuan,
@@ -60,7 +60,7 @@ func (s *fokusBelanjaService) Create(fokusBelanjaRequest request.CreateFokusBela
 func (s *fokusBelanjaService) Update(id int, fokusBelanjaRequest request.UpdateFokusBelanjaRequest) (model.FokusBelanja, error) {
 	var fokusBelanja, err = s.fokusBelanjaRepository.FindById(id)
 
-	fokusBelanja.FokusBelanja = fokusBelanjaRequest.FokusBelanja
+	fokusBelanja.NamaFokusBelanja = fokusBelanjaRequest.NamaFokusBelanja
 	fokusBelanja.Indikator = fokusBelanjaRequest.Indikator
 	fokusBelanja.Target = fokusBelanjaRequest.Target
 	fokusBelanja.Satuan = fokusBelanjaRequest.Satuan

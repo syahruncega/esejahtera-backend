@@ -40,10 +40,6 @@ func main() {
 	var instansiService = service.NewInstansiService(instansiRepository)
 	var instansiController = controller.NewInstansiController(instansiService)
 
-	var detailInstansiRepository = repository.NewDetailInstansiRepository(config.DB)
-	var detailInstansiService = service.NewDetailInstansiService(detailInstansiRepository)
-	var detailInstansiController = controller.NewDetailInstansiController(detailInstansiService)
-
 	var programRepository = repository.NewProgramRepository(config.DB)
 	var programService = service.NewProgramService(programRepository)
 	var programController = controller.NewProgramController(programService)
@@ -52,9 +48,13 @@ func main() {
 	var detailProgramService = service.NewDetailProgramService(detailProgramRepository)
 	var detailProgramController = controller.NewDetailProgramController(detailProgramService)
 
-	var indikatorProgramRepository = repository.NewIndikatorProgramRepository(config.DB)
-	var indikatorProgramService = service.NewIndikatorProgramService(indikatorProgramRepository)
-	var indikatorProgramController = controller.NewIndikatorProgramController(indikatorProgramService)
+	var sasaranRepository = repository.NewSasaranRepository(config.DB)
+	var sasaranService = service.NewSasaranService(sasaranRepository)
+	var sasaranController = controller.NewSasaranController(sasaranService)
+
+	var indikatorSasaranRepository = repository.NewIndikatorSasaranRepository(config.DB)
+	var indikatorSasaranService = service.NewIndikatorSasaranService(indikatorSasaranRepository)
+	var indikatorSasaranController = controller.NewIndikatorSasaranController(indikatorSasaranService)
 
 	var kegiatanRepository = repository.NewKegiatanRepository(config.DB)
 	var kegiatanService = service.NewKegiatanService(kegiatanRepository)
@@ -63,10 +63,6 @@ func main() {
 	var detailKegiatanRepository = repository.NewDetailKegiatanRepository(config.DB)
 	var detailKegiatanService = service.NewDetailKegiatanService(detailKegiatanRepository)
 	var detailKegiatanController = controller.NewDetailKegiatanController(detailKegiatanService)
-
-	var indikatorKegiatanRepository = repository.NewIndikatorKegiatanRepository(config.DB)
-	var indikatorKegiatanService = service.NewIndikatorKegiatanService(indikatorKegiatanRepository)
-	var indikatorKegiatanController = controller.NewIndikatorKegiatanController(indikatorKegiatanService)
 
 	var subKegiatanRepository = repository.NewSubKegiatanRepository(config.DB)
 	var subKegiatanService = service.NewSubKegiatanService(subKegiatanRepository)
@@ -175,12 +171,6 @@ func main() {
 	server.PATCH("/instansi/:id", instansiController.UpdateInstansi)
 	server.DELETE("/instansi/:id", instansiController.DeleteInstansi)
 
-	server.GET("/detailinstansi", detailInstansiController.GetDetailInstansis)
-	server.GET("/detailinstansi/:id", detailInstansiController.GetDetailInstansi)
-	server.POST("/detailinstansi", detailInstansiController.CreateDetailInstansi)
-	server.PATCH("/detailinstansi/:id", detailInstansiController.UpdateDetailInstansi)
-	server.DELETE("/detailinstansi/:id", detailInstansiController.DeleteDetailInstansi)
-
 	server.GET("/program", programController.GetPrograms)
 	server.GET("/program/:id", programController.GetProgram)
 	server.POST("/program", programController.CreateProgram)
@@ -193,11 +183,17 @@ func main() {
 	server.PATCH("/detailprogram/:id", detailProgramController.UpdateDetailProgram)
 	server.DELETE("/detailprogram/:id", detailProgramController.DeleteDetailProgram)
 
-	server.GET("/indikatorprogram", indikatorProgramController.GetIndikatorPrograms)
-	server.GET("/indikatorprogram/:id", indikatorProgramController.GetIndikatorProgram)
-	server.POST("/indikatorprogram", indikatorProgramController.CreateIndikatorProgram)
-	server.PATCH("/indikatorprogram/:id", indikatorProgramController.UpdateIndikatorProgram)
-	server.DELETE("/indikatorprogram/:id", indikatorProgramController.DeleteIndikatorProgram)
+	server.GET("/sasaran", sasaranController.GetSasarans)
+	server.GET("/sasaran/:id", sasaranController.GetSasaran)
+	server.POST("/sasaran", sasaranController.CreateSasaran)
+	server.PATCH("/sasaran/:id", sasaranController.UpdateSasaran)
+	server.DELETE("/sasaran/:id", sasaranController.DeleteSasaran)
+
+	server.GET("/indikatorsasaran", indikatorSasaranController.GetIndikatorSasarans)
+	server.GET("/indikatorsasaran/:id", indikatorSasaranController.GetIndikatorSasaran)
+	server.POST("/indikatorsasaran", indikatorSasaranController.CreateIndikatorSasaran)
+	server.PATCH("/indikatorsasaran/:id", indikatorSasaranController.UpdateIndikatorSasaran)
+	server.DELETE("/indikatorsasaran/:id", indikatorSasaranController.DeleteIndikatorSasaran)
 
 	server.GET("/kegiatan", kegiatanController.GetKegiatans)
 	server.GET("/kegiatan/:id", kegiatanController.GetKegiatan)
@@ -216,12 +212,6 @@ func main() {
 	server.POST("/detailkegiatan", detailKegiatanController.CreateDetailKegiatan)
 	server.PATCH("/detailkegiatan/:id", detailKegiatanController.UpdateDetailKegiatan)
 	server.DELETE("/detailkegiatan/:id", detailKegiatanController.DeleteDetailKegiatan)
-
-	server.GET("/indikatorkegiatan", indikatorKegiatanController.GetIndikatorKegiatans)
-	server.GET("/indikatorkegiatan/:id", indikatorKegiatanController.GetIndikatorKegiatan)
-	server.POST("/indikatorkegiatan", indikatorKegiatanController.CreateIndikatorKegiatan)
-	server.PATCH("/indikatorkegiatan/:id", indikatorKegiatanController.UpdateIndikatorKegiatan)
-	server.DELETE("/indikatorkegiatan/:id", indikatorKegiatanController.DeleteIndikatorKegiatan)
 
 	server.GET("/subkegiatan", subKegiatanController.GetSubKegiatans)
 	server.GET("/subkegiatan/:id", subKegiatanController.GetSubKegiatan)

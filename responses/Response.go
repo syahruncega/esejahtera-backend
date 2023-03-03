@@ -4,131 +4,117 @@ import "time"
 
 type BidangUrusanResponse struct {
 	Id               int       `json:"id"`
-	BidangUrusanId   string    `json:"bidangUrusanId"`
+	KodeBidangUrusan string    `json:"kodeBidangUrusan"`
 	NamaBidangUrusan string    `json:"namaBidangUrusan"`
 	CreatedAt        time.Time `json:"createdAt"`
 	UpdatedAt        time.Time `json:"updatedAt"`
 }
 
 type InstansiResponse struct {
-	Id           int       `json:"id"`
-	InstansiId   string    `json:"instansiId"`
-	NamaInstansi string    `json:"namaInstansi"`
-	CreatedAt    time.Time `json:"createdAt"`
-	UpdatedAt    time.Time `json:"updatedAt"`
-}
-
-type DetailInstansiResponse struct {
 	Id             int                  `json:"id"`
-	InstansiId     int                  `json:"instansiId"`
-	Instansi       InstansiResponse     `json:"instansi"`
 	BidangUrusanId int                  `json:"bidangUrusanId"`
 	BidangUrusan   BidangUrusanResponse `json:"bidangUrusan"`
+	KodeInstansi   string               `json:"kodeInstansi"`
+	NamaInstansi   string               `json:"namaInstansi"`
 	CreatedAt      time.Time            `json:"createdAt"`
 	UpdatedAt      time.Time            `json:"updatedAt"`
 }
 
 type ProgramResponse struct {
-	Id          int       `json:"id"`
-	ProgramId   string    `json:"programId"`
-	NamaProgram string    `json:"namaProgram"`
-	CreatedAt   time.Time `json:"createdAt"`
-	UpdatedAt   time.Time `json:"updatedAt"`
-}
-
-type DetailProgramResponse struct {
 	Id          int              `json:"id"`
 	InstansiId  int              `json:"instansiId"`
 	Instansi    InstansiResponse `json:"instansi"`
-	ProgramId   int              `json:"programId"`
+	Tahun       string           `json:"tahun"`
+	KodeProgram string           `json:"kodeProgram"`
+	NamaProgram string           `json:"namaProgram"`
+	CreatedAt   time.Time        `json:"createdAt"`
+	UpdatedAt   time.Time        `json:"updatedAt"`
+}
+
+type DetailProgramResponse struct {
+	Id          int `json:"id"`
+	ProgramId   int `json:"programId"`
 	Program     ProgramResponse
 	PaguProgram int64     `json:"paguProgram"`
+	Tipe        string    `json:"tipe"`
 	CreatedAt   time.Time `json:"createdAt"`
 	UpdatedAt   time.Time `json:"updatedAt"`
 }
 
-type IndikatorProgramResponse struct {
-	Id                      int    `json:"id"`
-	InstansiId              string `json:"instansiId"`
-	Instansi                InstansiResponse
-	ProgramId               string `json:"programId"`
-	Program                 ProgramResponse
-	Sasaran                 string    `json:"sasaran"`
-	IndikatorSasaran        string    `json:"indikatorSasaran"`
-	Kebijakan               string    `json:"kebijakan"`
-	IndikatorKinerjaProgram string    `json:"indikatorKinerjaProgram"`
-	PaguProgram             int       `json:"paguProgram"`
-	CreatedAt               time.Time `json:"createdAt"`
-	UpdatedAt               time.Time `json:"updatedAt"`
+type IndikatorSasaranResponse struct {
+	Id                   int `json:"id"`
+	ProgramId            int `json:"programId"`
+	Program              ProgramResponse
+	NamaIndikatorSasaran string    `json:"namaIndikatorSasaran"`
+	CreatedAt            time.Time `json:"createdAt"`
+	UpdatedAt            time.Time `json:"updatedAt"`
+}
+
+type KebijakanResponse struct {
+	Id            int             `json:"id"`
+	ProgramId     int             `json:"programId"`
+	Program       ProgramResponse `json:"program"`
+	NamaKebijakan string          `json:"namaKebijakan"`
+	CreatedAt     time.Time       `json:"createdAt"`
+	UpdatedAt     time.Time       `json:"updatedAt"`
 }
 
 type KegiatanResponse struct {
-	Id           int       `json:"id"`
-	KegiatanId   string    `json:"kegiatanId"`
-	NamaKegiatan string    `json:"namaKegiatan"`
-	CreatedAt    time.Time `json:"createdAt"`
-	UpdatedAt    time.Time `json:"updatedAt"`
-}
-
-type DetailKegiatanResponse struct {
 	Id           int             `json:"id"`
 	ProgramId    int             `json:"programId"`
 	Program      ProgramResponse `json:"program"`
-	KegiatanId   int             `json:"kegiatanId"`
+	Tahun        string          `json:"tahun"`
+	KodeKegiatan string          `json:"kodeKegiatan"`
+	NamaKegiatan string          `json:"namaKegiatan"`
+	CreatedAt    time.Time       `json:"createdAt"`
+	UpdatedAt    time.Time       `json:"updatedAt"`
+}
+
+type DetailKegiatanResponse struct {
+	Id           int `json:"id"`
+	KegiatanId   int `json:"kegiatanId"`
 	Kegiatan     KegiatanResponse
+	Tipe         string    `json:"tipe"`
 	PaguKegiatan int64     `json:"paguKegiatan"`
 	CreatedAt    time.Time `json:"createdAt"`
 	UpdatedAt    time.Time `json:"updatedAt"`
 }
 
-type IndikatorKegiatanResponse struct {
-	Id                       int              `json:"id"`
-	ProgramId                string           `json:"programId"`
-	Program                  ProgramResponse  `json:"program"`
-	KegiatanId               string           `json:"kegiatanId"`
-	Kegiatan                 KegiatanResponse `json:"kegiatan"`
-	IndikatorKinerjaKegiatan string           `json:"indikatorKinerjaKegiatan"`
-	PaguKegiatan             int              `json:"paguKegiatan"`
-	CreatedAt                time.Time        `json:"createdAt"`
-	UpdatedAt                time.Time        `json:"updatedAt"`
+type SasaranResponse struct {
+	Id          int             `json:"id"`
+	ProgramId   int             `json:"programId"`
+	Program     ProgramResponse `json:"program"`
+	NamaSasaran string          `json:"namaSasaran"`
+	CreatedAt   time.Time       `json:"createdAt"`
+	UpdatedAt   time.Time       `json:"updatedAt"`
 }
 
 type SubKegiatanResponse struct {
-	Id              int       `json:"id"`
-	SubKegiatanId   string    `json:"subKegiatanId"`
-	NamaSubKegiatan string    `json:"namaSubKegiatan"`
-	CreatedAt       time.Time `json:"createdAt"`
-	UpdatedAt       time.Time `json:"updatedAt"`
+	Id              int              `json:"id"`
+	KegiatanId      int              `json:"kegiatanId"`
+	Kegiatan        KegiatanResponse `json:"kegiatan"`
+	Tahun           string           `json:"tahun"`
+	KodeSubKegiatan string           `json:"kodeSubKegiatan"`
+	NamaSubKegiatan string           `json:"namaSubKegiatan"`
+	CreatedAt       time.Time        `json:"createdAt"`
+	UpdatedAt       time.Time        `json:"updatedAt"`
 }
 
 type DetailSubKegiatanResponse struct {
 	Id              int                 `json:"id"`
-	KegiatanId      int                 `json:"kegiatanId"`
-	Kegiatan        KegiatanResponse    `json:"kegiatan"`
 	SubKegiatanId   int                 `json:"subKegiatanId"`
 	SubKegiatan     SubKegiatanResponse `json:"subKegiatan"`
+	Tipe            string              `json:"tipe"`
 	PaguSubKegiatan int64               `json:"paguSubKegiatan"`
 	CreatedAt       time.Time           `json:"createdAt"`
 	UpdatedAt       time.Time           `json:"updatedAt"`
-}
-
-type IndikatorSubKegiatanResponse struct {
-	Id                          int                 `json:"id"`
-	KegiatanId                  string              `json:"kegiatanId"`
-	Kegiatan                    KegiatanResponse    `json:"kegiatan"`
-	SubKegiatanId               string              `json:"subKegiatanId"`
-	SubKegiatan                 SubKegiatanResponse `json:"subKegiatan"`
-	IndikatorKinerjaSubKegiatan string              `json:"indikatorKinerjaSubKegiatan"`
-	PaguSubKegiatan             int                 `json:"paguSubKegiatan"`
-	CreatedAt                   time.Time           `json:"createdAt"`
-	UpdatedAt                   time.Time           `json:"updatedAt"`
 }
 
 type FokusBelanjaResponse struct {
 	Id               int                 `json:"id"`
 	SubKegiatanId    int                 `json:"subKegiatanId"`
 	SubKegiatan      SubKegiatanResponse `json:"subKegiatan"`
-	FokusBelanja     string              `json:"fokusBelanja"`
+	NamaFokusBelanja string              `json:"namaFokusBelanja"`
 	Indikator        string              `json:"indikator"`
 	Target           float32             `json:"target"`
 	Satuan           string              `json:"satuan"`
