@@ -14,7 +14,7 @@ type Instansi struct {
 	Id             int `gorm:"column:id;primaryKey;not null;autoIncrement"`
 	BidangUrusanId int `gorm:"column:bidangUrusanId;not null"`
 	BidangUrusan   BidangUrusan
-	KodeInstansi   string    `gorm:"column:kodeInstansi;not null;unique"`
+	KodeInstansi   string    `gorm:"column:kodeInstansi;not null"`
 	NamaInstansi   string    `gorm:"column:namaInstansi;not null"`
 	CreatedAt      time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt      time.Time `gorm:"column:updatedAt;not null"`
@@ -25,7 +25,7 @@ type Program struct {
 	InstansiId  int `gorm:"column:instansiId;not null"`
 	Instansi    Instansi
 	Tahun       string    `gorm:"column:tahun;not null"`
-	KodeProgram string    `gorm:"column:kodeProgram;not null;unique"`
+	KodeProgram string    `gorm:"column:kodeProgram;not null"`
 	NamaProgram string    `gorm:"column:namaProgram;not null"`
 	CreatedAt   time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt   time.Time `gorm:"column:updatedAt;not null"`
@@ -64,7 +64,7 @@ type Kegiatan struct {
 	ProgramId    int `gorm:"column:programId;not null"`
 	Program      Program
 	Tahun        string    `gorm:"column:tahun;not null"`
-	KodeKegiatan string    `gorm:"column:kodeKegiatan;not null;unique"`
+	KodeKegiatan string    `gorm:"column:kodeKegiatan;not null"`
 	NamaKegiatan string    `gorm:"column:namaKegiatan;not null"`
 	CreatedAt    time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt    time.Time `gorm:"column:updatedAt;not null"`
@@ -85,7 +85,7 @@ type SubKegiatan struct {
 	KegiatanId      int `gorm:"column:kegiatanId;not null"`
 	Kegiatan        Kegiatan
 	Tahun           string    `gorm:"column:tahun;not null"`
-	KodeSubKegiatan string    `gorm:"column:kodeSubKegiatan;not null;unique"`
+	KodeSubKegiatan string    `gorm:"column:kodeSubKegiatan;not null"`
 	NamaSubKegiatan string    `gorm:"column:namaSubKegiatan;not null"`
 	CreatedAt       time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt       time.Time `gorm:"column:updatedAt;not null"`
