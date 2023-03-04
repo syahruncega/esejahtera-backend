@@ -46,7 +46,6 @@ func (r *programRepository) Create(program model.Program) (model.Program, error)
 
 func (r *programRepository) Update(program model.Program) (model.Program, error) {
 	var err = r.db.Model(&program).Updates(model.Program{
-		InstansiId:  program.InstansiId,
 		Tahun:       program.Tahun,
 		KodeProgram: program.KodeProgram,
 		NamaProgram: program.NamaProgram,

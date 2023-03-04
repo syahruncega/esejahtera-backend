@@ -36,7 +36,6 @@ func (s *kegiatanService) FindById(id int) (model.Kegiatan, error) {
 
 func (s *kegiatanService) Create(kegiatanRequest request.CreateKegiatanRequest) (model.Kegiatan, error) {
 	var kegiatan = model.Kegiatan{
-		ProgramId:    kegiatanRequest.ProgramId,
 		Tahun:        kegiatanRequest.Tahun,
 		KodeKegiatan: kegiatanRequest.KodeKegiatan,
 		NamaKegiatan: kegiatanRequest.NamaKegiatan,
@@ -50,7 +49,6 @@ func (s *kegiatanService) Create(kegiatanRequest request.CreateKegiatanRequest) 
 func (s *kegiatanService) Update(id int, kegiatanRequest request.UpdateKegiatanRequest) (model.Kegiatan, error) {
 	var kegiatan, err = s.kegiatanRepository.FindById(id)
 
-	kegiatan.ProgramId = kegiatanRequest.ProgramId
 	kegiatan.Tahun = kegiatanRequest.Tahun
 	kegiatan.KodeKegiatan = kegiatanRequest.KodeKegiatan
 	kegiatan.NamaKegiatan = kegiatanRequest.NamaKegiatan

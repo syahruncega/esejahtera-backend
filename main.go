@@ -40,13 +40,21 @@ func main() {
 	var instansiService = service.NewInstansiService(instansiRepository)
 	var instansiController = controller.NewInstansiController(instansiService)
 
+	var bidangUrusanOnInstansiRepository = repository.NewBidangUrusanOnInstansiRepository(config.DB)
+	var bidangUrusanOnInstansiService = service.NewBidangUrusanOnInstansiService(bidangUrusanOnInstansiRepository)
+	var bidangUrusanOnInstansiController = controller.NewBidangUrusanOnInstansiController(bidangUrusanOnInstansiService)
+
 	var programRepository = repository.NewProgramRepository(config.DB)
 	var programService = service.NewProgramService(programRepository)
 	var programController = controller.NewProgramController(programService)
 
-	var detailProgramRepository = repository.NewDetailProgramRepository(config.DB)
-	var detailProgramService = service.NewDetailProgramService(detailProgramRepository)
-	var detailProgramController = controller.NewDetailProgramController(detailProgramService)
+	var rencanaProgramRepository = repository.NewRencanaProgramRepository(config.DB)
+	var rencanaProgramService = service.NewRencanaProgramService(rencanaProgramRepository)
+	var rencanaProgramController = controller.NewRencanaProgramController(rencanaProgramService)
+
+	var instansiOnProgramRepository = repository.NewInstansiOnProgramRepository(config.DB)
+	var instansiOnProgramService = service.NewInstansiOnProgramService(instansiOnProgramRepository)
+	var instansiOnProgramController = controller.NewInstansiOnProgramController(instansiOnProgramService)
 
 	var sasaranRepository = repository.NewSasaranRepository(config.DB)
 	var sasaranService = service.NewSasaranService(sasaranRepository)
@@ -64,17 +72,25 @@ func main() {
 	var kegiatanService = service.NewKegiatanService(kegiatanRepository)
 	var kegiatanController = controller.NewKegiatanController(kegiatanService)
 
-	var detailKegiatanRepository = repository.NewDetailKegiatanRepository(config.DB)
-	var detailKegiatanService = service.NewDetailKegiatanService(detailKegiatanRepository)
-	var detailKegiatanController = controller.NewDetailKegiatanController(detailKegiatanService)
+	var rencanaKegiatanRepository = repository.NewRencanaKegiatanRepository(config.DB)
+	var rencanaKegiatanService = service.NewRencanaKegiatanService(rencanaKegiatanRepository)
+	var rencanaKegiatanController = controller.NewRencanaKegiatanController(rencanaKegiatanService)
+
+	var programOnKegiatanRepository = repository.NewProgramOnKegiatanRepository(config.DB)
+	var programOnKegiatanService = service.NewProgramOnKegiatanService(programOnKegiatanRepository)
+	var programOnKegiatanController = controller.NewProgramOnKegiatanController(programOnKegiatanService)
 
 	var subKegiatanRepository = repository.NewSubKegiatanRepository(config.DB)
 	var subKegiatanService = service.NewSubKegiatanService(subKegiatanRepository)
 	var subKegiatanController = controller.NewSubKegiatanController(subKegiatanService)
 
-	var detailSubKegiatanRepository = repository.NewDetailSubKegiatanRepository(config.DB)
-	var detailSubKegiatanService = service.NewDetailSubKegiatanService(detailSubKegiatanRepository)
-	var detailSubKegiatanController = controller.NewDetailSubKegiatanController(detailSubKegiatanService)
+	var rencanaSubKegiatanRepository = repository.NewRencanaSubKegiatanRepository(config.DB)
+	var rencanaSubKegiatanService = service.NewRencanaSubKegiatanService(rencanaSubKegiatanRepository)
+	var rencanaSubKegiatanController = controller.NewRencanaSubKegiatanController(rencanaSubKegiatanService)
+
+	var kegiatanOnSubKegiatanRepository = repository.NewKegiatanOnSubKegiatanRepository(config.DB)
+	var kegiatanOnSubKegiatanService = service.NewKegiatanOnSubKegiatanService(kegiatanOnSubKegiatanRepository)
+	var kegiatanOnSubKegiatanController = controller.NewKegiatanOnSubKegiatanController(kegiatanOnSubKegiatanService)
 
 	var fokusBelanjaRepository = repository.NewFokusBelanjaRepository(config.DB)
 	var fokusBelanjaService = service.NewFokusBelanjaService(fokusBelanjaRepository)
@@ -171,17 +187,29 @@ func main() {
 	server.PATCH("/instansi/:id", instansiController.UpdateInstansi)
 	server.DELETE("/instansi/:id", instansiController.DeleteInstansi)
 
+	server.GET("/bidangurusanoninstansi", bidangUrusanOnInstansiController.GetBidangUrusanOnInstansis)
+	server.GET("/bidangurusanoninstansi/:id", bidangUrusanOnInstansiController.GetBidangUrusanOnInstansi)
+	server.POST("/bidangurusanoninstansi", bidangUrusanOnInstansiController.CreateBidangUrusanOnInstansi)
+	server.PATCH("/bidangurusanoninstansi", bidangUrusanOnInstansiController.UpdateBidangUrusanOnInstansi)
+	server.DELETE("/bidangurusanoninstansi", bidangUrusanOnInstansiController.DeleteBidangUrusanOnInstansi)
+
 	server.GET("/program", programController.GetPrograms)
 	server.GET("/program/:id", programController.GetProgram)
 	server.POST("/program", programController.CreateProgram)
 	server.PATCH("/program/:id", programController.UpdateProgram)
 	server.DELETE("/program/:id", programController.DeleteProgram)
 
-	server.GET("/detailprogram", detailProgramController.GetDetailPrograms)
-	server.GET("/detailprogram/:id", detailProgramController.GetDetailProgram)
-	server.POST("/detailprogram", detailProgramController.CreateDetailProgram)
-	server.PATCH("/detailprogram/:id", detailProgramController.UpdateDetailProgram)
-	server.DELETE("/detailprogram/:id", detailProgramController.DeleteDetailProgram)
+	server.GET("/rencanaprogram", rencanaProgramController.GetRencanaPrograms)
+	server.GET("/rencanaprogram/:id", rencanaProgramController.GetRencanaProgram)
+	server.POST("/rencanaprogram", rencanaProgramController.CreateRencanaProgram)
+	server.PATCH("/rencanaprogram/:id", rencanaProgramController.UpdateRencanaProgram)
+	server.DELETE("/rencanaprogram/:id", rencanaProgramController.DeleteRencanaProgram)
+
+	server.GET("/instansionprogram", instansiOnProgramController.GetInstansiOnPrograms)
+	server.GET("/instansionprogram/:id", instansiOnProgramController.GetInstansiOnProgram)
+	server.POST("/instansionprogram", instansiOnProgramController.CreateInstansiOnProgram)
+	server.PATCH("/instansionprogram/:id", instansiOnProgramController.UpdateInstansiOnProgram)
+	server.DELETE("/instansionprogram/:id", instansiOnProgramController.DeleteInstansiOnProgram)
 
 	server.GET("/sasaran", sasaranController.GetSasarans)
 	server.GET("/sasaran/:id", sasaranController.GetSasaran)
@@ -207,11 +235,17 @@ func main() {
 	server.PATCH("/kegiatan/:id", kegiatanController.UpdateKegiatan)
 	server.DELETE("/kegiatan/:id", kegiatanController.DeleteKegiatan)
 
-	server.GET("/detailkegiatan", detailKegiatanController.GetDetailKegiatans)
-	server.GET("/detailkegiatan/:id", detailKegiatanController.GetDetailKegiatan)
-	server.POST("/detailkegiatan", detailKegiatanController.CreateDetailKegiatan)
-	server.PATCH("/detailkegiatan/:id", detailKegiatanController.UpdateDetailKegiatan)
-	server.DELETE("/detailkegiatan/:id", detailKegiatanController.DeleteDetailKegiatan)
+	server.GET("/rencanakegiatan", rencanaKegiatanController.GetRencanaKegiatans)
+	server.GET("/rencanakegiatan/:id", rencanaKegiatanController.GetRencanaKegiatan)
+	server.POST("/rencanakegiatan", rencanaKegiatanController.CreateRencanaKegiatan)
+	server.PATCH("/rencanakegiatan/:id", rencanaKegiatanController.UpdateRencanaKegiatan)
+	server.DELETE("/rencanakegiatan/:id", rencanaKegiatanController.DeleteRencanaKegiatan)
+
+	server.GET("/programonkegiatan", programOnKegiatanController.GetProgramOnKegiatans)
+	server.GET("/programonkegiatan/:id", programOnKegiatanController.GetProgramOnKegiatan)
+	server.POST("/programonkegiatan", programOnKegiatanController.CreateProgramOnKegiatan)
+	server.PATCH("/programonkegiatan/:id", programOnKegiatanController.UpdateProgramOnKegiatan)
+	server.DELETE("/programonkegiatan/:id", programOnKegiatanController.DeleteProgramOnKegiatan)
 
 	server.GET("/subkegiatan", subKegiatanController.GetSubKegiatans)
 	server.GET("/subkegiatan/:id", subKegiatanController.GetSubKegiatan)
@@ -219,11 +253,17 @@ func main() {
 	server.PATCH("/subkegiatan/:id", subKegiatanController.UpdateSubKegiatan)
 	server.DELETE("/subkegiatan/:id", subKegiatanController.DeleteSubKegiatan)
 
-	server.GET("/detailsubkegiatan", detailSubKegiatanController.GetDetailSubKegiatans)
-	server.GET("/detailsubkegiatan/:id", detailSubKegiatanController.GetDetailSubKegiatan)
-	server.POST("/detailsubkegiatan", detailSubKegiatanController.CreateDetailSubKegiatan)
-	server.PATCH("/detailsubkegiatan/:id", detailSubKegiatanController.UpdateDetailSubKegiatan)
-	server.DELETE("/detailsubkegiatan/:id", detailSubKegiatanController.DeleteDetailSubKegiatan)
+	server.GET("/rencanasubkegiatan", rencanaSubKegiatanController.GetRencanaSubKegiatans)
+	server.GET("/rencanasubkegiatan/:id", rencanaSubKegiatanController.GetRencanaSubKegiatan)
+	server.POST("/rencanasubkegiatan", rencanaSubKegiatanController.CreateRencanaSubKegiatan)
+	server.PATCH("/rencanasubkegiatan/:id", rencanaSubKegiatanController.UpdateRencanaSubKegiatan)
+	server.DELETE("/rencanasubkegiatan/:id", rencanaSubKegiatanController.DeleteRencanaSubkKegiatan)
+
+	server.GET("/kegiatanonsubkegiatan", kegiatanOnSubKegiatanController.GetKegiatanOnSubKegiatans)
+	server.GET("/kegiatanonsubkegiatan/:id", kegiatanOnSubKegiatanController.GetKegiatanOnSubKegiatan)
+	server.POST("/kegiatanonsubkegiatan", kegiatanOnSubKegiatanController.CreateKegiatanOnSubKegiatan)
+	server.PATCH("/kegiatanonsubkegiatan/:id", kegiatanOnSubKegiatanController.UpdateKegiatanOnSubKegiatan)
+	server.DELETE("/kegiatanonsubkegiatan/:id", kegiatanOnSubKegiatanController.DeleteKegiatanOnSubKegiatan)
 
 	server.GET("/fokusbelanja", fokusBelanjaController.GetFokusBelanjas)
 	server.GET("/fokusbelanja/:id", fokusBelanjaController.GetFokusBelanja)

@@ -26,7 +26,7 @@ func NewFokusBelanjaRepository(db *gorm.DB) *fokusBelanjaRepository {
 func (r *fokusBelanjaRepository) FindAll() ([]model.FokusBelanja, error) {
 	var fokusBelanjas []model.FokusBelanja
 
-	var err = r.db.Model(&fokusBelanjas).Preload("SubKegiatan").Find(&fokusBelanjas).Error
+	var err = r.db.Model(&fokusBelanjas).Preload("RencanaSubKegiatan").Find(&fokusBelanjas).Error
 
 	return fokusBelanjas, err
 }
@@ -34,7 +34,7 @@ func (r *fokusBelanjaRepository) FindAll() ([]model.FokusBelanja, error) {
 func (r *fokusBelanjaRepository) FindById(id int) (model.FokusBelanja, error) {
 	var fokusBelanja model.FokusBelanja
 
-	var err = r.db.Model(&fokusBelanja).Preload("SubKegiatan").Take(&fokusBelanja, id).Error
+	var err = r.db.Model(&fokusBelanja).Preload("RencanaSubKegiatan").Take(&fokusBelanja, id).Error
 
 	return fokusBelanja, err
 }
@@ -42,7 +42,7 @@ func (r *fokusBelanjaRepository) FindById(id int) (model.FokusBelanja, error) {
 func (r *fokusBelanjaRepository) FindBySubKegiatanId(subKegiatanId int) ([]model.FokusBelanja, error) {
 	var fokusBelanjas []model.FokusBelanja
 
-	var err = r.db.Where("subKegiatanId = ?", subKegiatanId).Model(&fokusBelanjas).Preload("SubKegiatan").Find(&fokusBelanjas).Error
+	var err = r.db.Where("subKegiatanId = ?", subKegiatanId).Model(&fokusBelanjas).Preload("RencanaSubKegiatan").Find(&fokusBelanjas).Error
 
 	return fokusBelanjas, err
 }
@@ -54,14 +54,14 @@ func (r *fokusBelanjaRepository) Create(fokusBelanja model.FokusBelanja) (model.
 }
 
 func (r *fokusBelanjaRepository) Update(fokusBelanja model.FokusBelanja) (model.FokusBelanja, error) {
-	var err = r.db.Model(&fokusBelanja).Select("SubKegiatanId", "FokusBelanja", "Indikator", "Target", "Satuan", "PaguFokusBelanja", "Keterangan").Updates(model.FokusBelanja{
-		SubKegiatanId:    fokusBelanja.SubKegiatanId,
-		NamaFokusBelanja: fokusBelanja.NamaFokusBelanja,
-		Indikator:        fokusBelanja.Indikator,
-		Target:           fokusBelanja.Target,
-		Satuan:           fokusBelanja.Satuan,
-		PaguFokusBelanja: fokusBelanja.PaguFokusBelanja,
-		Keterangan:       fokusBelanja.Keterangan,
+	var err = r.db.Model(&fokusBelanja).Select("RencanaSubKegiatanId", "NamaFokusBelanja", "Indikator", "Target", "Satuan", "PaguFokusBelanja", "Keterangan").Updates(model.FokusBelanja{
+		RencanaSubKegiatanId: fokusBelanja.RencanaSubKegiatanId,
+		NamaFokusBelanja:     fokusBelanja.NamaFokusBelanja,
+		Indikator:            fokusBelanja.Indikator,
+		Target:               fokusBelanja.Target,
+		Satuan:               fokusBelanja.Satuan,
+		PaguFokusBelanja:     fokusBelanja.PaguFokusBelanja,
+		Keterangan:           fokusBelanja.Keterangan,
 	}).Error
 
 	return fokusBelanja, err

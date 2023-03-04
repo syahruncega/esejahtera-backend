@@ -43,13 +43,13 @@ func (s *fokusBelanjaService) FindBySubKegiatanId(subKegiatanId int) ([]model.Fo
 
 func (s *fokusBelanjaService) Create(fokusBelanjaRequest request.CreateFokusBelanjaRequest) (model.FokusBelanja, error) {
 	var detailSubKegiatan = model.FokusBelanja{
-		SubKegiatanId:    fokusBelanjaRequest.SubKegiatanId,
-		NamaFokusBelanja: fokusBelanjaRequest.NamaFokusBelanja,
-		Indikator:        fokusBelanjaRequest.Indikator,
-		Target:           fokusBelanjaRequest.Target,
-		Satuan:           fokusBelanjaRequest.Satuan,
-		PaguFokusBelanja: fokusBelanjaRequest.PaguFokusBelanja,
-		Keterangan:       fokusBelanjaRequest.Keterangan,
+		RencanaSubKegiatanId: fokusBelanjaRequest.RencanaSubKegiatanId,
+		NamaFokusBelanja:     fokusBelanjaRequest.NamaFokusBelanja,
+		Indikator:            fokusBelanjaRequest.Indikator,
+		Target:               fokusBelanjaRequest.Target,
+		Satuan:               fokusBelanjaRequest.Satuan,
+		PaguFokusBelanja:     fokusBelanjaRequest.PaguFokusBelanja,
+		Keterangan:           fokusBelanjaRequest.Keterangan,
 	}
 
 	var newFokusBelanja, err = s.fokusBelanjaRepository.Create(detailSubKegiatan)
@@ -60,13 +60,13 @@ func (s *fokusBelanjaService) Create(fokusBelanjaRequest request.CreateFokusBela
 func (s *fokusBelanjaService) Update(id int, fokusBelanjaRequest request.UpdateFokusBelanjaRequest) (model.FokusBelanja, error) {
 	var fokusBelanja, err = s.fokusBelanjaRepository.FindById(id)
 
+	fokusBelanja.RencanaSubKegiatanId = fokusBelanjaRequest.RencanaSubKegiatanId
 	fokusBelanja.NamaFokusBelanja = fokusBelanjaRequest.NamaFokusBelanja
 	fokusBelanja.Indikator = fokusBelanjaRequest.Indikator
 	fokusBelanja.Target = fokusBelanjaRequest.Target
 	fokusBelanja.Satuan = fokusBelanjaRequest.Satuan
 	fokusBelanja.PaguFokusBelanja = fokusBelanjaRequest.PaguFokusBelanja
 	fokusBelanja.Keterangan = fokusBelanjaRequest.Keterangan
-	fokusBelanja.SubKegiatanId = fokusBelanjaRequest.SubKegiatanId
 
 	updatedFokusBelanja, err := s.fokusBelanjaRepository.Update(fokusBelanja)
 

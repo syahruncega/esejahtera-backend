@@ -36,7 +36,6 @@ func (s *subKegiatanService) FindById(id int) (model.SubKegiatan, error) {
 
 func (s *subKegiatanService) Create(subKegiatanRequest request.CreateSubKegiatanRequest) (model.SubKegiatan, error) {
 	var subKegiatan = model.SubKegiatan{
-		KegiatanId:      subKegiatanRequest.KegiatanId,
 		Tahun:           subKegiatanRequest.Tahun,
 		KodeSubKegiatan: subKegiatanRequest.KodeSubKegiatan,
 		NamaSubKegiatan: subKegiatanRequest.NamaSubKegiatan,
@@ -50,7 +49,6 @@ func (s *subKegiatanService) Create(subKegiatanRequest request.CreateSubKegiatan
 func (s *subKegiatanService) Update(id int, subKegiatanRequest request.UpdateSubKegiatanRequest) (model.SubKegiatan, error) {
 	var subKegiatan, err = s.subKegiatanRepository.FindById(id)
 
-	subKegiatan.KegiatanId = subKegiatanRequest.KegiatanId
 	subKegiatan.Tahun = subKegiatanRequest.Tahun
 	subKegiatan.KodeSubKegiatan = subKegiatanRequest.KodeSubKegiatan
 	subKegiatan.NamaSubKegiatan = subKegiatanRequest.NamaSubKegiatan
