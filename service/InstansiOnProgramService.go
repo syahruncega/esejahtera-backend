@@ -9,6 +9,7 @@ import (
 type InstansiOnProgramService interface {
 	FindAll() ([]model.InstansiOnProgram, error)
 	FindById(id int) (model.InstansiOnProgram, error)
+	FindByInstansiId(instansiId int) ([]model.InstansiOnProgram, error)
 	Create(instansiOnProgramRequest request.CreateInstansiOnProgramRequest) (model.InstansiOnProgram, error)
 	Update(id int, instansiOnProgramRequest request.UpdateInstansiOnProgramRequest) (model.InstansiOnProgram, error)
 	Delete(id int) (model.InstansiOnProgram, error)
@@ -32,6 +33,12 @@ func (s *instansiOnProgramService) FindById(id int) (model.InstansiOnProgram, er
 	var instansiOnProgram, err = s.instansiOnProgramRepository.FindById(id)
 
 	return instansiOnProgram, err
+}
+
+func (s *instansiOnProgramService) FindByInstansiId(instansiId int) ([]model.InstansiOnProgram, error) {
+	var instansiOnPrograms, err = s.instansiOnProgramRepository.FindByInstansiId(instansiId)
+
+	return instansiOnPrograms, err
 }
 
 func (s *instansiOnProgramService) Create(instansiOnProgramRequest request.CreateInstansiOnProgramRequest) (model.InstansiOnProgram, error) {

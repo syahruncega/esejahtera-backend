@@ -9,6 +9,7 @@ import (
 type ProgramOnKegiatanRepository interface {
 	FindAll() ([]model.ProgramOnKegiatan, error)
 	FindById(id int) (model.ProgramOnKegiatan, error)
+	FindByProgramId(programId int) ([]model.ProgramOnKegiatan, error)
 	Create(programOnKegiatan model.ProgramOnKegiatan) (model.ProgramOnKegiatan, error)
 	Update(programOnKegiatan model.ProgramOnKegiatan) (model.ProgramOnKegiatan, error)
 	Delete(programOnKegiatan model.ProgramOnKegiatan) (model.ProgramOnKegiatan, error)
@@ -36,6 +37,14 @@ func (r *programOnKegiatanRepository) FindById(id int) (model.ProgramOnKegiatan,
 	var err = r.db.Model(&programOnKegiatan).Preload("Program").Preload("Kegiatan").Take(&programOnKegiatan, id).Error
 
 	return programOnKegiatan, err
+}
+
+func (r *programOnKegiatanRepository) FindByProgramId(programId int) ([]model.ProgramOnKegiatan, error) {
+	var programOnKegiatans []model.ProgramOnKegiatan
+
+	var err = r.db.Where("programId = ?", programId).Model(&programOnKegiatans).Preload("Program").Preload("Kegiatan").Find(&programOnKegiatans).Error
+
+	return programOnKegiatans, err
 }
 
 func (r *programOnKegiatanRepository) Create(programOnKegiatan model.ProgramOnKegiatan) (model.ProgramOnKegiatan, error) {

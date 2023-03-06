@@ -9,6 +9,7 @@ import (
 type ProgramOnKegiatanService interface {
 	FindAll() ([]model.ProgramOnKegiatan, error)
 	FindById(id int) (model.ProgramOnKegiatan, error)
+	FindByProgramId(programId int) ([]model.ProgramOnKegiatan, error)
 	Create(programOnKegiatanRequest request.CreateProgramOnKegiatanRequest) (model.ProgramOnKegiatan, error)
 	Update(id int, programOnKegiatanRequest request.UpdateProgramOnKegiatanRequest) (model.ProgramOnKegiatan, error)
 	Delete(id int) (model.ProgramOnKegiatan, error)
@@ -32,6 +33,12 @@ func (s *programOnKegiatanService) FindById(id int) (model.ProgramOnKegiatan, er
 	var programOnKegiatan, err = s.programOnKegiatanRepository.FindById(id)
 
 	return programOnKegiatan, err
+}
+
+func (s *programOnKegiatanService) FindByProgramId(programId int) ([]model.ProgramOnKegiatan, error) {
+	var programOnKegiatans, err = s.programOnKegiatanRepository.FindByProgramId(programId)
+
+	return programOnKegiatans, err
 }
 
 func (s *programOnKegiatanService) Create(programOnKegiatanRequest request.CreateProgramOnKegiatanRequest) (model.ProgramOnKegiatan, error) {

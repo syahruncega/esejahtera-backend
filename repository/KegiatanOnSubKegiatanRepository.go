@@ -9,6 +9,7 @@ import (
 type KegiatanOnSubKegiatanRepository interface {
 	FindAll() ([]model.KegiatanOnSubKegiatan, error)
 	FindById(id int) (model.KegiatanOnSubKegiatan, error)
+	FindByKegiatanId(kegiatanId int) ([]model.KegiatanOnSubKegiatan, error)
 	Create(kegiatanOnSubKegiatan model.KegiatanOnSubKegiatan) (model.KegiatanOnSubKegiatan, error)
 	Update(kegiatanOnSubKegiatan model.KegiatanOnSubKegiatan) (model.KegiatanOnSubKegiatan, error)
 	Delete(kegiatanOnSubKegiatan model.KegiatanOnSubKegiatan) (model.KegiatanOnSubKegiatan, error)
@@ -36,6 +37,14 @@ func (r *kegiatanOnSubKegiatanRepository) FindById(id int) (model.KegiatanOnSubK
 	var err = r.db.Model(&kegiatanOnSubKegiatan).Preload("Kegiatan").Preload("SubKegiatan").Take(&kegiatanOnSubKegiatan, id).Error
 
 	return kegiatanOnSubKegiatan, err
+}
+
+func (r *kegiatanOnSubKegiatanRepository) FindByKegiatanId(kegiatanId int) ([]model.KegiatanOnSubKegiatan, error) {
+	var kegiatanOnSubKegiatans []model.KegiatanOnSubKegiatan
+
+	var err = r.db.Where("kegiatanId = ?", kegiatanId).Model(&kegiatanOnSubKegiatans).Preload("Kegiatan").Preload("SubKegiatan").Find(&kegiatanOnSubKegiatans).Error
+
+	return kegiatanOnSubKegiatans, err
 }
 
 func (r *kegiatanOnSubKegiatanRepository) Create(kegiatanOnSubKegiatan model.KegiatanOnSubKegiatan) (model.KegiatanOnSubKegiatan, error) {

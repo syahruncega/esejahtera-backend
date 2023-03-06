@@ -99,13 +99,13 @@ type RencanaKegiatanResponse struct {
 }
 
 type ProgramOnKegiatanResponse struct {
-	Id         int `json:"id"`
-	ProgramId  int `json:"programId"`
-	Program    ProgramResponse
-	KegiatanId int `json:"kegiatanId"`
-	Kegiatan   KegiatanResponse
-	CreatedAt  time.Time `json:"createdAt"`
-	UpdatedAt  time.Time `json:"updatedAt"`
+	Id         int              `json:"id"`
+	ProgramId  int              `json:"programId"`
+	Program    ProgramResponse  `json:"program"`
+	KegiatanId int              `json:"kegiatanId"`
+	Kegiatan   KegiatanResponse `json:"kegiatan"`
+	CreatedAt  time.Time        `json:"createdAt"`
+	UpdatedAt  time.Time        `json:"updatedAt"`
 }
 
 type SasaranResponse struct {

@@ -9,6 +9,7 @@ import (
 type InstansiOnProgramRepository interface {
 	FindAll() ([]model.InstansiOnProgram, error)
 	FindById(id int) (model.InstansiOnProgram, error)
+	FindByInstansiId(instansiId int) ([]model.InstansiOnProgram, error)
 	Create(instansiOnProgram model.InstansiOnProgram) (model.InstansiOnProgram, error)
 	Update(instansiOnProgram model.InstansiOnProgram) (model.InstansiOnProgram, error)
 	Delete(instansiOnProgram model.InstansiOnProgram) (model.InstansiOnProgram, error)
@@ -36,6 +37,14 @@ func (r *instansiOnProgramRepository) FindById(id int) (model.InstansiOnProgram,
 	var err = r.db.Model(&instansiOnProgram).Preload("Instansi").Preload("Program").Take(&instansiOnProgram, id).Error
 
 	return instansiOnProgram, err
+}
+
+func (r *instansiOnProgramRepository) FindByInstansiId(instansiId int) ([]model.InstansiOnProgram, error) {
+	var instansiOnPrograms []model.InstansiOnProgram
+
+	var err = r.db.Where("instansiId = ?", instansiId).Model(&instansiOnPrograms).Preload("Instansi").Preload("Program").Find(&instansiOnPrograms).Error
+
+	return instansiOnPrograms, err
 }
 
 func (r *instansiOnProgramRepository) Create(instansiOnProgram model.InstansiOnProgram) (model.InstansiOnProgram, error) {

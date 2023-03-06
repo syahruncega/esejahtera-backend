@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"kemiskinan/helper"
+	"kemiskinan/model"
 	"kemiskinan/request"
 	"kemiskinan/responses"
 	"kemiskinan/service"
@@ -22,7 +23,18 @@ func NewKegiatanOnSubKegiatanController(kegiatanOnSubKegiatanService service.Keg
 }
 
 func (c *kegiatanOnSubKegiatanController) GetKegiatanOnSubKegiatans(cntx *gin.Context) {
-	var kegiatanOnSubKegiatans, err = c.kegiatanOnSubKegiatanService.FindAll()
+	var kegiatanOnSubKegiatans []model.KegiatanOnSubKegiatan
+	var err error
+
+	var kegiatanIdString = cntx.Query("kegiatanid")
+	var kegiatanId, _ = strconv.Atoi(kegiatanIdString)
+
+	if kegiatanIdString != "" {
+		kegiatanOnSubKegiatans, err = c.kegiatanOnSubKegiatanService.FindByKegiatanId(kegiatanId)
+	} else {
+		kegiatanOnSubKegiatans, err = c.kegiatanOnSubKegiatanService.FindAll()
+	}
+
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),

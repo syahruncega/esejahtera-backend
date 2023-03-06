@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"kemiskinan/helper"
+	"kemiskinan/model"
 	"kemiskinan/request"
 	"kemiskinan/responses"
 	"kemiskinan/service"
@@ -22,7 +23,18 @@ func NewBidangUrusanOnInstansiController(bidangUrusanOnInstansiService service.B
 }
 
 func (c *bidangUrusanOnInstansiController) GetBidangUrusanOnInstansis(cntx *gin.Context) {
-	var bidangUrusanOnInstansis, err = c.bidangUrusanOnInstansiService.FindAll()
+	var bidangUrusanOnInstansis []model.BidangUrusanOnInstansi
+	var err error
+
+	var instansiIdString = cntx.Query("instansiid")
+	var instansiId, _ = strconv.Atoi(instansiIdString)
+
+	if instansiIdString != "" {
+		bidangUrusanOnInstansis, err = c.bidangUrusanOnInstansiService.FindByInstansiId(instansiId)
+	} else {
+		bidangUrusanOnInstansis, err = c.bidangUrusanOnInstansiService.FindAll()
+	}
+
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),

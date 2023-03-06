@@ -9,6 +9,7 @@ import (
 type KegiatanOnSubKegiatanService interface {
 	FindAll() ([]model.KegiatanOnSubKegiatan, error)
 	FindById(id int) (model.KegiatanOnSubKegiatan, error)
+	FindByKegiatanId(kegiatanId int) ([]model.KegiatanOnSubKegiatan, error)
 	Create(kegiatanOnSubKegiatanRequest request.CreateKegiatanOnSubKegiatanRequest) (model.KegiatanOnSubKegiatan, error)
 	Update(id int, kegiatanOnSubKegiatanRequest request.UpdateKegiatanOnSubKegiatanRequest) (model.KegiatanOnSubKegiatan, error)
 	Delete(id int) (model.KegiatanOnSubKegiatan, error)
@@ -32,6 +33,12 @@ func (s *kegiatanOnSubKegiatanService) FindById(id int) (model.KegiatanOnSubKegi
 	var kegiatanOnSubKegiatan, err = s.kegiatanOnSubKegiatanRepository.FindById(id)
 
 	return kegiatanOnSubKegiatan, err
+}
+
+func (s *kegiatanOnSubKegiatanService) FindByKegiatanId(kegiatanId int) ([]model.KegiatanOnSubKegiatan, error) {
+	var kegiatanOnSubKegiatans, err = s.kegiatanOnSubKegiatanRepository.FindByKegiatanId(kegiatanId)
+
+	return kegiatanOnSubKegiatans, err
 }
 
 func (s *kegiatanOnSubKegiatanService) Create(kegiatanOnSubKegiatanRequest request.CreateKegiatanOnSubKegiatanRequest) (model.KegiatanOnSubKegiatan, error) {

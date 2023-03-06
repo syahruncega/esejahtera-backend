@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"kemiskinan/helper"
+	"kemiskinan/model"
 	"kemiskinan/request"
 	"kemiskinan/responses"
 	"kemiskinan/service"
@@ -22,7 +23,18 @@ func NewProgramOnKegiatanController(programOnKegiatanService service.ProgramOnKe
 }
 
 func (c *programOnKegiatanController) GetProgramOnKegiatans(cntx *gin.Context) {
-	var programOnKegiatans, err = c.programOnKegiatanService.FindAll()
+	var programOnKegiatans []model.ProgramOnKegiatan
+	var err error
+
+	var programIdString = cntx.Query("programid")
+	var programId, _ = strconv.Atoi(programIdString)
+
+	if programIdString != "" {
+		programOnKegiatans, err = c.programOnKegiatanService.FindByProgramId(programId)
+	} else {
+		programOnKegiatans, err = c.programOnKegiatanService.FindAll()
+	}
+
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),
