@@ -23,7 +23,6 @@ func NewRencanaSubKegiatanController(rencanaSubKegiatanService service.RencanaSu
 
 func (c *rencanaSubKegiatanController) GetRencanaSubKegiatans(cntx *gin.Context) {
 	var rencanaSubKegiatans, err = c.rencanaSubKegiatanService.FindAll()
-
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),
@@ -55,6 +54,34 @@ func (c *rencanaSubKegiatanController) GetRencanaSubKegiatan(cntx *gin.Context) 
 	var rencanaSubKegiatanResponse = helper.ConvertToRencanaSubKegiatanResponse(rencanaSubKegiatan)
 
 	cntx.JSON(http.StatusOK, rencanaSubKegiatanResponse)
+}
+
+func (c *rencanaSubKegiatanController) GetRencanaSubKegiatansBySearch(cntx *gin.Context) {
+	var whereClauseString = cntx.Request.URL.Query()
+	var whereClauseInterface = map[string]interface{}{}
+
+	for k, v := range whereClauseString {
+		interfaceKey := k
+		interfaceVal := v
+
+		whereClauseInterface[interfaceKey] = interfaceVal
+	}
+
+	var rencanaSubKegiatans, err = c.rencanaSubKegiatanService.FindBySearch(whereClauseInterface)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	var rencanaSubKegiatansResponse []responses.RencanaSubKegiatanResponse
+
+	for _, rencanaSubKegiatan := range rencanaSubKegiatans {
+		var rencanaSubKegiatanResponse = helper.ConvertToRencanaSubKegiatanResponse(rencanaSubKegiatan)
+		rencanaSubKegiatansResponse = append(rencanaSubKegiatansResponse, rencanaSubKegiatanResponse)
+	}
+
+	cntx.JSON(http.StatusOK, rencanaSubKegiatansResponse)
 }
 
 func (c *rencanaSubKegiatanController) CreateRencanaSubKegiatan(cntx *gin.Context) {

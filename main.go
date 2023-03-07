@@ -201,6 +201,7 @@ func main() {
 
 	server.GET("/rencanaprogram", rencanaProgramController.GetRencanaPrograms)
 	server.GET("/rencanaprogram/:id", rencanaProgramController.GetRencanaProgram)
+	server.GET("/rencanaprogram/search", rencanaProgramController.GetRencanaProgramsBySearch)
 	server.POST("/rencanaprogram", rencanaProgramController.CreateRencanaProgram)
 	server.PATCH("/rencanaprogram/:id", rencanaProgramController.UpdateRencanaProgram)
 	server.DELETE("/rencanaprogram/:id", rencanaProgramController.DeleteRencanaProgram)
@@ -237,6 +238,7 @@ func main() {
 
 	server.GET("/rencanakegiatan", rencanaKegiatanController.GetRencanaKegiatans)
 	server.GET("/rencanakegiatan/:id", rencanaKegiatanController.GetRencanaKegiatan)
+	server.GET("/rencanakegiatan/search", rencanaKegiatanController.GetRencanaKegiatansBySearch)
 	server.POST("/rencanakegiatan", rencanaKegiatanController.CreateRencanaKegiatan)
 	server.PATCH("/rencanakegiatan/:id", rencanaKegiatanController.UpdateRencanaKegiatan)
 	server.DELETE("/rencanakegiatan/:id", rencanaKegiatanController.DeleteRencanaKegiatan)

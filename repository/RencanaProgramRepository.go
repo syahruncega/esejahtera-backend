@@ -9,6 +9,7 @@ import (
 type RencanaProgramRepository interface {
 	FindAll() ([]model.RencanaProgram, error)
 	FindById(id int) (model.RencanaProgram, error)
+	FindBySearch(whereClause map[string]interface{}) ([]model.RencanaProgram, error)
 	Create(rencanaProgram model.RencanaProgram) (model.RencanaProgram, error)
 	Update(rencanaProgram model.RencanaProgram) (model.RencanaProgram, error)
 	Delete(rencanaProgram model.RencanaProgram) (model.RencanaProgram, error)
@@ -36,6 +37,14 @@ func (r *rencanaProgramRepository) FindById(id int) (model.RencanaProgram, error
 	var err = r.db.Model(&rencanaProgram).Preload("Instansi").Preload("Program").Take(&rencanaProgram, id).Error
 
 	return rencanaProgram, err
+}
+
+func (r *rencanaProgramRepository) FindBySearch(whereClause map[string]interface{}) ([]model.RencanaProgram, error) {
+	var rencanaPrograms []model.RencanaProgram
+
+	var err = r.db.Where(whereClause).Model(&rencanaPrograms).Preload("Instansi").Preload("Program").Find(&rencanaPrograms).Error
+
+	return rencanaPrograms, err
 }
 
 func (r *rencanaProgramRepository) Create(rencanaProgram model.RencanaProgram) (model.RencanaProgram, error) {

@@ -9,6 +9,7 @@ import (
 type RencanaKegiatanService interface {
 	FindAll() ([]model.RencanaKegiatan, error)
 	FindById(id int) (model.RencanaKegiatan, error)
+	FindBySearch(whereClause map[string]interface{}) ([]model.RencanaKegiatan, error)
 	Create(rencanaKegiatanRequest request.CreateRencanaKegiatanRequest) (model.RencanaKegiatan, error)
 	Update(idi int, rencanaKegiatanRequest request.UpdateRencanaKegiatanRequest) (model.RencanaKegiatan, error)
 	Delete(id int) (model.RencanaKegiatan, error)
@@ -32,6 +33,12 @@ func (s *rencanaKegiatanService) FindById(id int) (model.RencanaKegiatan, error)
 	var rencanaKegiatan, err = s.rencanaKegiatanRepository.FindById(id)
 
 	return rencanaKegiatan, err
+}
+
+func (s *rencanaKegiatanService) FindBySearch(whereClause map[string]interface{}) ([]model.RencanaKegiatan, error) {
+	var rencanaKegiatans, err = s.rencanaKegiatanRepository.FindBySearch(whereClause)
+
+	return rencanaKegiatans, err
 }
 
 func (s *rencanaKegiatanService) Create(rencanaKegiatanRequest request.CreateRencanaKegiatanRequest) (model.RencanaKegiatan, error) {

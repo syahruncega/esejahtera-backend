@@ -9,7 +9,7 @@ import (
 type FokusBelanjaService interface {
 	FindAll() ([]model.FokusBelanja, error)
 	FindById(id int) (model.FokusBelanja, error)
-	FindBySubKegiatanId(subKegiatanId int) ([]model.FokusBelanja, error)
+	FindByRencanaSubKegiatanId(rencanaSubKegiatanId int) ([]model.FokusBelanja, error)
 	Create(fokusBelanjaRequest request.CreateFokusBelanjaRequest) (model.FokusBelanja, error)
 	Update(id int, fokusBelanjaRequest request.UpdateFokusBelanjaRequest) (model.FokusBelanja, error)
 	Delete(id int) (model.FokusBelanja, error)
@@ -35,8 +35,8 @@ func (s *fokusBelanjaService) FindById(id int) (model.FokusBelanja, error) {
 	return fokusBelanja, err
 }
 
-func (s *fokusBelanjaService) FindBySubKegiatanId(subKegiatanId int) ([]model.FokusBelanja, error) {
-	var fokusBelanjas, err = s.fokusBelanjaRepository.FindBySubKegiatanId(subKegiatanId)
+func (s *fokusBelanjaService) FindByRencanaSubKegiatanId(rencanaSubKegiatanId int) ([]model.FokusBelanja, error) {
+	var fokusBelanjas, err = s.fokusBelanjaRepository.FindByRencanaSubKegiatanId(rencanaSubKegiatanId)
 
 	return fokusBelanjas, err
 }

@@ -56,6 +56,34 @@ func (c *rencanaKegiatanController) GetRencanaKegiatan(cntx *gin.Context) {
 	cntx.JSON(http.StatusOK, rencanaKegiatanResponse)
 }
 
+func (c *rencanaKegiatanController) GetRencanaKegiatansBySearch(cntx *gin.Context) {
+	var whereClauseString = cntx.Request.URL.Query()
+	var whereClauseInterface = map[string]interface{}{}
+
+	for k, v := range whereClauseString {
+		interfaceKey := k
+		interfaceVal := v
+
+		whereClauseInterface[interfaceKey] = interfaceVal
+	}
+
+	var rencanaKegiatans, err = c.rencanaKegiatanService.FindBySearch(whereClauseInterface)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	var rencanaKegiatansResponse []responses.RencanaKegiatanResponse
+
+	for _, rencanaKegiatan := range rencanaKegiatans {
+		var rencanaKegiatanResponse = helper.ConvertToRencanaKegiatanResponse(rencanaKegiatan)
+		rencanaKegiatansResponse = append(rencanaKegiatansResponse, rencanaKegiatanResponse)
+	}
+
+	cntx.JSON(http.StatusOK, rencanaKegiatansResponse)
+}
+
 func (c *rencanaKegiatanController) CreateRencanaKegiatan(cntx *gin.Context) {
 	var rencanaKegiatanRequest request.CreateRencanaKegiatanRequest
 

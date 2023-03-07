@@ -23,14 +23,14 @@ func NewFokusBelanjaController(fokusBelanjaService service.FokusBelanjaService) 
 }
 
 func (c *fokusBelanjaController) GetFokusBelanjas(cntx *gin.Context) {
-	var subKegiatanIdString = cntx.Query("subkegiatanid")
+	var rencanaSubKegiatanIdString = cntx.Query("rencanasubkegiatanid")
+	var rencanaSubKegiatanId, _ = strconv.Atoi(rencanaSubKegiatanIdString)
 
 	var fokusBelanjas []model.FokusBelanja
 	var err error
 
-	if subKegiatanIdString != "" {
-		var subKegiatanId, _ = strconv.Atoi(subKegiatanIdString)
-		fokusBelanjas, err = c.fokusBelanjaService.FindBySubKegiatanId(subKegiatanId)
+	if rencanaSubKegiatanIdString != "" {
+		fokusBelanjas, err = c.fokusBelanjaService.FindByRencanaSubKegiatanId(rencanaSubKegiatanId)
 	} else {
 		fokusBelanjas, err = c.fokusBelanjaService.FindAll()
 	}

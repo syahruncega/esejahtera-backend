@@ -57,6 +57,34 @@ func (c *rencanaProgramController) GetRencanaProgram(cntx *gin.Context) {
 	cntx.JSON(http.StatusOK, rencanaProgramResponse)
 }
 
+func (c *rencanaProgramController) GetRencanaProgramsBySearch(cntx *gin.Context) {
+	var whereClauseString = cntx.Request.URL.Query()
+	var whereClauseInterface = map[string]interface{}{}
+
+	for k, v := range whereClauseString {
+		interfaceKey := k
+		interfaceVal := v
+
+		whereClauseInterface[interfaceKey] = interfaceVal
+	}
+
+	var rencanaPrograms, err = c.rencanaProgramService.FindBySearch(whereClauseInterface)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	var rencanaProgramsResponse []responses.RencanaProgramResponse
+
+	for _, rencanaProgram := range rencanaPrograms {
+		var rencanaProgramResponse = helper.ConvertToRencanaProgramResponse(rencanaProgram)
+		rencanaProgramsResponse = append(rencanaProgramsResponse, rencanaProgramResponse)
+	}
+
+	cntx.JSON(http.StatusOK, rencanaProgramsResponse)
+}
+
 func (c *rencanaProgramController) CreateRencanaProgram(cntx *gin.Context) {
 	var rencanaProgramRequest request.CreateRencanaProgramRequest
 

@@ -9,7 +9,7 @@ import (
 type FokusBelanjaRepository interface {
 	FindAll() ([]model.FokusBelanja, error)
 	FindById(id int) (model.FokusBelanja, error)
-	FindBySubKegiatanId(subkegiatanId int) ([]model.FokusBelanja, error)
+	FindByRencanaSubKegiatanId(rencanaSubKegiatanId int) ([]model.FokusBelanja, error)
 	Create(detailSubKegiatan model.FokusBelanja) (model.FokusBelanja, error)
 	Update(detailSubKegiatan model.FokusBelanja) (model.FokusBelanja, error)
 	Delete(detailSubKegiatan model.FokusBelanja) (model.FokusBelanja, error)
@@ -39,10 +39,10 @@ func (r *fokusBelanjaRepository) FindById(id int) (model.FokusBelanja, error) {
 	return fokusBelanja, err
 }
 
-func (r *fokusBelanjaRepository) FindBySubKegiatanId(subKegiatanId int) ([]model.FokusBelanja, error) {
+func (r *fokusBelanjaRepository) FindByRencanaSubKegiatanId(rencanaSubKegiatanId int) ([]model.FokusBelanja, error) {
 	var fokusBelanjas []model.FokusBelanja
 
-	var err = r.db.Where("subKegiatanId = ?", subKegiatanId).Model(&fokusBelanjas).Preload("RencanaSubKegiatan").Find(&fokusBelanjas).Error
+	var err = r.db.Where("subKegiatanId = ?", rencanaSubKegiatanId).Model(&fokusBelanjas).Preload("RencanaSubKegiatan").Find(&fokusBelanjas).Error
 
 	return fokusBelanjas, err
 }
