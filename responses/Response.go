@@ -42,11 +42,11 @@ type RencanaProgramResponse struct {
 	InstansiId  int              `json:"instansiId"`
 	Instansi    InstansiResponse `json:"instansi"`
 	ProgramId   int              `json:"programId"`
-	Program     ProgramResponse
-	PaguProgram int64     `json:"paguProgram"`
-	Tipe        string    `json:"tipe"`
-	CreatedAt   time.Time `json:"createdAt"`
-	UpdatedAt   time.Time `json:"updatedAt"`
+	Program     ProgramResponse  `json:"program"`
+	PaguProgram int64            `json:"paguProgram"`
+	Tipe        string           `json:"tipe"`
+	CreatedAt   time.Time        `json:"createdAt"`
+	UpdatedAt   time.Time        `json:"updatedAt"`
 }
 
 type InstansiOnProgramResponse struct {
@@ -91,11 +91,11 @@ type RencanaKegiatanResponse struct {
 	RencanaProgramId int                    `json:"rencanaProgramId"`
 	RencanaProgram   RencanaProgramResponse `json:"rencanaProgram"`
 	KegiatanId       int                    `json:"kegiatanId"`
-	Kegiatan         KegiatanResponse
-	Tipe             string    `json:"tipe"`
-	PaguKegiatan     int64     `json:"paguKegiatan"`
-	CreatedAt        time.Time `json:"createdAt"`
-	UpdatedAt        time.Time `json:"updatedAt"`
+	Kegiatan         KegiatanResponse       `json:"kegiatan"`
+	Tipe             string                 `json:"tipe"`
+	PaguKegiatan     int64                  `json:"paguKegiatan"`
+	CreatedAt        time.Time              `json:"createdAt"`
+	UpdatedAt        time.Time              `json:"updatedAt"`
 }
 
 type ProgramOnKegiatanResponse struct {
