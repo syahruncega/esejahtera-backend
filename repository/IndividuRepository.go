@@ -69,7 +69,7 @@ func (r *individuRepository) CountData(whereClause map[string]interface{}) (int6
 func (r *individuRepository) FindBySearch(whereClause map[string]interface{}) ([]model.Individu, error) {
 	var individus []model.Individu
 
-	var err = r.db.Where(whereClause).Limit(15).Model(&individus).Preload("Provinsi").Preload("KabupatenKota").Preload("Kecamatan").Preload("Kelurahan").Preload("User").Preload("Mahasiswa").Find(&individus).Error
+	var err = r.db.Where(whereClause).Model(&individus).Preload("Provinsi").Preload("KabupatenKota").Preload("Kecamatan").Preload("Kelurahan").Preload("User").Preload("Mahasiswa").Find(&individus).Error
 
 	return individus, err
 }
