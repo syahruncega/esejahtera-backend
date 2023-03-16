@@ -11,6 +11,7 @@ type UserService interface {
 	FindAll() ([]model.User, error)
 	FindById(id int) (model.User, error)
 	Create(userRequest request.CreateUserRequest) (model.User, error)
+	CreateBatch(usersRequest []request.CreateUserRequest) ([]model.User, error)
 	Update(id int, userRequest request.UpdateUserRequest) (model.User, error)
 	Delete(id int) (model.User, error)
 	Login(username string) (model.User, error)
@@ -49,6 +50,29 @@ func (s *userService) Create(userRequest request.CreateUserRequest) (model.User,
 	}
 
 	var newUser, err = s.userRepository.Create(user)
+
+	return newUser, err
+}
+
+func (s *userService) CreateBatch(usersRequest []request.CreateUserRequest) ([]model.User, error) {
+	var userWithHash []model.User
+
+	for _, user := range usersRequest {
+		var password = user.Password
+		var hashedPassword, _ = helper.HashPassword(password)
+
+		var userModel = model.User{
+			Username: user.Username,
+			Password: hashedPassword,
+			Email:    user.Email,
+			NoHp:     user.NoHp,
+			Role:     user.Role,
+		}
+
+		userWithHash = append(userWithHash, userModel)
+	}
+
+	var newUser, err = s.userRepository.CreateBatch(userWithHash)
 
 	return newUser, err
 }

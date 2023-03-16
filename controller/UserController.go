@@ -104,6 +104,42 @@ func (c *userController) CreateUser(cntx *gin.Context) {
 	})
 }
 
+func (c *userController) CreateBatchUser(cntx *gin.Context) {
+	var usersRequest []request.CreateUserRequest
+
+	var err = cntx.ShouldBindJSON(&usersRequest)
+	if err != nil {
+		var errorMessages = []string{}
+
+		for _, e := range err.(validator.ValidationErrors) {
+			var errorMessage = fmt.Sprintf("Error on field %s, condition : %s", e.Field(), e.ActualTag())
+			errorMessages = append(errorMessages, errorMessage)
+		}
+
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": errorMessages,
+		})
+		return
+	}
+
+	users, err := c.userService.CreateBatch(usersRequest)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	var usersResponse []responses.UserResponse
+
+	for _, user := range users {
+		var userResponse = helper.ConvertToUserResponse(user)
+		usersResponse = append(usersResponse, userResponse)
+	}
+
+	cntx.JSON(http.StatusOK, usersResponse)
+}
+
 func (c *userController) UpdateUser(cntx *gin.Context) {
 	var userRequest request.UpdateUserRequest
 

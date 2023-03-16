@@ -14,6 +14,7 @@ type MahasiswaRepository interface {
 	CountVerifiedKeluarga(id int, kelurahanId string) (int64, error)
 	CountVerifiedIndividu(id int, kelurahanId string) (int64, error)
 	Create(mahasiswa model.Mahasiswa) (model.Mahasiswa, error)
+	CreateBatch(mahasiswas []model.Mahasiswa) ([]model.Mahasiswa, error)
 	Update(mahasiswa model.Mahasiswa) (model.Mahasiswa, error)
 	Delete(mahasiswa model.Mahasiswa) (model.Mahasiswa, error)
 }
@@ -78,6 +79,12 @@ func (r *mahasiswaRepository) Create(mahasiswa model.Mahasiswa) (model.Mahasiswa
 	var err = r.db.Create(&mahasiswa).Error
 
 	return mahasiswa, err
+}
+
+func (r *mahasiswaRepository) CreateBatch(mahasiswas []model.Mahasiswa) ([]model.Mahasiswa, error) {
+	var err = r.db.Create(&mahasiswas).Error
+
+	return mahasiswas, err
 }
 
 func (r *mahasiswaRepository) Update(mahasiswa model.Mahasiswa) (model.Mahasiswa, error) {

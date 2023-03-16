@@ -14,6 +14,7 @@ type MahasiswaService interface {
 	CountVerifiedIndividu(id int, kelurahanId string) (int64, error)
 	CountVerifiedKeluarga(id int, kelurahanId string) (int64, error)
 	Create(mahasiswaRequest request.CreateMahasiswaRequest) (model.Mahasiswa, error)
+	CreateBatch(mahasiswaRequest []request.CreateMahasiswaRequest) ([]model.Mahasiswa, error)
 	Update(id int, mahasiswaRequest request.UpdateMahasiswaRequest) (model.Mahasiswa, error)
 	Delete(id int) (model.Mahasiswa, error)
 }
@@ -76,6 +77,30 @@ func (s *mahasiswaService) Create(mahasiswaRequest request.CreateMahasiswaReques
 	}
 
 	newMahasiswa, err := s.mahasiswaRepository.Create(mahasiswa)
+
+	return newMahasiswa, err
+}
+
+func (s *mahasiswaService) CreateBatch(mahasiswasRequest []request.CreateMahasiswaRequest) ([]model.Mahasiswa, error) {
+	var dataMahasiswas []model.Mahasiswa
+
+	for _, mahasiswa := range mahasiswasRequest {
+		var data = model.Mahasiswa{
+			UserId:          mahasiswa.UserId,
+			NamaLengkap:     mahasiswa.NamaLengkap,
+			Universitas:     mahasiswa.Universitas,
+			JenisKelamin:    mahasiswa.JenisKelamin,
+			TanggalLahir:    mahasiswa.TanggalLahir,
+			KabupatenKotaId: mahasiswa.KabupatenKotaId,
+			KecamatanId:     mahasiswa.KecamatanId,
+			KelurahanId:     mahasiswa.KelurahanId,
+			UrlFotoProfil:   mahasiswa.UrlFotoProfil,
+		}
+
+		dataMahasiswas = append(dataMahasiswas, data)
+	}
+
+	newMahasiswa, err := s.mahasiswaRepository.CreateBatch(dataMahasiswas)
 
 	return newMahasiswa, err
 }

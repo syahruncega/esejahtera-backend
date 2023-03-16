@@ -151,6 +151,42 @@ func (c *mahasiswaController) CreateMahasiswa(cntx *gin.Context) {
 	cntx.JSON(http.StatusCreated, mahasiswaResponse)
 }
 
+func (c *mahasiswaController) CreateBatchMahasiswa(cntx *gin.Context) {
+	var mahasiswasRequest []request.CreateMahasiswaRequest
+
+	var err = cntx.ShouldBindJSON(&mahasiswasRequest)
+	if err != nil {
+		var errorMessages = []string{}
+
+		for _, e := range err.(validator.ValidationErrors) {
+			var errorMessage = fmt.Sprintf("Error on field %s, condition : %s", e.Field(), e.ActualTag())
+			errorMessages = append(errorMessages, errorMessage)
+		}
+
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": errorMessages,
+		})
+		return
+	}
+
+	mahasiswas, err := c.mahasiswaService.CreateBatch(mahasiswasRequest)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	var mahasiswasResponse []responses.MahasiswaResponse
+
+	for _, mahasiswa := range mahasiswas {
+		var mahasiswaResponse = helper.ConvertToMahasiswaResponse(mahasiswa)
+		mahasiswasResponse = append(mahasiswasResponse, mahasiswaResponse)
+	}
+
+	cntx.JSON(http.StatusOK, mahasiswasResponse)
+}
+
 func (c *mahasiswaController) UpdateMahasiswa(cntx *gin.Context) {
 	var mahasiswaRequest request.UpdateMahasiswaRequest
 

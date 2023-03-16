@@ -10,6 +10,7 @@ type UserRepository interface {
 	FindAll() ([]model.User, error)
 	FindById(id int) (model.User, error)
 	Create(user model.User) (model.User, error)
+	CreateBatch(users []model.User) ([]model.User, error)
 	Update(user model.User) (model.User, error)
 	Delete(user model.User) (model.User, error)
 	Login(username string) (model.User, error)
@@ -43,6 +44,12 @@ func (r *userRepository) Create(user model.User) (model.User, error) {
 	var err = r.db.Create(&user).Error
 
 	return user, err
+}
+
+func (r *userRepository) CreateBatch(users []model.User) ([]model.User, error) {
+	var err = r.db.Create(&users).Error
+
+	return users, err
 }
 
 func (r *userRepository) Update(user model.User) (model.User, error) {

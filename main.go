@@ -169,7 +169,7 @@ func main() {
 	var server = gin.Default()
 
 	server.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3003", "http://localhost:3003", "https://www.e-sejahtera.info", "https://e-sejahtera.info"},
+		AllowOrigins:     []string{"http://localhost:4003", "http://localhost:3003", "https://www.e-sejahtera.info", "https://e-sejahtera.info"},
 		AllowCredentials: true,
 		AllowMethods:     []string{"POST", "PUT", "DELETE", "GET", "PATCH"},
 		AllowHeaders:     []string{"Access-Control-Allow-Headers", "Access-Control-Allow-Origin", "access-control-allow-origin, access-control-allow-headers", "Content-Type", "Accept", "Origin", "Authorization"},
@@ -308,6 +308,7 @@ func main() {
 	server.POST("/auth/login", userController.LoginUser)
 	server.POST("/auth/logout", userController.LogoutUser)
 	server.POST("/user", userController.CreateUser)
+	server.POST("/user/batch", userController.CreateBatchUser)
 	server.PATCH("/user/:id", userController.UpdateUser)
 	server.DELETE("/user/:id", userController.DeleteUser)
 
@@ -347,6 +348,7 @@ func main() {
 	server.GET("/mahasiswarelasi", mahasiswaController.GetMahasiswaWithRelation)
 	server.GET("/mahasiswa/verifying", mahasiswaController.GetVerifiedByMahasiswa)
 	server.POST("/mahasiswa", mahasiswaController.CreateMahasiswa)
+	server.POST("/mahasiswa/batch", mahasiswaController.CreateBatchMahasiswa)
 	server.PATCH("/mahasiswa/:id", mahasiswaController.UpdateMahasiswa)
 	server.DELETE("/mahasiswa/:id", mahasiswaController.DeleteMahasiswa)
 
