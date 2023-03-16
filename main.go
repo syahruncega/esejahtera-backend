@@ -190,8 +190,8 @@ func main() {
 	server.GET("/bidangurusanoninstansi", bidangUrusanOnInstansiController.GetBidangUrusanOnInstansis)
 	server.GET("/bidangurusanoninstansi/:id", bidangUrusanOnInstansiController.GetBidangUrusanOnInstansi)
 	server.POST("/bidangurusanoninstansi", bidangUrusanOnInstansiController.CreateBidangUrusanOnInstansi)
-	server.PATCH("/bidangurusanoninstansi", bidangUrusanOnInstansiController.UpdateBidangUrusanOnInstansi)
-	server.DELETE("/bidangurusanoninstansi", bidangUrusanOnInstansiController.DeleteBidangUrusanOnInstansi)
+	server.PATCH("/bidangurusanoninstansi/:id", bidangUrusanOnInstansiController.UpdateBidangUrusanOnInstansi)
+	server.DELETE("/bidangurusanoninstansi/:id", bidangUrusanOnInstansiController.DeleteBidangUrusanOnInstansi)
 
 	server.GET("/program", programController.GetPrograms)
 	server.GET("/program/:id", programController.GetProgram)
