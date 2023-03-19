@@ -275,6 +275,18 @@ type Admin struct {
 	UpdatedAt     time.Time `gorm:"column:updatedAt;not null"`
 }
 
+type AdminOpd struct {
+	Id            int `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	UserId        int `gorm:"column:userId;not null"`
+	User          User
+	NamaLengkap   string `gorm:"column:namaLengkap"`
+	InstansiId    int    `gorm:"column:instansiId;not null"`
+	Instansi      Instansi
+	UrlFotoProfil string    `gorm:"column:urlFotoProfil"`
+	CreatedAt     time.Time `gorm:"column:createdAt"`
+	UpdatedAt     time.Time `gorm:"column:updatedAt"`
+}
+
 type Analis struct {
 	Id            int `gorm:"column:id;primaryKey;not null;autoIncrement"`
 	UserId        int `gorm:"column:userId;not null"`

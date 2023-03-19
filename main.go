@@ -124,6 +124,10 @@ func main() {
 	var adminService = service.NewAdminService(adminRepository)
 	var adminController = controller.NewAdminController(adminService)
 
+	var adminOpdRepository = repository.NewAdminOpdRepository(config.DB)
+	var adminOpdService = service.NewAdminOpdService(adminOpdRepository)
+	var adminOpdController = controller.NewAdminOpdController(adminOpdService)
+
 	var analisRepository = repository.NewAnalisRepository(config.DB)
 	var analisService = service.NewAnalisService(analisRepository)
 	var analisController = controller.NewAnalisController(analisService)
@@ -318,6 +322,13 @@ func main() {
 	server.POST("/admin", adminController.CreateAdmin)
 	server.PATCH("/admin/:id", adminController.UpdateAdmin)
 	server.DELETE("/admin/:id", adminController.DeleteAdmin)
+
+	server.GET("/adminopd", adminOpdController.GetAdminOpd)
+	server.GET("/adminopd/:id", adminOpdController.GetAdminOpd)
+	server.GET("/adminopd/user/:userid", adminOpdController.GetAdminOpdByUserId)
+	server.POST("/adminopd", adminOpdController.CreateAdminOpd)
+	server.PATCH("/adminopd/:id", adminOpdController.UpdateAdminOpd)
+	server.DELETE("/adminopd/:id", adminOpdController.DeleteAdminOpd)
 
 	server.GET("/analis", analisController.GetAnaliss)
 	server.GET("/analis/:id", analisController.GetAnalis)

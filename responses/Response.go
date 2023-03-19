@@ -280,6 +280,18 @@ type AdminResponse struct {
 	UpdatedAt     time.Time `json:"updatedAt"`
 }
 
+type AdminOpdResponse struct {
+	Id            int              `json:"id"`
+	UserId        int              `json:"userId"`
+	User          UserResponse     `json:"user"`
+	NamaLengkap   string           `json:"namaLengkap"`
+	InstansiId    int              `json:"instansiId"`
+	Instansi      InstansiResponse `json:"instansi"`
+	UrlFotoProfil string           `json:"urlFotoProfil"`
+	CreatedAt     time.Time        `json:"createdAt"`
+	UpdatedAt     time.Time        `json:"updatedAt"`
+}
+
 type AdminWithRelationResponse struct {
 	Id            int          `json:"id"`
 	UserId        int          `json:"userId"`

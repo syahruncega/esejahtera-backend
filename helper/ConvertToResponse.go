@@ -531,6 +531,35 @@ func ConvertToAdminResponse(a model.Admin) responses.AdminResponse {
 	}
 }
 
+func ConvertToAdminOpdResponse(a model.AdminOpd) responses.AdminOpdResponse {
+	return responses.AdminOpdResponse{
+		Id:     a.Id,
+		UserId: a.UserId,
+		User: responses.UserResponse{
+			Id:        a.User.Id,
+			Username:  a.User.Username,
+			Password:  a.User.Password,
+			Email:     a.User.Email,
+			NoHp:      a.User.NoHp,
+			Role:      a.User.Role,
+			CreatedAt: a.User.CreatedAt,
+			UpdatedAt: a.User.UpdatedAt,
+		},
+		NamaLengkap: a.NamaLengkap,
+		InstansiId:  a.InstansiId,
+		Instansi: responses.InstansiResponse{
+			Id:           a.Instansi.Id,
+			KodeInstansi: a.Instansi.KodeInstansi,
+			NamaInstansi: a.Instansi.NamaInstansi,
+			CreatedAt:    a.Instansi.CreatedAt,
+			UpdatedAt:    a.Instansi.UpdatedAt,
+		},
+		UrlFotoProfil: a.UrlFotoProfil,
+		CreatedAt:     a.CreatedAt,
+		UpdatedAt:     a.UpdatedAt,
+	}
+}
+
 func ConvertToAdminWithRelationResponse(a model.Admin) responses.AdminWithRelationResponse {
 	return responses.AdminWithRelationResponse{
 		Id:     a.Id,
