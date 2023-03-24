@@ -4,6 +4,7 @@ import (
 	"kemiskinan/model"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type RencanaKegiatanRepository interface {
@@ -26,7 +27,7 @@ func NewRencanaKegiatanRepository(db *gorm.DB) *rencanaKegiatanRepository {
 func (r *rencanaKegiatanRepository) FindAll() ([]model.RencanaKegiatan, error) {
 	var rencanaKegiatans []model.RencanaKegiatan
 
-	var err = r.db.Model(&rencanaKegiatans).Preload("RencanaProgram.Instansi").Preload("RencanaProgram.Program").Preload("Kegiatan").Find(&rencanaKegiatans).Error
+	var err = r.db.Model(&rencanaKegiatans).Preload(clause.Associations).Preload("RencanaProgram." + clause.Associations).Preload("Kegiatan").Find(&rencanaKegiatans).Error
 
 	return rencanaKegiatans, err
 }
@@ -34,7 +35,7 @@ func (r *rencanaKegiatanRepository) FindAll() ([]model.RencanaKegiatan, error) {
 func (r *rencanaKegiatanRepository) FindById(id int) (model.RencanaKegiatan, error) {
 	var rencanaKegiatan model.RencanaKegiatan
 
-	var err = r.db.Model(&rencanaKegiatan).Preload("RencanaProgram.Instansi").Preload("RencanaProgram.Program").Preload("Kegiatan").Find(&rencanaKegiatan, id).Error
+	var err = r.db.Model(&rencanaKegiatan).Preload(clause.Associations).Preload("RencanaProgram."+clause.Associations).Preload("Kegiatan").Find(&rencanaKegiatan, id).Error
 
 	return rencanaKegiatan, err
 }
@@ -42,7 +43,7 @@ func (r *rencanaKegiatanRepository) FindById(id int) (model.RencanaKegiatan, err
 func (r *rencanaKegiatanRepository) FindBySearch(whereClause map[string]interface{}) ([]model.RencanaKegiatan, error) {
 	var rencanaKegiatans []model.RencanaKegiatan
 
-	var err = r.db.Where(whereClause).Model(&rencanaKegiatans).Preload("RencanaProgram.Instansi").Preload("RencanaProgram.Program").Preload("Kegiatan").Find(&rencanaKegiatans).Error
+	var err = r.db.Where(whereClause).Model(&rencanaKegiatans).Preload(clause.Associations).Preload("RencanaProgram." + clause.Associations).Preload("Kegiatan").Find(&rencanaKegiatans).Error
 
 	return rencanaKegiatans, err
 }

@@ -261,6 +261,7 @@ func main() {
 
 	server.GET("/rencanasubkegiatan", rencanaSubKegiatanController.GetRencanaSubKegiatans)
 	server.GET("/rencanasubkegiatan/:id", rencanaSubKegiatanController.GetRencanaSubKegiatan)
+	server.GET("/rencanasubkegiatan/search", rencanaSubKegiatanController.GetRencanaSubKegiatansBySearch)
 	server.POST("/rencanasubkegiatan", rencanaSubKegiatanController.CreateRencanaSubKegiatan)
 	server.PATCH("/rencanasubkegiatan/:id", rencanaSubKegiatanController.UpdateRencanaSubKegiatan)
 	server.DELETE("/rencanasubkegiatan/:id", rencanaSubKegiatanController.DeleteRencanaSubkKegiatan)

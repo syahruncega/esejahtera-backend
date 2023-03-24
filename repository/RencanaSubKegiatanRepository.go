@@ -4,6 +4,7 @@ import (
 	"kemiskinan/model"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type RencanaSubKegiatanRepository interface {
@@ -42,7 +43,7 @@ func (r *rencanaSubKegiatanRepository) FindById(id int) (model.RencanaSubKegiata
 func (r *rencanaSubKegiatanRepository) FindBySearch(whereClause map[string]interface{}) ([]model.RencanaSubKegiatan, error) {
 	var rencanaSubKegiatans []model.RencanaSubKegiatan
 
-	var err = r.db.Where(whereClause).Model(&rencanaSubKegiatans).Preload("RencanaKegiatan").Preload("SubKegiatan").Find(&rencanaSubKegiatans).Error
+	var err = r.db.Where(whereClause).Model(&rencanaSubKegiatans).Preload(clause.Associations).Preload("RencanaKegiatan." + clause.Associations).Preload("RencanaKegiatan.RencanaProgram." + clause.Associations).Preload("SubKegiatan").Find(&rencanaSubKegiatans).Error
 
 	return rencanaSubKegiatans, err
 }
