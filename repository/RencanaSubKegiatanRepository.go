@@ -27,7 +27,7 @@ func NewRencanaSubKegiatanRepository(db *gorm.DB) *rencanaSubKegiatanRepository 
 func (r *rencanaSubKegiatanRepository) FindAll() ([]model.RencanaSubKegiatan, error) {
 	var rencanaSubKegiatans []model.RencanaSubKegiatan
 
-	var err = r.db.Model(&rencanaSubKegiatans).Preload("RencanaKegiatan").Preload("SubKegiatan").Find(&rencanaSubKegiatans).Error
+	var err = r.db.Model(&rencanaSubKegiatans).Preload(clause.Associations).Preload("RencanaKegiatan." + clause.Associations).Preload("RencanaKegiatan.RencanaProgram." + clause.Associations).Preload("SubKegiatan").Find(&rencanaSubKegiatans).Error
 
 	return rencanaSubKegiatans, err
 }
@@ -35,7 +35,7 @@ func (r *rencanaSubKegiatanRepository) FindAll() ([]model.RencanaSubKegiatan, er
 func (r *rencanaSubKegiatanRepository) FindById(id int) (model.RencanaSubKegiatan, error) {
 	var rencanaSubKegiatan model.RencanaSubKegiatan
 
-	var err = r.db.Model(&rencanaSubKegiatan).Preload("RencanaKegiatan").Preload("SubKegiatan").Take(&rencanaSubKegiatan, id).Error
+	var err = r.db.Model(&rencanaSubKegiatan).Preload(clause.Associations).Preload("RencanaKegiatan."+clause.Associations).Preload("RencanaKegiatan.RencanaProgram."+clause.Associations).Preload("SubKegiatan").Take(&rencanaSubKegiatan, id).Error
 
 	return rencanaSubKegiatan, err
 }
