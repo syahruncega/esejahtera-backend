@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"kemiskinan/helper"
+	"kemiskinan/model"
 	"kemiskinan/request"
 	"kemiskinan/responses"
 	"kemiskinan/service"
@@ -22,7 +23,18 @@ func NewIndikatorSasaranController(indikatorSasaranService service.IndikatorSasa
 }
 
 func (c *indikatorSasaranController) GetIndikatorSasarans(cntx *gin.Context) {
-	var indikatorSasarans, err = c.indikatorSasaranService.FindAll()
+	var programIdString = cntx.Query("programid")
+	var programId, _ = strconv.Atoi(programIdString)
+
+	var indikatorSasarans []model.IndikatorSasaran
+	var err error
+
+	if programIdString != "" {
+		indikatorSasarans, err = c.indikatorSasaranService.FindByProgramId(programId)
+	} else {
+		indikatorSasarans, err = c.indikatorSasaranService.FindAll()
+	}
+
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),

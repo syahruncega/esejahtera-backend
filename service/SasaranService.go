@@ -9,6 +9,7 @@ import (
 type SasaranService interface {
 	FindAll() ([]model.Sasaran, error)
 	FindById(id int) (model.Sasaran, error)
+	FindByProgramId(programId int) ([]model.Sasaran, error)
 	Create(sasaranRequest request.CreateSasaranRequest) (model.Sasaran, error)
 	Update(id int, sasaranRequest request.UpdateSasaranRequest) (model.Sasaran, error)
 	Delete(id int) (model.Sasaran, error)
@@ -32,6 +33,12 @@ func (s *sasaranService) FindById(id int) (model.Sasaran, error) {
 	var sasaran, err = s.sasaranRepository.FindById(id)
 
 	return sasaran, err
+}
+
+func (s *sasaranService) FindByProgramId(programId int) ([]model.Sasaran, error) {
+	var sasarans, err = s.sasaranRepository.FindByProgramId(programId)
+
+	return sasarans, err
 }
 
 func (s *sasaranService) Create(sasaranRequest request.CreateSasaranRequest) (model.Sasaran, error) {

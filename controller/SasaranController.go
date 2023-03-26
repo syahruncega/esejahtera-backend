@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"kemiskinan/helper"
+	"kemiskinan/model"
 	"kemiskinan/request"
 	"kemiskinan/responses"
 	"kemiskinan/service"
@@ -22,7 +23,18 @@ func NewSasaranController(sasaranService service.SasaranService) *sasaranControl
 }
 
 func (c *sasaranController) GetSasarans(cntx *gin.Context) {
-	var sasarans, err = c.sasaranService.FindAll()
+	var programIdString = cntx.Query("programid")
+	var programId, _ = strconv.Atoi(programIdString)
+
+	var sasarans []model.Sasaran
+	var err error
+
+	if programIdString != "" {
+		sasarans, err = c.sasaranService.FindByProgramId(programId)
+	} else {
+		sasarans, err = c.sasaranService.FindAll()
+	}
+
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),

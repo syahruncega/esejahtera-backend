@@ -9,6 +9,7 @@ import (
 type SasaranRepository interface {
 	FindAll() ([]model.Sasaran, error)
 	FindById(id int) (model.Sasaran, error)
+	FindByProgramId(programId int) ([]model.Sasaran, error)
 	Create(sasaran model.Sasaran) (model.Sasaran, error)
 	Update(sasaran model.Sasaran) (model.Sasaran, error)
 	Delete(sasaran model.Sasaran) (model.Sasaran, error)
@@ -33,9 +34,17 @@ func (r *sasaranRepository) FindAll() ([]model.Sasaran, error) {
 func (r *sasaranRepository) FindById(id int) (model.Sasaran, error) {
 	var sasaran model.Sasaran
 
-	var err = r.db.Model(&sasaran).Preload("sasaran").Take(&sasaran, id).Error
+	var err = r.db.Model(&sasaran).Preload("Program").Take(&sasaran, id).Error
 
 	return sasaran, err
+}
+
+func (r *sasaranRepository) FindByProgramId(programId int) ([]model.Sasaran, error) {
+	var sasarans []model.Sasaran
+
+	var err = r.db.Where("programId = ?", programId).Preload("Program").Find(&sasarans).Error
+
+	return sasarans, err
 }
 
 func (r *sasaranRepository) Create(sasaran model.Sasaran) (model.Sasaran, error) {

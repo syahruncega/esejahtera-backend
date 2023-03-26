@@ -9,6 +9,7 @@ import (
 type KebijakanRepository interface {
 	FindAll() ([]model.Kebijakan, error)
 	FindById(id int) (model.Kebijakan, error)
+	FindByProgramId(programId int) ([]model.Kebijakan, error)
 	Create(kebijakan model.Kebijakan) (model.Kebijakan, error)
 	Update(kebijakan model.Kebijakan) (model.Kebijakan, error)
 	Delete(kebijakan model.Kebijakan) (model.Kebijakan, error)
@@ -36,6 +37,14 @@ func (r *kebijakanRepository) FindById(id int) (model.Kebijakan, error) {
 	var err = r.db.Model(&kebijakan).Preload("Program").Take(&kebijakan, id).Error
 
 	return kebijakan, err
+}
+
+func (r *kebijakanRepository) FindByProgramId(programId int) ([]model.Kebijakan, error) {
+	var kebijakans []model.Kebijakan
+
+	var err = r.db.Where("programId = ? ", programId).Model(&kebijakans).Preload("Program").Find(&kebijakans).Error
+
+	return kebijakans, err
 }
 
 func (r *kebijakanRepository) Create(kebijakan model.Kebijakan) (model.Kebijakan, error) {

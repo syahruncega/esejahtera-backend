@@ -9,6 +9,7 @@ import (
 type IndikatorSasaranRepository interface {
 	FindAll() ([]model.IndikatorSasaran, error)
 	FindById(id int) (model.IndikatorSasaran, error)
+	FindByProgramId(programId int) ([]model.IndikatorSasaran, error)
 	Create(indikatorSasaran model.IndikatorSasaran) (model.IndikatorSasaran, error)
 	Update(indikatorSasaran model.IndikatorSasaran) (model.IndikatorSasaran, error)
 	Delete(indikatorSasaran model.IndikatorSasaran) (model.IndikatorSasaran, error)
@@ -36,6 +37,14 @@ func (r *indikatorSasaranRepository) FindById(id int) (model.IndikatorSasaran, e
 	var err = r.db.Model(&indikatorSasaran).Preload("Program").Take(&indikatorSasaran, id).Error
 
 	return indikatorSasaran, err
+}
+
+func (r *indikatorSasaranRepository) FindByProgramId(programId int) ([]model.IndikatorSasaran, error) {
+	var indikatorSasarans []model.IndikatorSasaran
+
+	var err = r.db.Where("programId = ?", programId).Model(&indikatorSasarans).Preload("Program").Find(&indikatorSasarans).Error
+
+	return indikatorSasarans, err
 }
 
 func (r *indikatorSasaranRepository) Create(indikatorSasaran model.IndikatorSasaran) (model.IndikatorSasaran, error) {

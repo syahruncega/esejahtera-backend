@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"kemiskinan/helper"
+	"kemiskinan/model"
 	"kemiskinan/request"
 	"kemiskinan/responses"
 	"kemiskinan/service"
@@ -22,7 +23,18 @@ func NewKebijakanController(kebijakanService service.KebijakanService) *kebijaka
 }
 
 func (c *kebijakanController) GetKebijakans(cntx *gin.Context) {
-	var kebijakans, err = c.kebijakanService.FindAll()
+	var programIdString = cntx.Query("programid")
+	var programId, _ = strconv.Atoi(programIdString)
+
+	var kebijakans []model.Kebijakan
+	var err error
+
+	if programIdString != "" {
+		kebijakans, err = c.kebijakanService.FindByProgramId(programId)
+	} else {
+		kebijakans, err = c.kebijakanService.FindAll()
+	}
+
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),

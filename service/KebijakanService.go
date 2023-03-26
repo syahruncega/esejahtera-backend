@@ -9,6 +9,7 @@ import (
 type KebijakanService interface {
 	FindAll() ([]model.Kebijakan, error)
 	FindById(id int) (model.Kebijakan, error)
+	FindByProgramId(programId int) ([]model.Kebijakan, error)
 	Create(kebijakanRequest request.CreateKebijakanRequest) (model.Kebijakan, error)
 	Update(id int, kebijakanRequest request.UpdateKebijakanRequest) (model.Kebijakan, error)
 	Delete(id int) (model.Kebijakan, error)
@@ -32,6 +33,12 @@ func (s *kebijakanService) FindById(id int) (model.Kebijakan, error) {
 	var kebijakan, err = s.kebijakanRepository.FindById(id)
 
 	return kebijakan, err
+}
+
+func (s *kebijakanService) FindByProgramId(programId int) ([]model.Kebijakan, error) {
+	var kebijakans, err = s.kebijakanRepository.FindByProgramId(programId)
+
+	return kebijakans, err
 }
 
 func (s *kebijakanService) Create(kebijakanRequest request.CreateKebijakanRequest) (model.Kebijakan, error) {
