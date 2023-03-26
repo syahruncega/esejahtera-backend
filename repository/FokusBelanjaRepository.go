@@ -42,7 +42,7 @@ func (r *fokusBelanjaRepository) FindById(id int) (model.FokusBelanja, error) {
 func (r *fokusBelanjaRepository) FindByRencanaSubKegiatanId(rencanaSubKegiatanId int) ([]model.FokusBelanja, error) {
 	var fokusBelanjas []model.FokusBelanja
 
-	var err = r.db.Where("subKegiatanId = ?", rencanaSubKegiatanId).Model(&fokusBelanjas).Preload("RencanaSubKegiatan").Find(&fokusBelanjas).Error
+	var err = r.db.Where("rencanaSubKegiatanId = ?", rencanaSubKegiatanId).Model(&fokusBelanjas).Preload("RencanaSubKegiatan").Find(&fokusBelanjas).Error
 
 	return fokusBelanjas, err
 }
