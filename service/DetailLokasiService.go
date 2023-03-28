@@ -9,6 +9,7 @@ import (
 type DetailLokasiService interface {
 	FindAll() ([]model.Detail_Lokasi, error)
 	FindById(id int) (model.Detail_Lokasi, error)
+	FindByFokusBelanjaId(fokusBelanjaId int) ([]model.Detail_Lokasi, error)
 	Create(detailLokasiRequest request.CreateDetail_LokasiRequest) (model.Detail_Lokasi, error)
 	Update(id int, detailLokasiRequest request.UpdateDetail_LokasiRequest) (model.Detail_Lokasi, error)
 	Delete(id int) (model.Detail_Lokasi, error)
@@ -32,6 +33,12 @@ func (s *detailLokasiService) FindById(id int) (model.Detail_Lokasi, error) {
 	var detailLokasi, err = s.detailLokasiRepository.FindById(id)
 
 	return detailLokasi, err
+}
+
+func (s *detailLokasiService) FindByFokusBelanjaId(fokusBelanjaId int) ([]model.Detail_Lokasi, error) {
+	var detailLokasis, err = s.detailLokasiRepository.FindByFokusBelanjaId(fokusBelanjaId)
+
+	return detailLokasis, err
 }
 
 func (s *detailLokasiService) Create(detailLokasiRequest request.CreateDetail_LokasiRequest) (model.Detail_Lokasi, error) {

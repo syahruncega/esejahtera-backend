@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"kemiskinan/helper"
+	"kemiskinan/model"
 	"kemiskinan/request"
 	"kemiskinan/responses"
 	"kemiskinan/service"
@@ -22,7 +23,18 @@ func NewDetailLokasiController(detailLokasiService service.DetailLokasiService) 
 }
 
 func (c *detailLokasiController) GetDetailLokasis(cntx *gin.Context) {
-	var detailLokasis, err = c.detailLokasiService.FindAll()
+	var fokusBelanjaIdString = cntx.Query("fokusbelanjaid")
+	var fokusBelanjaId, _ = strconv.Atoi(fokusBelanjaIdString)
+
+	var detailLokasis []model.Detail_Lokasi
+	var err error
+
+	if fokusBelanjaIdString != "" {
+		detailLokasis, err = c.detailLokasiService.FindByFokusBelanjaId(fokusBelanjaId)
+	} else {
+		detailLokasis, err = c.detailLokasiService.FindAll()
+	}
+
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),
