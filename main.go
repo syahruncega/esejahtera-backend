@@ -73,7 +73,7 @@ func main() {
 	var kegiatanController = controller.NewKegiatanController(kegiatanService)
 
 	var rencanaKegiatanRepository = repository.NewRencanaKegiatanRepository(config.DB)
-	var rencanaKegiatanService = service.NewRencanaKegiatanService(rencanaKegiatanRepository)
+	var rencanaKegiatanService = service.NewRencanaKegiatanService(rencanaKegiatanRepository, rencanaProgramRepository)
 	var rencanaKegiatanController = controller.NewRencanaKegiatanController(rencanaKegiatanService)
 
 	var programOnKegiatanRepository = repository.NewProgramOnKegiatanRepository(config.DB)
@@ -85,7 +85,7 @@ func main() {
 	var subKegiatanController = controller.NewSubKegiatanController(subKegiatanService)
 
 	var rencanaSubKegiatanRepository = repository.NewRencanaSubKegiatanRepository(config.DB)
-	var rencanaSubKegiatanService = service.NewRencanaSubKegiatanService(rencanaSubKegiatanRepository)
+	var rencanaSubKegiatanService = service.NewRencanaSubKegiatanService(rencanaSubKegiatanRepository, rencanaKegiatanRepository)
 	var rencanaSubKegiatanController = controller.NewRencanaSubKegiatanController(rencanaSubKegiatanService)
 
 	var kegiatanOnSubKegiatanRepository = repository.NewKegiatanOnSubKegiatanRepository(config.DB)
@@ -93,7 +93,7 @@ func main() {
 	var kegiatanOnSubKegiatanController = controller.NewKegiatanOnSubKegiatanController(kegiatanOnSubKegiatanService)
 
 	var fokusBelanjaRepository = repository.NewFokusBelanjaRepository(config.DB)
-	var fokusBelanjaService = service.NewFokusBelanjaService(fokusBelanjaRepository)
+	var fokusBelanjaService = service.NewFokusBelanjaService(fokusBelanjaRepository, rencanaSubKegiatanRepository)
 	var fokusBelanjaController = controller.NewFokusBelanjaController(fokusBelanjaService)
 
 	var detailLokasiRepository = repository.NewDetailLokasiRepository(config.DB)

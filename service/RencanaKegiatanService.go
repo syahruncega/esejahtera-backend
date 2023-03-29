@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"kemiskinan/model"
 	"kemiskinan/repository"
 	"kemiskinan/request"
@@ -11,16 +12,17 @@ type RencanaKegiatanService interface {
 	FindById(id int) (model.RencanaKegiatan, error)
 	FindBySearch(whereClause map[string]interface{}) ([]model.RencanaKegiatan, error)
 	Create(rencanaKegiatanRequest request.CreateRencanaKegiatanRequest) (model.RencanaKegiatan, error)
-	Update(idi int, rencanaKegiatanRequest request.UpdateRencanaKegiatanRequest) (model.RencanaKegiatan, error)
+	Update(id int, rencanaKegiatanRequest request.UpdateRencanaKegiatanRequest) (model.RencanaKegiatan, error)
 	Delete(id int) (model.RencanaKegiatan, error)
 }
 
 type rencanaKegiatanService struct {
 	rencanaKegiatanRepository repository.RencanaKegiatanRepository
+	rencanaProgramRepository  repository.RencanaProgramRepository
 }
 
-func NewRencanaKegiatanService(rencanaKegiatanRepository repository.RencanaKegiatanRepository) *rencanaKegiatanService {
-	return &rencanaKegiatanService{rencanaKegiatanRepository}
+func NewRencanaKegiatanService(rencanaKegiatanRepository repository.RencanaKegiatanRepository, rencanaProgramRepository repository.RencanaProgramRepository) *rencanaKegiatanService {
+	return &rencanaKegiatanService{rencanaKegiatanRepository, rencanaProgramRepository}
 }
 
 func (s *rencanaKegiatanService) FindAll() ([]model.RencanaKegiatan, error) {
@@ -49,9 +51,17 @@ func (s *rencanaKegiatanService) Create(rencanaKegiatanRequest request.CreateRen
 		Tipe:             rencanaKegiatanRequest.Tipe,
 	}
 
-	newRencanaKegiatan, err := s.rencanaKegiatanRepository.Create(rencanaKegiatan)
+	var rencanaProgram, _ = s.rencanaProgramRepository.FindById(rencanaKegiatan.RencanaProgramId)
 
-	return newRencanaKegiatan, err
+	var totalPaguRencanaKegiatan, _ = s.rencanaKegiatanRepository.SumPaguRencanaKegiatan(rencanaKegiatan.RencanaProgramId)
+	totalPaguRencanaKegiatan = totalPaguRencanaKegiatan + rencanaKegiatan.PaguKegiatan
+
+	if rencanaProgram.PaguProgram >= totalPaguRencanaKegiatan {
+		newRencanaKegiatan, err := s.rencanaKegiatanRepository.Create(rencanaKegiatan)
+		return newRencanaKegiatan, err
+	} else {
+		return rencanaKegiatan, errors.New("pagu kegiatan melebihi pagu program")
+	}
 }
 
 func (s *rencanaKegiatanService) Update(id int, rencanaKegiatanRequest request.UpdateRencanaKegiatanRequest) (model.RencanaKegiatan, error) {

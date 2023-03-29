@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"kemiskinan/model"
 	"kemiskinan/repository"
 	"kemiskinan/request"
@@ -16,11 +17,12 @@ type FokusBelanjaService interface {
 }
 
 type fokusBelanjaService struct {
-	fokusBelanjaRepository repository.FokusBelanjaRepository
+	fokusBelanjaRepository       repository.FokusBelanjaRepository
+	rencanaSubKegiatanRepository repository.RencanaSubKegiatanRepository
 }
 
-func NewFokusBelanjaService(fokusBelanjaRepository repository.FokusBelanjaRepository) *fokusBelanjaService {
-	return &fokusBelanjaService{fokusBelanjaRepository}
+func NewFokusBelanjaService(fokusBelanjaRepository repository.FokusBelanjaRepository, rencanaSubKegiatanRepository repository.RencanaSubKegiatanRepository) *fokusBelanjaService {
+	return &fokusBelanjaService{fokusBelanjaRepository, rencanaSubKegiatanRepository}
 }
 
 func (s *fokusBelanjaService) FindAll() ([]model.FokusBelanja, error) {
@@ -42,7 +44,7 @@ func (s *fokusBelanjaService) FindByRencanaSubKegiatanId(rencanaSubKegiatanId in
 }
 
 func (s *fokusBelanjaService) Create(fokusBelanjaRequest request.CreateFokusBelanjaRequest) (model.FokusBelanja, error) {
-	var detailSubKegiatan = model.FokusBelanja{
+	var fokusBelanja = model.FokusBelanja{
 		RencanaSubKegiatanId: fokusBelanjaRequest.RencanaSubKegiatanId,
 		NamaFokusBelanja:     fokusBelanjaRequest.NamaFokusBelanja,
 		Indikator:            fokusBelanjaRequest.Indikator,
@@ -52,9 +54,18 @@ func (s *fokusBelanjaService) Create(fokusBelanjaRequest request.CreateFokusBela
 		Keterangan:           fokusBelanjaRequest.Keterangan,
 	}
 
-	var newFokusBelanja, err = s.fokusBelanjaRepository.Create(detailSubKegiatan)
+	var rencanaSubKegiatan, _ = s.rencanaSubKegiatanRepository.FindById(fokusBelanja.RencanaSubKegiatanId)
 
-	return newFokusBelanja, err
+	var totalPaguFokusBelanja, _ = s.fokusBelanjaRepository.SumPaguFokusBelanja(fokusBelanja.RencanaSubKegiatanId)
+	totalPaguFokusBelanja = totalPaguFokusBelanja + int64(fokusBelanja.PaguFokusBelanja)
+
+	if rencanaSubKegiatan.PaguSubKegiatan >= totalPaguFokusBelanja {
+		var newFokusBelanja, err = s.fokusBelanjaRepository.Create(fokusBelanja)
+		return newFokusBelanja, err
+	} else {
+		return fokusBelanja, errors.New("pagu fokus belanja melebihi pagu sub kegiatan")
+	}
+
 }
 
 func (s *fokusBelanjaService) Update(id int, fokusBelanjaRequest request.UpdateFokusBelanjaRequest) (model.FokusBelanja, error) {

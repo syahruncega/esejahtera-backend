@@ -11,6 +11,7 @@ type RencanaSubKegiatanRepository interface {
 	FindAll() ([]model.RencanaSubKegiatan, error)
 	FindById(id int) (model.RencanaSubKegiatan, error)
 	FindBySearch(whereClause map[string]interface{}) ([]model.RencanaSubKegiatan, error)
+	SumPaguRencanaSubKegiatan(rencanaKegiatanId int) (int64, error)
 	Create(rencanaSubKegiatan model.RencanaSubKegiatan) (model.RencanaSubKegiatan, error)
 	Update(rencanaSubKegiatan model.RencanaSubKegiatan) (model.RencanaSubKegiatan, error)
 	Delete(rencanaSubKegiatan model.RencanaSubKegiatan) (model.RencanaSubKegiatan, error)
@@ -46,6 +47,18 @@ func (r *rencanaSubKegiatanRepository) FindBySearch(whereClause map[string]inter
 	var err = r.db.Where(whereClause).Model(&rencanaSubKegiatans).Preload(clause.Associations).Preload("RencanaKegiatan." + clause.Associations).Preload("RencanaKegiatan.RencanaProgram." + clause.Associations).Preload("SubKegiatan").Find(&rencanaSubKegiatans).Error
 
 	return rencanaSubKegiatans, err
+}
+
+func (r *rencanaSubKegiatanRepository) SumPaguRencanaSubKegiatan(rencanaKegiatanId int) (int64, error) {
+	var totalPaguRencanaSubKegiatan int64
+
+	var rows, err = r.db.Table("rencana_sub_kegiatans").Where("rencanaKegiatanId = ?", rencanaKegiatanId).Select("sum(paguSubKegiatan) as totalPaguRencanaSubKegiatan").Rows()
+
+	for rows.Next() {
+		rows.Scan(&totalPaguRencanaSubKegiatan)
+	}
+
+	return totalPaguRencanaSubKegiatan, err
 }
 
 func (r *rencanaSubKegiatanRepository) Create(rencanaSubKegiatan model.RencanaSubKegiatan) (model.RencanaSubKegiatan, error) {

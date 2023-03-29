@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"kemiskinan/model"
 	"kemiskinan/repository"
 	"kemiskinan/request"
@@ -17,10 +18,11 @@ type RencanaSubKegiatanService interface {
 
 type rencanaSubKegiatanService struct {
 	rencanaSubKegiatanRepository repository.RencanaSubKegiatanRepository
+	rencanaKegiatanRepository    repository.RencanaKegiatanRepository
 }
 
-func NewRencanaSubKegiatanService(rencanaSubKegiatanRepository repository.RencanaSubKegiatanRepository) *rencanaSubKegiatanService {
-	return &rencanaSubKegiatanService{rencanaSubKegiatanRepository}
+func NewRencanaSubKegiatanService(rencanaSubKegiatanRepository repository.RencanaSubKegiatanRepository, rencanaKegiatanRepository repository.RencanaKegiatanRepository) *rencanaSubKegiatanService {
+	return &rencanaSubKegiatanService{rencanaSubKegiatanRepository, rencanaKegiatanRepository}
 }
 
 func (s *rencanaSubKegiatanService) FindAll() ([]model.RencanaSubKegiatan, error) {
@@ -49,9 +51,17 @@ func (s *rencanaSubKegiatanService) Create(rencanaSubKegiatanRequest request.Cre
 		Tipe:              rencanaSubKegiatanRequest.Tipe,
 	}
 
-	newRencanaSubKegiatan, err := s.rencanaSubKegiatanRepository.Create(rencanaSubKegiatan)
+	var rencanaKegiatan, _ = s.rencanaKegiatanRepository.FindById(rencanaSubKegiatan.RencanaKegiatanId)
 
-	return newRencanaSubKegiatan, err
+	var totalPaguRencanaSubKegiatan, _ = s.rencanaSubKegiatanRepository.SumPaguRencanaSubKegiatan(rencanaSubKegiatan.RencanaKegiatanId)
+	totalPaguRencanaSubKegiatan = totalPaguRencanaSubKegiatan + rencanaSubKegiatan.PaguSubKegiatan
+
+	if rencanaKegiatan.PaguKegiatan >= totalPaguRencanaSubKegiatan {
+		newRencanaSubKegiatan, err := s.rencanaSubKegiatanRepository.Create(rencanaSubKegiatan)
+		return newRencanaSubKegiatan, err
+	} else {
+		return rencanaSubKegiatan, errors.New("pagu sub kegiatan melebihi pagu kegiatan")
+	}
 }
 
 func (s *rencanaSubKegiatanService) Update(id int, rencanaSubKegiatanRequest request.UpdateRencanaSubKegiatanRequest) (model.RencanaSubKegiatan, error) {

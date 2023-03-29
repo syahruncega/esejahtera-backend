@@ -10,6 +10,7 @@ type FokusBelanjaRepository interface {
 	FindAll() ([]model.FokusBelanja, error)
 	FindById(id int) (model.FokusBelanja, error)
 	FindByRencanaSubKegiatanId(rencanaSubKegiatanId int) ([]model.FokusBelanja, error)
+	SumPaguFokusBelanja(rencanaSubKegiatanId int) (int64, error)
 	Create(detailSubKegiatan model.FokusBelanja) (model.FokusBelanja, error)
 	Update(detailSubKegiatan model.FokusBelanja) (model.FokusBelanja, error)
 	Delete(detailSubKegiatan model.FokusBelanja) (model.FokusBelanja, error)
@@ -45,6 +46,18 @@ func (r *fokusBelanjaRepository) FindByRencanaSubKegiatanId(rencanaSubKegiatanId
 	var err = r.db.Where("rencanaSubKegiatanId = ?", rencanaSubKegiatanId).Model(&fokusBelanjas).Preload("RencanaSubKegiatan").Find(&fokusBelanjas).Error
 
 	return fokusBelanjas, err
+}
+
+func (r *fokusBelanjaRepository) SumPaguFokusBelanja(rencanaSubKegiatanId int) (int64, error) {
+	var totalPaguFokusBelanja int64
+
+	var rows, err = r.db.Table("fokus_belanjas").Where("rencanaSubKegiatanId = ?", rencanaSubKegiatanId).Select("sum(paguFokusBelanja) as totalPaguFokusBelanja").Rows()
+
+	for rows.Next() {
+		rows.Scan(&totalPaguFokusBelanja)
+	}
+
+	return totalPaguFokusBelanja, err
 }
 
 func (r *fokusBelanjaRepository) Create(fokusBelanja model.FokusBelanja) (model.FokusBelanja, error) {

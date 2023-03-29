@@ -27,6 +27,7 @@ func (c *rencanaKegiatanController) GetRencanaKegiatans(cntx *gin.Context) {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),
 		})
+		return
 	}
 
 	var rencanaKegiatansResponse []responses.RencanaKegiatanResponse
@@ -72,6 +73,7 @@ func (c *rencanaKegiatanController) GetRencanaKegiatansBySearch(cntx *gin.Contex
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),
 		})
+		return
 	}
 
 	var rencanaKegiatansResponse []responses.RencanaKegiatanResponse
