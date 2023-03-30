@@ -106,9 +106,7 @@ func (c *rencanaKegiatanController) CreateRencanaKegiatan(cntx *gin.Context) {
 
 	rencanaKegiatan, err := c.rencanaKegiatanService.Create(rencanaKegiatanRequest)
 	if err != nil {
-		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
-		})
+		cntx.JSON(http.StatusBadRequest, err)
 		return
 	}
 
@@ -140,9 +138,7 @@ func (c *rencanaKegiatanController) UpdateRencanaKegiatan(cntx *gin.Context) {
 
 	rencanaKegiatan, err := c.rencanaKegiatanService.Update(id, rencanaKegiatanRequest)
 	if err != nil {
-		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
-		})
+		cntx.JSON(http.StatusBadRequest, err)
 		return
 	}
 

@@ -65,16 +65,24 @@ func (s *rencanaSubKegiatanService) Create(rencanaSubKegiatanRequest request.Cre
 }
 
 func (s *rencanaSubKegiatanService) Update(id int, rencanaSubKegiatanRequest request.UpdateRencanaSubKegiatanRequest) (model.RencanaSubKegiatan, error) {
-	var rencanaSubKegiatan, err = s.rencanaSubKegiatanRepository.FindById(id)
+	var rencanaSubKegiatan, _ = s.rencanaSubKegiatanRepository.FindById(id)
 
 	rencanaSubKegiatan.RencanaKegiatanId = rencanaSubKegiatanRequest.RencanaKegiatanId
 	rencanaSubKegiatan.SubKegiatanId = rencanaSubKegiatanRequest.SubKegiatanId
 	rencanaSubKegiatan.PaguSubKegiatan = rencanaSubKegiatanRequest.PaguSubKegiatan
 	rencanaSubKegiatan.Tipe = rencanaSubKegiatanRequest.Tipe
 
-	updatedRencanaSubKegiatan, err := s.rencanaSubKegiatanRepository.Update(rencanaSubKegiatan)
+	var rencanaKegiatan, _ = s.rencanaKegiatanRepository.FindById(rencanaSubKegiatan.RencanaKegiatanId)
 
-	return updatedRencanaSubKegiatan, err
+	var totalPaguRencanaSubKegiatan, _ = s.rencanaSubKegiatanRepository.SumPaguRencanaSubKegiatan(rencanaSubKegiatan.RencanaKegiatanId)
+	totalPaguRencanaSubKegiatan = totalPaguRencanaSubKegiatan + rencanaSubKegiatan.PaguSubKegiatan
+
+	if rencanaKegiatan.PaguKegiatan >= totalPaguRencanaSubKegiatan {
+		updatedRencanaSubKegiatan, err := s.rencanaSubKegiatanRepository.Update(rencanaSubKegiatan)
+		return updatedRencanaSubKegiatan, err
+	} else {
+		return rencanaSubKegiatan, errors.New("pagu sub kegiatan melebihi pagu kegiatan")
+	}
 }
 
 func (s *rencanaSubKegiatanService) Delete(id int) (model.RencanaSubKegiatan, error) {

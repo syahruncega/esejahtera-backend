@@ -69,7 +69,7 @@ func (s *fokusBelanjaService) Create(fokusBelanjaRequest request.CreateFokusBela
 }
 
 func (s *fokusBelanjaService) Update(id int, fokusBelanjaRequest request.UpdateFokusBelanjaRequest) (model.FokusBelanja, error) {
-	var fokusBelanja, err = s.fokusBelanjaRepository.FindById(id)
+	var fokusBelanja, _ = s.fokusBelanjaRepository.FindById(id)
 
 	fokusBelanja.RencanaSubKegiatanId = fokusBelanjaRequest.RencanaSubKegiatanId
 	fokusBelanja.NamaFokusBelanja = fokusBelanjaRequest.NamaFokusBelanja
@@ -79,9 +79,17 @@ func (s *fokusBelanjaService) Update(id int, fokusBelanjaRequest request.UpdateF
 	fokusBelanja.PaguFokusBelanja = fokusBelanjaRequest.PaguFokusBelanja
 	fokusBelanja.Keterangan = fokusBelanjaRequest.Keterangan
 
-	updatedFokusBelanja, err := s.fokusBelanjaRepository.Update(fokusBelanja)
+	var rencanaSubKegiatan, _ = s.rencanaSubKegiatanRepository.FindById(fokusBelanja.RencanaSubKegiatanId)
 
-	return updatedFokusBelanja, err
+	var totalPaguFokusBelanja, _ = s.fokusBelanjaRepository.SumPaguFokusBelanja(fokusBelanja.RencanaSubKegiatanId)
+	totalPaguFokusBelanja = totalPaguFokusBelanja + int64(fokusBelanja.PaguFokusBelanja)
+
+	if rencanaSubKegiatan.PaguSubKegiatan >= totalPaguFokusBelanja {
+		updatedFokusBelanja, err := s.fokusBelanjaRepository.Update(fokusBelanja)
+		return updatedFokusBelanja, err
+	} else {
+		return fokusBelanja, errors.New("pagu fokus belanja melebihi pagu sub kegiatan")
+	}
 }
 
 func (s *fokusBelanjaService) Delete(id int) (model.FokusBelanja, error) {
