@@ -68,7 +68,7 @@ type UpdateKeluargaVerifikasiRequest struct {
 	PenerimaPKH            string `json:"penerimaPKH"`
 	PenerimaSembako        string `json:"penerimaSembako"`
 	PenerimaLainnya        string `json:"penerimaLainnya"`
-	StatusResponden        string `json:"statusResponded"`
+	StatusResponden        string `json:"statusResponden"`
 	UserId                 int    `json:"userId"`
 	MahasiswaId            int    `json:"mahasiswaId"`
 	UrlBukti               string `json:"urlBukti"`
