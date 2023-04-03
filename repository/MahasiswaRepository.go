@@ -13,6 +13,7 @@ type MahasiswaRepository interface {
 	FindAllRelation() ([]model.Mahasiswa, error)
 	CountVerifiedKeluarga(id int, kelurahanId string) (int64, error)
 	CountVerifiedIndividu(id int, kelurahanId string) (int64, error)
+	DistinctKelurahan() ([]model.DistinctKelurahan, error)
 	Create(mahasiswa model.Mahasiswa) (model.Mahasiswa, error)
 	CreateBatch(mahasiswas []model.Mahasiswa) ([]model.Mahasiswa, error)
 	Update(mahasiswa model.Mahasiswa) (model.Mahasiswa, error)
@@ -73,6 +74,14 @@ func (r *mahasiswaRepository) CountVerifiedKeluarga(id int, kelurahanId string) 
 	var err = r.db.Where("mahasiswaId = ? and kelurahanId = ?", id, kelurahanId).Table("keluargas").Select("count(*)").Count(&count).Error
 
 	return count, err
+}
+
+func (r *mahasiswaRepository) DistinctKelurahan() ([]model.DistinctKelurahan, error) {
+	var distinctsKelurahan []model.DistinctKelurahan
+
+	var err = r.db.Distinct("m.kelurahanId, kl.nama").Table("mahasiswas as m").Joins("inner join kelurahans as kl on kl.id = m.kelurahanId").Scan(&distinctsKelurahan).Error
+
+	return distinctsKelurahan, err
 }
 
 func (r *mahasiswaRepository) Create(mahasiswa model.Mahasiswa) (model.Mahasiswa, error) {

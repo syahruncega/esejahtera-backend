@@ -117,7 +117,25 @@ func (c *mahasiswaController) GetVerifiedByMahasiswa(cntx *gin.Context) {
 		"jumlahVerifikasiKeluarga": jumlahKeluargaVerified,
 		"jumlahVerifikasiIndividu": jumlahIndividuVerified,
 	})
+}
 
+func (c *mahasiswaController) DistinctKelurahan(cntx *gin.Context) {
+	var distinctsKelurahan, err = c.mahasiswaService.DistinctKelurahan()
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+		return
+	}
+
+	var distinctsKelurahanResponse []responses.DistinctKelurahan
+
+	for _, distinctKelurahan := range distinctsKelurahan {
+		var distinctKelurahanResponse = helper.ConvertToDistinctKelurahanResponse(distinctKelurahan)
+		distinctsKelurahanResponse = append(distinctsKelurahanResponse, distinctKelurahanResponse)
+	}
+
+	cntx.JSON(http.StatusOK, distinctsKelurahanResponse)
 }
 
 func (c *mahasiswaController) CreateMahasiswa(cntx *gin.Context) {

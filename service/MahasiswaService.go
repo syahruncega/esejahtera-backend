@@ -13,6 +13,7 @@ type MahasiswaService interface {
 	FindAllRelation() ([]model.Mahasiswa, error)
 	CountVerifiedIndividu(id int, kelurahanId string) (int64, error)
 	CountVerifiedKeluarga(id int, kelurahanId string) (int64, error)
+	DistinctKelurahan() ([]model.DistinctKelurahan, error)
 	Create(mahasiswaRequest request.CreateMahasiswaRequest) (model.Mahasiswa, error)
 	CreateBatch(mahasiswaRequest []request.CreateMahasiswaRequest) ([]model.Mahasiswa, error)
 	Update(id int, mahasiswaRequest request.UpdateMahasiswaRequest) (model.Mahasiswa, error)
@@ -61,6 +62,12 @@ func (s *mahasiswaService) CountVerifiedKeluarga(id int, kelurahanId string) (in
 	var jumlah, err = s.mahasiswaRepository.CountVerifiedKeluarga(id, kelurahanId)
 
 	return jumlah, err
+}
+
+func (s *mahasiswaService) DistinctKelurahan() ([]model.DistinctKelurahan, error) {
+	var distinctKelurahan, err = s.mahasiswaRepository.DistinctKelurahan()
+
+	return distinctKelurahan, err
 }
 
 func (s *mahasiswaService) Create(mahasiswaRequest request.CreateMahasiswaRequest) (model.Mahasiswa, error) {

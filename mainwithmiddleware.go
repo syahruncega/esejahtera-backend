@@ -359,6 +359,7 @@ package main
 // 	server.GET("/mahasiswa/:id", middleware.CheckAuth, mahasiswaController.GetMahasiswa)
 // 	server.GET("/mahasiswarelasi", middleware.CheckAuth, mahasiswaController.GetMahasiswaWithRelation)
 // 	server.GET("/mahasiswa/verifying", middleware.CheckAuth, mahasiswaController.GetVerifiedByMahasiswa)
+//  server.GET("/lokasikkn", middleware.CheckAuth, mahasiswaController.DistinctKelurahan)
 // 	server.POST("/mahasiswa", middleware.CheckAuth, mahasiswaController.CreateMahasiswa)
 // 	server.POST("/mahasiswa/batch", middleware.CheckAuth, mahasiswaController.CreateBatchMahasiswa)
 // 	server.PATCH("/mahasiswa/:id", middleware.CheckAuth, mahasiswaController.UpdateMahasiswa)

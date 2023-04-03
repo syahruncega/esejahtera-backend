@@ -199,6 +199,11 @@ type KelurahanResponse struct {
 	Nama        string `json:"nama"`
 }
 
+type DistinctKelurahan struct {
+	KelurahanId string `json:"kelurahanId"`
+	Nama        string `json:"nama"`
+}
+
 type KeluargaResponse struct {
 	Id                     int                    `json:"id"`
 	IdKeluarga             string                 `json:"idKeluarga"`

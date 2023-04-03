@@ -437,6 +437,13 @@ func ConvertToKelurahanResponse(k model.Kelurahan) responses.KelurahanResponse {
 	}
 }
 
+func ConvertToDistinctKelurahanResponse(d model.DistinctKelurahan) responses.DistinctKelurahan {
+	return responses.DistinctKelurahan{
+		KelurahanId: d.KelurahanId,
+		Nama:        d.Nama,
+	}
+}
+
 func ConvertToKeluargaResponse(k model.Keluarga) responses.KeluargaResponse {
 	return responses.KeluargaResponse{
 		Id:         k.Id,

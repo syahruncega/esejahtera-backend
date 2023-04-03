@@ -359,6 +359,7 @@ func main() {
 	server.GET("/mahasiswa/:id", mahasiswaController.GetMahasiswa)
 	server.GET("/mahasiswarelasi", mahasiswaController.GetMahasiswaWithRelation)
 	server.GET("/mahasiswa/verifying", mahasiswaController.GetVerifiedByMahasiswa)
+	server.GET("/lokasikkn", mahasiswaController.DistinctKelurahan)
 	server.POST("/mahasiswa", mahasiswaController.CreateMahasiswa)
 	server.POST("/mahasiswa/batch", mahasiswaController.CreateBatchMahasiswa)
 	server.PATCH("/mahasiswa/:id", mahasiswaController.UpdateMahasiswa)
