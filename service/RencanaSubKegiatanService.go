@@ -19,10 +19,11 @@ type RencanaSubKegiatanService interface {
 type rencanaSubKegiatanService struct {
 	rencanaSubKegiatanRepository repository.RencanaSubKegiatanRepository
 	rencanaKegiatanRepository    repository.RencanaKegiatanRepository
+	fokusBelanjaRepository       repository.FokusBelanjaRepository
 }
 
-func NewRencanaSubKegiatanService(rencanaSubKegiatanRepository repository.RencanaSubKegiatanRepository, rencanaKegiatanRepository repository.RencanaKegiatanRepository) *rencanaSubKegiatanService {
-	return &rencanaSubKegiatanService{rencanaSubKegiatanRepository, rencanaKegiatanRepository}
+func NewRencanaSubKegiatanService(rencanaSubKegiatanRepository repository.RencanaSubKegiatanRepository, rencanaKegiatanRepository repository.RencanaKegiatanRepository, fokusBelanjaRepository repository.FokusBelanjaRepository) *rencanaSubKegiatanService {
+	return &rencanaSubKegiatanService{rencanaSubKegiatanRepository, rencanaKegiatanRepository, fokusBelanjaRepository}
 }
 
 func (s *rencanaSubKegiatanService) FindAll() ([]model.RencanaSubKegiatan, error) {
@@ -76,15 +77,22 @@ func (s *rencanaSubKegiatanService) Update(id int, rencanaSubKegiatanRequest req
 
 	var rencanaKegiatan, _ = s.rencanaKegiatanRepository.FindById(rencanaSubKegiatan.RencanaKegiatanId)
 
+	var totalPaguFokusBelanja, _ = s.fokusBelanjaRepository.SumPaguFokusBelanja(id)
+
 	var totalPaguRencanaSubKegiatan, _ = s.rencanaSubKegiatanRepository.SumPaguRencanaSubKegiatan(rencanaSubKegiatan.RencanaKegiatanId)
 	totalPaguRencanaSubKegiatan = totalPaguRencanaSubKegiatan - currentPagu + rencanaSubKegiatanRequest.PaguSubKegiatan
 
-	if rencanaKegiatan.PaguKegiatan >= totalPaguRencanaSubKegiatan {
-		updatedRencanaSubKegiatan, err := s.rencanaSubKegiatanRepository.Update(rencanaSubKegiatan)
-		return updatedRencanaSubKegiatan, err
+	if rencanaSubKegiatanRequest.PaguSubKegiatan >= totalPaguFokusBelanja {
+		if rencanaKegiatan.PaguKegiatan >= totalPaguRencanaSubKegiatan {
+			updatedRencanaSubKegiatan, err := s.rencanaSubKegiatanRepository.Update(rencanaSubKegiatan)
+			return updatedRencanaSubKegiatan, err
+		} else {
+			return rencanaSubKegiatan, errors.New("pagu sub kegiatan melebihi pagu kegiatannya")
+		}
 	} else {
-		return rencanaSubKegiatan, errors.New("pagu sub kegiatan melebihi pagu kegiatan")
+		return rencanaSubKegiatan, errors.New("pagu parent lebih kecil dari pagu child")
 	}
+
 }
 
 func (s *rencanaSubKegiatanService) Delete(id int) (model.RencanaSubKegiatan, error) {

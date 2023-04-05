@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"kemiskinan/model"
 	"kemiskinan/repository"
 	"kemiskinan/request"
@@ -16,11 +17,12 @@ type RencanaProgramService interface {
 }
 
 type rencanaProgramService struct {
-	rencanaProgramRepository repository.RencanaProgramRepository
+	rencanaProgramRepository  repository.RencanaProgramRepository
+	rencanaKegiatanRepository repository.RencanaKegiatanRepository
 }
 
-func NewRencanaProgramService(rencanaProgramRepository repository.RencanaProgramRepository) *rencanaProgramService {
-	return &rencanaProgramService{rencanaProgramRepository}
+func NewRencanaProgramService(rencanaProgramRepository repository.RencanaProgramRepository, rencanaKegiatanRepository repository.RencanaKegiatanRepository) *rencanaProgramService {
+	return &rencanaProgramService{rencanaProgramRepository, rencanaKegiatanRepository}
 }
 
 func (s *rencanaProgramService) FindAll() ([]model.RencanaProgram, error) {
@@ -56,15 +58,29 @@ func (s *rencanaProgramService) Create(rencanaProgramRequest request.CreateRenca
 
 func (s *rencanaProgramService) Update(id int, rencanaProgramRequest request.UpdateRencanaProgramRequest) (model.RencanaProgram, error) {
 	var rencanaProgram, err = s.rencanaProgramRepository.FindById(id)
+	if err != nil {
+		return rencanaProgram, err
+	}
 
-	rencanaProgram.InstansiId = rencanaProgramRequest.InstansiId
-	rencanaProgram.ProgramId = rencanaProgramRequest.ProgramId
-	rencanaProgram.PaguProgram = rencanaProgramRequest.PaguProgram
-	rencanaProgram.Tipe = rencanaProgramRequest.Tipe
+	totalPaguRencanaKegiatan, err := s.rencanaKegiatanRepository.SumPaguRencanaKegiatan(id)
+	if err != nil {
+		return rencanaProgram, err
+	}
 
-	updatedRencanaProgram, err := s.rencanaProgramRepository.Update(rencanaProgram)
+	if rencanaProgramRequest.PaguProgram >= totalPaguRencanaKegiatan {
 
-	return updatedRencanaProgram, err
+		rencanaProgram.InstansiId = rencanaProgramRequest.InstansiId
+		rencanaProgram.ProgramId = rencanaProgramRequest.ProgramId
+		rencanaProgram.PaguProgram = rencanaProgramRequest.PaguProgram
+		rencanaProgram.Tipe = rencanaProgramRequest.Tipe
+
+		updatedRencanaProgram, err := s.rencanaProgramRepository.Update(rencanaProgram)
+
+		return updatedRencanaProgram, err
+	} else {
+		return rencanaProgram, errors.New("pagu parent lebih kecil dari pagu child")
+	}
+
 }
 
 func (s *rencanaProgramService) Delete(id int) (model.RencanaProgram, error) {

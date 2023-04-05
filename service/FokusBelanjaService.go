@@ -90,7 +90,7 @@ func (s *fokusBelanjaService) Update(id int, fokusBelanjaRequest request.UpdateF
 		updatedFokusBelanja, err := s.fokusBelanjaRepository.Update(fokusBelanja)
 		return updatedFokusBelanja, err
 	} else {
-		return fokusBelanja, errors.New("pagu fokus belanja melebihi pagu sub kegiatan")
+		return fokusBelanja, errors.New("pagu fokus belanja melebihi pagu sub-kegiatannya")
 	}
 }
 

@@ -139,9 +139,7 @@ func (c *rencanaProgramController) UpdateRencanaProgram(cntx *gin.Context) {
 
 	rencanaProgram, err := c.rencanaProgramService.Update(id, rencanaProgramRequest)
 	if err != nil {
-		cntx.JSON(http.StatusBadRequest, gin.H{
-			"error": cntx.Error(err),
-		})
+		cntx.JSON(http.StatusBadRequest, cntx.Error(err))
 		return
 	}
 
