@@ -166,7 +166,7 @@ func main() {
 
 	var userRepository = repository.NewUserRepository(config.DB)
 	var userService = service.NewUserService(userRepository)
-	var userController = controller.NewUserController(userService, adminService, pusbangService, dosenService, analisService, mahasiswaService)
+	var userController = controller.NewUserController(userService, adminService, pusbangService, dosenService, analisService, mahasiswaService, adminOpdService)
 
 	var statistikController = controller.NewStatistikController(keluargaService, individuService)
 

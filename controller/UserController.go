@@ -24,9 +24,10 @@ type userController struct {
 	dosenService     service.DosenService
 	analisService    service.AnalisService
 	mahasiswaService service.MahasiswaService
+	adminOpdService  service.AdminOpdService
 }
 
-func NewUserController(userService service.UserService, adminService service.AdminService, pusbangService service.PusbangService, dosenService service.DosenService, analisService service.AnalisService, mahasiswaService service.MahasiswaService) *userController {
+func NewUserController(userService service.UserService, adminService service.AdminService, pusbangService service.PusbangService, dosenService service.DosenService, analisService service.AnalisService, mahasiswaService service.MahasiswaService, adminOpdService service.AdminOpdService) *userController {
 	return &userController{
 		userService,
 		adminService,
@@ -34,6 +35,7 @@ func NewUserController(userService service.UserService, adminService service.Adm
 		dosenService,
 		analisService,
 		mahasiswaService,
+		adminOpdService,
 	}
 }
 
@@ -331,6 +333,16 @@ func (c *userController) GetUserProfile(cntx *gin.Context) {
 		var mahasiswaResponse = helper.ConvertToMahasiswaResponse(mahasiswa)
 
 		cntx.JSON(http.StatusOK, mahasiswaResponse)
+	} else if userRole == "adminOpd" {
+		var opd, err = c.adminOpdService.FindByUserId(userId)
+		if err != nil {
+			cntx.JSON(http.StatusOK, false)
+			return
+		}
+
+		var opdResponse = helper.ConvertToAdminOpdResponse(opd)
+
+		cntx.JSON(http.StatusOK, opdResponse)
 	}
 }
 

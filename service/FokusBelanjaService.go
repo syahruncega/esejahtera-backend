@@ -82,7 +82,7 @@ func (s *fokusBelanjaService) Update(id int, fokusBelanjaRequest request.UpdateF
 	var rencanaSubKegiatan, _ = s.rencanaSubKegiatanRepository.FindById(fokusBelanja.RencanaSubKegiatanId)
 
 	var totalPaguFokusBelanja, _ = s.fokusBelanjaRepository.SumPaguFokusBelanja(fokusBelanja.RencanaSubKegiatanId)
-	totalPaguFokusBelanja = totalPaguFokusBelanja + int64(fokusBelanja.PaguFokusBelanja)
+	totalPaguFokusBelanja = totalPaguFokusBelanja - fokusBelanja.PaguFokusBelanja + fokusBelanjaRequest.PaguFokusBelanja
 
 	if rencanaSubKegiatan.PaguSubKegiatan >= totalPaguFokusBelanja {
 		updatedFokusBelanja, err := s.fokusBelanjaRepository.Update(fokusBelanja)

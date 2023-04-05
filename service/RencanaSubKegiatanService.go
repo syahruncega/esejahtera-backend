@@ -75,7 +75,7 @@ func (s *rencanaSubKegiatanService) Update(id int, rencanaSubKegiatanRequest req
 	var rencanaKegiatan, _ = s.rencanaKegiatanRepository.FindById(rencanaSubKegiatan.RencanaKegiatanId)
 
 	var totalPaguRencanaSubKegiatan, _ = s.rencanaSubKegiatanRepository.SumPaguRencanaSubKegiatan(rencanaSubKegiatan.RencanaKegiatanId)
-	totalPaguRencanaSubKegiatan = totalPaguRencanaSubKegiatan + rencanaSubKegiatan.PaguSubKegiatan
+	totalPaguRencanaSubKegiatan = totalPaguRencanaSubKegiatan - rencanaSubKegiatan.PaguSubKegiatan + rencanaSubKegiatanRequest.PaguSubKegiatan
 
 	if rencanaKegiatan.PaguKegiatan >= totalPaguRencanaSubKegiatan {
 		updatedRencanaSubKegiatan, err := s.rencanaSubKegiatanRepository.Update(rencanaSubKegiatan)

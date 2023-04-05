@@ -6,7 +6,7 @@ type CreateFokusBelanjaRequest struct {
 	Indikator            string  `json:"indikator" binding:"required"`
 	Target               float32 `json:"target" binding:"required"`
 	Satuan               string  `json:"satuan" binding:"required"`
-	PaguFokusBelanja     int     `json:"paguFokusBelanja" binding:"required"`
+	PaguFokusBelanja     int64   `json:"paguFokusBelanja" binding:"required"`
 	Keterangan           string  `json:"keterangan" binding:"required"`
 }
 
@@ -17,6 +17,6 @@ type UpdateFokusBelanjaRequest struct {
 	Indikator            string  `json:"indikator"`
 	Target               float32 `json:"target"`
 	Satuan               string  `json:"satuan"`
-	PaguFokusBelanja     int     `json:"paguFokusBelanja"`
+	PaguFokusBelanja     int64   `json:"paguFokusBelanja"`
 	Keterangan           string  `json:"keterangan"`
 }

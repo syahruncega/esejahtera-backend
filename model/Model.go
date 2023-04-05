@@ -156,7 +156,7 @@ type FokusBelanja struct {
 	Indikator            string    `gorm:"column:indikator;not null"`
 	Target               float32   `gorm:"column:target;not null"`
 	Satuan               string    `gorm:"column:satuan;not null"`
-	PaguFokusBelanja     int       `gorm:"column:paguFokusBelanja;not null"`
+	PaguFokusBelanja     int64     `gorm:"column:paguFokusBelanja;not null"`
 	Keterangan           string    `gorm:"column:keterangan;not null"`
 	CreatedAt            time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt            time.Time `gorm:"column:updatedAt;not null"`

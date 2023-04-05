@@ -156,7 +156,7 @@ type FokusBelanjaResponse struct {
 	Indikator            string                     `json:"indikator"`
 	Target               float32                    `json:"target"`
 	Satuan               string                     `json:"satuan"`
-	PaguFokusBelanja     int                        `json:"paguFokusBelanja"`
+	PaguFokusBelanja     int64                      `json:"paguFokusBelanja"`
 	Keterangan           string                     `json:"keterangan"`
 	CreatedAt            time.Time                  `json:"createdAt"`
 	UpdatedAt            time.Time                  `json:"updatedAt"`
