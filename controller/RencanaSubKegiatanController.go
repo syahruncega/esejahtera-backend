@@ -104,7 +104,7 @@ func (c *rencanaSubKegiatanController) CreateRencanaSubKegiatan(cntx *gin.Contex
 
 	rencanaSubKegiatan, err := c.rencanaSubKegiatanService.Create(rencanaSubKegiatanRequest)
 	if err != nil {
-		cntx.JSON(http.StatusBadRequest, err)
+		cntx.JSON(http.StatusBadRequest, cntx.Error(err))
 		return
 	}
 
@@ -136,7 +136,7 @@ func (c *rencanaSubKegiatanController) UpdateRencanaSubKegiatan(cntx *gin.Contex
 
 	rencanaSubKegiatan, err := c.rencanaSubKegiatanService.Update(id, rencanaSubKegiatanRequest)
 	if err != nil {
-		cntx.JSON(http.StatusBadRequest, err)
+		cntx.JSON(http.StatusBadRequest, cntx.Error(err))
 		return
 	}
 

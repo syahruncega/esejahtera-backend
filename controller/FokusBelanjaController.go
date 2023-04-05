@@ -88,7 +88,7 @@ func (c *fokusBelanjaController) CreateFokusBelanja(cntx *gin.Context) {
 
 	fokusBelanja, err := c.fokusBelanjaService.Create(fokusBelanjaRequest)
 	if err != nil {
-		cntx.JSON(http.StatusBadRequest, err)
+		cntx.JSON(http.StatusBadRequest, cntx.Error(err))
 		return
 	}
 
@@ -120,7 +120,7 @@ func (c *fokusBelanjaController) UpdateFokusBelanja(cntx *gin.Context) {
 
 	fokusBelanja, err := c.fokusBelanjaService.Update(id, fokusBelanjaRequest)
 	if err != nil {
-		cntx.JSON(http.StatusBadRequest, err)
+		cntx.JSON(http.StatusBadRequest, cntx.Error(err))
 		return
 	}
 
