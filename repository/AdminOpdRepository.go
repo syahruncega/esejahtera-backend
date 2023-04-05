@@ -42,7 +42,7 @@ func (r *adminOpdRepository) FindById(id int) (model.AdminOpd, error) {
 func (r *adminOpdRepository) FindByUserId(userId int) (model.AdminOpd, error) {
 	var adminOpd model.AdminOpd
 
-	var err = r.db.Where("userId = ?", userId).Model(&adminOpd).Preload("User").Preload("Instansi").Find(&adminOpd).Error
+	var err = r.db.Where("userId = ?", userId).Model(&adminOpd).Preload("User").Preload("Instansi").Take(&adminOpd).Error
 
 	return adminOpd, err
 }
