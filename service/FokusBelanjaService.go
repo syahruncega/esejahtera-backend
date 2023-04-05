@@ -71,6 +71,8 @@ func (s *fokusBelanjaService) Create(fokusBelanjaRequest request.CreateFokusBela
 func (s *fokusBelanjaService) Update(id int, fokusBelanjaRequest request.UpdateFokusBelanjaRequest) (model.FokusBelanja, error) {
 	var fokusBelanja, _ = s.fokusBelanjaRepository.FindById(id)
 
+	var currentPagu = fokusBelanja.PaguFokusBelanja
+
 	fokusBelanja.RencanaSubKegiatanId = fokusBelanjaRequest.RencanaSubKegiatanId
 	fokusBelanja.NamaFokusBelanja = fokusBelanjaRequest.NamaFokusBelanja
 	fokusBelanja.Indikator = fokusBelanjaRequest.Indikator
@@ -82,7 +84,7 @@ func (s *fokusBelanjaService) Update(id int, fokusBelanjaRequest request.UpdateF
 	var rencanaSubKegiatan, _ = s.rencanaSubKegiatanRepository.FindById(fokusBelanja.RencanaSubKegiatanId)
 
 	var totalPaguFokusBelanja, _ = s.fokusBelanjaRepository.SumPaguFokusBelanja(fokusBelanja.RencanaSubKegiatanId)
-	totalPaguFokusBelanja = totalPaguFokusBelanja - fokusBelanja.PaguFokusBelanja + fokusBelanjaRequest.PaguFokusBelanja
+	totalPaguFokusBelanja = totalPaguFokusBelanja - currentPagu + fokusBelanjaRequest.PaguFokusBelanja
 
 	if rencanaSubKegiatan.PaguSubKegiatan >= totalPaguFokusBelanja {
 		updatedFokusBelanja, err := s.fokusBelanjaRepository.Update(fokusBelanja)

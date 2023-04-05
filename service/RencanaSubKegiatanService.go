@@ -67,6 +67,8 @@ func (s *rencanaSubKegiatanService) Create(rencanaSubKegiatanRequest request.Cre
 func (s *rencanaSubKegiatanService) Update(id int, rencanaSubKegiatanRequest request.UpdateRencanaSubKegiatanRequest) (model.RencanaSubKegiatan, error) {
 	var rencanaSubKegiatan, _ = s.rencanaSubKegiatanRepository.FindById(id)
 
+	var currentPagu = rencanaSubKegiatan.PaguSubKegiatan
+
 	rencanaSubKegiatan.RencanaKegiatanId = rencanaSubKegiatanRequest.RencanaKegiatanId
 	rencanaSubKegiatan.SubKegiatanId = rencanaSubKegiatanRequest.SubKegiatanId
 	rencanaSubKegiatan.PaguSubKegiatan = rencanaSubKegiatanRequest.PaguSubKegiatan
@@ -75,7 +77,7 @@ func (s *rencanaSubKegiatanService) Update(id int, rencanaSubKegiatanRequest req
 	var rencanaKegiatan, _ = s.rencanaKegiatanRepository.FindById(rencanaSubKegiatan.RencanaKegiatanId)
 
 	var totalPaguRencanaSubKegiatan, _ = s.rencanaSubKegiatanRepository.SumPaguRencanaSubKegiatan(rencanaSubKegiatan.RencanaKegiatanId)
-	totalPaguRencanaSubKegiatan = totalPaguRencanaSubKegiatan - rencanaSubKegiatan.PaguSubKegiatan + rencanaSubKegiatanRequest.PaguSubKegiatan
+	totalPaguRencanaSubKegiatan = totalPaguRencanaSubKegiatan - currentPagu + rencanaSubKegiatanRequest.PaguSubKegiatan
 
 	if rencanaKegiatan.PaguKegiatan >= totalPaguRencanaSubKegiatan {
 		updatedRencanaSubKegiatan, err := s.rencanaSubKegiatanRepository.Update(rencanaSubKegiatan)
