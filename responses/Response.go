@@ -45,6 +45,7 @@ type RencanaProgramResponse struct {
 	Program     ProgramResponse  `json:"program"`
 	PaguProgram int64            `json:"paguProgram"`
 	Tipe        string           `json:"tipe"`
+	Tahun       string           `json:"tahun"`
 	CreatedAt   time.Time        `json:"createdAt"`
 	UpdatedAt   time.Time        `json:"updatedAt"`
 }
@@ -60,21 +61,21 @@ type InstansiOnProgramResponse struct {
 }
 
 type IndikatorSasaranResponse struct {
-	Id                   int `json:"id"`
-	ProgramId            int `json:"programId"`
-	Program              ProgramResponse
-	NamaIndikatorSasaran string    `json:"namaIndikatorSasaran"`
-	CreatedAt            time.Time `json:"createdAt"`
-	UpdatedAt            time.Time `json:"updatedAt"`
+	Id                   int                    `json:"id"`
+	RencanaProgramId     int                    `json:"rencanaProgramId"`
+	RencanaProgram       RencanaProgramResponse `json:"rencanaProgram"`
+	NamaIndikatorSasaran string                 `json:"namaIndikatorSasaran"`
+	CreatedAt            time.Time              `json:"createdAt"`
+	UpdatedAt            time.Time              `json:"updatedAt"`
 }
 
 type KebijakanResponse struct {
-	Id            int             `json:"id"`
-	ProgramId     int             `json:"programId"`
-	Program       ProgramResponse `json:"program"`
-	NamaKebijakan string          `json:"namaKebijakan"`
-	CreatedAt     time.Time       `json:"createdAt"`
-	UpdatedAt     time.Time       `json:"updatedAt"`
+	Id               int                    `json:"id"`
+	RencanaProgramId int                    `json:"rencanaProgramId"`
+	RencanaProgram   RencanaProgramResponse `json:"rencanaProgram"`
+	NamaKebijakan    string                 `json:"namaKebijakan"`
+	CreatedAt        time.Time              `json:"createdAt"`
+	UpdatedAt        time.Time              `json:"updatedAt"`
 }
 
 type KegiatanResponse struct {
@@ -94,6 +95,7 @@ type RencanaKegiatanResponse struct {
 	Kegiatan         KegiatanResponse       `json:"kegiatan"`
 	Tipe             string                 `json:"tipe"`
 	PaguKegiatan     int64                  `json:"paguKegiatan"`
+	Tahun            string                 `json:"tahun"`
 	CreatedAt        time.Time              `json:"createdAt"`
 	UpdatedAt        time.Time              `json:"updatedAt"`
 }
@@ -109,12 +111,12 @@ type ProgramOnKegiatanResponse struct {
 }
 
 type SasaranResponse struct {
-	Id          int             `json:"id"`
-	ProgramId   int             `json:"programId"`
-	Program     ProgramResponse `json:"program"`
-	NamaSasaran string          `json:"namaSasaran"`
-	CreatedAt   time.Time       `json:"createdAt"`
-	UpdatedAt   time.Time       `json:"updatedAt"`
+	Id               int                    `json:"id"`
+	RencanaProgramId int                    `json:"rencanaProgramId"`
+	RencanaProgram   RencanaProgramResponse `json:"rencanaProgram"`
+	NamaSasaran      string                 `json:"namaSasaran"`
+	CreatedAt        time.Time              `json:"createdAt"`
+	UpdatedAt        time.Time              `json:"updatedAt"`
 }
 
 type SubKegiatanResponse struct {
@@ -134,6 +136,7 @@ type RencanaSubKegiatanResponse struct {
 	SubKegiatan       SubKegiatanResponse     `json:"subKegiatan"`
 	Tipe              string                  `json:"tipe"`
 	PaguSubKegiatan   int64                   `json:"paguSubKegiatan"`
+	Tahun             string                  `json:"tahun"`
 	CreatedAt         time.Time               `json:"createdAt"`
 	UpdatedAt         time.Time               `json:"updatedAt"`
 }
@@ -158,6 +161,7 @@ type FokusBelanjaResponse struct {
 	Satuan               string                     `json:"satuan"`
 	PaguFokusBelanja     int64                      `json:"paguFokusBelanja"`
 	Keterangan           string                     `json:"keterangan"`
+	Tahun                string                     `json:"tahun"`
 	CreatedAt            time.Time                  `json:"createdAt"`
 	UpdatedAt            time.Time                  `json:"updatedAt"`
 }

@@ -81,6 +81,7 @@ func ConvertToRencanaProgramResponse(r model.RencanaProgram) responses.RencanaPr
 		},
 		PaguProgram: r.PaguProgram,
 		Tipe:        r.Tipe,
+		Tahun:       r.Tahun,
 		CreatedAt:   r.CreatedAt,
 		UpdatedAt:   r.UpdatedAt,
 	}
@@ -113,15 +114,17 @@ func ConvertToInstansiOnProgramResponse(i model.InstansiOnProgram) responses.Ins
 
 func ConvertToIndikatorSasaranResponse(i model.IndikatorSasaran) responses.IndikatorSasaranResponse {
 	return responses.IndikatorSasaranResponse{
-		Id:        i.Id,
-		ProgramId: i.ProgramId,
-		Program: responses.ProgramResponse{
-			Id:          i.Program.Id,
-			Tahun:       i.Program.Tahun,
-			KodeProgram: i.Program.KodeProgram,
-			NamaProgram: i.Program.NamaProgram,
-			CreatedAt:   i.Program.CreatedAt,
-			UpdatedAt:   i.Program.UpdatedAt,
+		Id:               i.Id,
+		RencanaProgramId: i.RencanaProgramId,
+		RencanaProgram: responses.RencanaProgramResponse{
+			Id:          i.RencanaProgram.Id,
+			InstansiId:  i.RencanaProgram.InstansiId,
+			ProgramId:   i.RencanaProgram.ProgramId,
+			PaguProgram: i.RencanaProgram.PaguProgram,
+			Tipe:        i.RencanaProgram.Tipe,
+			Tahun:       i.RencanaProgram.Tahun,
+			CreatedAt:   i.RencanaProgram.CreatedAt,
+			UpdatedAt:   i.RencanaProgram.UpdatedAt,
 		},
 		NamaIndikatorSasaran: i.NamaIndikatorSasaran,
 		CreatedAt:            i.CreatedAt,
@@ -165,6 +168,7 @@ func ConvertToRencanaKegiatanResponse(r model.RencanaKegiatan) responses.Rencana
 			},
 			PaguProgram: r.RencanaProgram.PaguProgram,
 			Tipe:        r.RencanaProgram.Tipe,
+			Tahun:       r.RencanaProgram.Tahun,
 			CreatedAt:   r.RencanaProgram.CreatedAt,
 			UpdatedAt:   r.RencanaProgram.UpdatedAt,
 		},
@@ -179,6 +183,7 @@ func ConvertToRencanaKegiatanResponse(r model.RencanaKegiatan) responses.Rencana
 		},
 		PaguKegiatan: r.PaguKegiatan,
 		Tipe:         r.Tipe,
+		Tahun:        r.Tahun,
 		CreatedAt:    r.CreatedAt,
 		UpdatedAt:    r.UpdatedAt,
 	}
@@ -212,15 +217,17 @@ func ConvertToProgramOnKegiatanResponse(p model.ProgramOnKegiatan) responses.Pro
 
 func ConvertToSasaranResponse(s model.Sasaran) responses.SasaranResponse {
 	return responses.SasaranResponse{
-		Id:        s.Id,
-		ProgramId: s.ProgramId,
-		Program: responses.ProgramResponse{
-			Id:          s.Program.Id,
-			Tahun:       s.Program.Tahun,
-			KodeProgram: s.Program.KodeProgram,
-			NamaProgram: s.Program.NamaProgram,
-			CreatedAt:   s.Program.CreatedAt,
-			UpdatedAt:   s.Program.UpdatedAt,
+		Id:               s.Id,
+		RencanaProgramId: s.RencanaProgramId,
+		RencanaProgram: responses.RencanaProgramResponse{
+			Id:          s.RencanaProgram.Id,
+			InstansiId:  s.RencanaProgram.InstansiId,
+			ProgramId:   s.RencanaProgram.ProgramId,
+			PaguProgram: s.RencanaProgram.PaguProgram,
+			Tipe:        s.RencanaProgram.Tipe,
+			Tahun:       s.RencanaProgram.Tahun,
+			CreatedAt:   s.RencanaProgram.CreatedAt,
+			UpdatedAt:   s.RencanaProgram.UpdatedAt,
 		},
 		NamaSasaran: s.NamaSasaran,
 		CreatedAt:   s.CreatedAt,
@@ -266,6 +273,7 @@ func ConvertToRencanaSubKegiatanResponse(r model.RencanaSubKegiatan) responses.R
 				},
 				PaguProgram: r.RencanaKegiatan.RencanaProgram.PaguProgram,
 				Tipe:        r.RencanaKegiatan.RencanaProgram.Tipe,
+				Tahun:       r.RencanaKegiatan.Tahun,
 				CreatedAt:   r.RencanaKegiatan.RencanaProgram.CreatedAt,
 				UpdatedAt:   r.RencanaKegiatan.RencanaProgram.UpdatedAt,
 			},
@@ -294,6 +302,7 @@ func ConvertToRencanaSubKegiatanResponse(r model.RencanaSubKegiatan) responses.R
 		},
 		Tipe:            r.Tipe,
 		PaguSubKegiatan: r.PaguSubKegiatan,
+		Tahun:           r.Tahun,
 		CreatedAt:       r.CreatedAt,
 		UpdatedAt:       r.UpdatedAt,
 	}
@@ -301,15 +310,17 @@ func ConvertToRencanaSubKegiatanResponse(r model.RencanaSubKegiatan) responses.R
 
 func ConvertToKebijakanResponse(k model.Kebijakan) responses.KebijakanResponse {
 	return responses.KebijakanResponse{
-		Id:        k.Id,
-		ProgramId: k.ProgramId,
-		Program: responses.ProgramResponse{
-			Id:          k.Id,
-			Tahun:       k.Program.Tahun,
-			KodeProgram: k.Program.KodeProgram,
-			NamaProgram: k.Program.NamaProgram,
-			CreatedAt:   k.Program.CreatedAt,
-			UpdatedAt:   k.Program.UpdatedAt,
+		Id:               k.Id,
+		RencanaProgramId: k.RencanaProgramId,
+		RencanaProgram: responses.RencanaProgramResponse{
+			Id:          k.RencanaProgram.Id,
+			InstansiId:  k.RencanaProgram.InstansiId,
+			ProgramId:   k.RencanaProgram.ProgramId,
+			PaguProgram: k.RencanaProgram.PaguProgram,
+			Tipe:        k.RencanaProgram.Tipe,
+			Tahun:       k.RencanaProgram.Tahun,
+			CreatedAt:   k.RencanaProgram.CreatedAt,
+			UpdatedAt:   k.RencanaProgram.UpdatedAt,
 		},
 		NamaKebijakan: k.NamaKebijakan,
 		CreatedAt:     k.CreatedAt,
@@ -353,6 +364,7 @@ func ConvertToFokusBelanjaResponse(f model.FokusBelanja) responses.FokusBelanjaR
 			SubKegiatanId:     f.RencanaSubKegiatanId,
 			PaguSubKegiatan:   f.RencanaSubKegiatan.PaguSubKegiatan,
 			Tipe:              f.RencanaSubKegiatan.Tipe,
+			Tahun:             f.RencanaSubKegiatan.Tahun,
 			CreatedAt:         f.RencanaSubKegiatan.CreatedAt,
 			UpdatedAt:         f.RencanaSubKegiatan.UpdatedAt,
 		},
@@ -362,6 +374,7 @@ func ConvertToFokusBelanjaResponse(f model.FokusBelanja) responses.FokusBelanjaR
 		Satuan:           f.Satuan,
 		PaguFokusBelanja: f.PaguFokusBelanja,
 		Keterangan:       f.Keterangan,
+		Tahun:            f.Tahun,
 		CreatedAt:        f.CreatedAt,
 		UpdatedAt:        f.UpdatedAt,
 	}
@@ -380,6 +393,7 @@ func ConvertToDetailLokasiResponse(d model.Detail_Lokasi) responses.Detail_Lokas
 			Satuan:               d.FokusBelanja.Satuan,
 			PaguFokusBelanja:     d.FokusBelanja.PaguFokusBelanja,
 			Keterangan:           d.FokusBelanja.Keterangan,
+			Tahun:                d.FokusBelanja.Tahun,
 			CreatedAt:            d.FokusBelanja.CreatedAt,
 			UpdatedAt:            d.FokusBelanja.UpdatedAt,
 		},

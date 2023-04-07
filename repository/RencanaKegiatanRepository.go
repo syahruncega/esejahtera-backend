@@ -73,6 +73,7 @@ func (r *rencanaKegiatanRepository) Update(rencanaKegiatan model.RencanaKegiatan
 		KegiatanId:       rencanaKegiatan.KegiatanId,
 		PaguKegiatan:     rencanaKegiatan.PaguKegiatan,
 		Tipe:             rencanaKegiatan.Tipe,
+		Tahun:            rencanaKegiatan.Tahun,
 	}).Error
 
 	return rencanaKegiatan, err

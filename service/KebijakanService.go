@@ -43,8 +43,8 @@ func (s *kebijakanService) FindByProgramId(programId int) ([]model.Kebijakan, er
 
 func (s *kebijakanService) Create(kebijakanRequest request.CreateKebijakanRequest) (model.Kebijakan, error) {
 	var kebijakan = model.Kebijakan{
-		ProgramId:     kebijakanRequest.ProgramId,
-		NamaKebijakan: kebijakanRequest.NamaKebijakan,
+		RencanaProgramId: kebijakanRequest.RencanaProgramId,
+		NamaKebijakan:    kebijakanRequest.NamaKebijakan,
 	}
 
 	newKebijakan, err := s.kebijakanRepository.Create(kebijakan)
@@ -55,7 +55,7 @@ func (s *kebijakanService) Create(kebijakanRequest request.CreateKebijakanReques
 func (s *kebijakanService) Update(id int, kebijakanRequest request.UpdateKebijakanRequest) (model.Kebijakan, error) {
 	var kebijakan, err = s.kebijakanRepository.FindById(id)
 
-	kebijakan.ProgramId = kebijakanRequest.ProgramId
+	kebijakan.RencanaProgramId = kebijakanRequest.RencanaProgramId
 	kebijakan.NamaKebijakan = kebijakanRequest.NamaKebijakan
 
 	updatedKebijakan, err := s.kebijakanRepository.Update(kebijakan)

@@ -49,6 +49,7 @@ func (s *rencanaProgramService) Create(rencanaProgramRequest request.CreateRenca
 		ProgramId:   rencanaProgramRequest.ProgramId,
 		PaguProgram: rencanaProgramRequest.PaguProgram,
 		Tipe:        rencanaProgramRequest.Tipe,
+		Tahun:       rencanaProgramRequest.Tahun,
 	}
 
 	newRencanaProgram, err := s.rencanaProgramRepository.Create(rencanaProgram)
@@ -73,6 +74,7 @@ func (s *rencanaProgramService) Update(id int, rencanaProgramRequest request.Upd
 		rencanaProgram.ProgramId = rencanaProgramRequest.ProgramId
 		rencanaProgram.PaguProgram = rencanaProgramRequest.PaguProgram
 		rencanaProgram.Tipe = rencanaProgramRequest.Tipe
+		rencanaProgram.Tahun = rencanaProgramRequest.Tahun
 
 		updatedRencanaProgram, err := s.rencanaProgramRepository.Update(rencanaProgram)
 

@@ -55,7 +55,7 @@ func (r *indikatorSasaranRepository) Create(indikatorSasaran model.IndikatorSasa
 
 func (r *indikatorSasaranRepository) Update(indikatorSasaran model.IndikatorSasaran) (model.IndikatorSasaran, error) {
 	var err = r.db.Model(&indikatorSasaran).Updates(model.IndikatorSasaran{
-		ProgramId:            indikatorSasaran.ProgramId,
+		RencanaProgramId:     indikatorSasaran.RencanaProgramId,
 		NamaIndikatorSasaran: indikatorSasaran.NamaIndikatorSasaran,
 	}).Error
 

@@ -5,6 +5,7 @@ type CreateRencanaSubKegiatanRequest struct {
 	SubKegiatanId     int    `json:"subKegiatanId" binding:"required"`
 	PaguSubKegiatan   int64  `json:"paguSubKegiatan" binding:"required"`
 	Tipe              string `json:"tipe" binding:"required"`
+	Tahun             string `json:"tahun" binding:"required"`
 }
 
 type UpdateRencanaSubKegiatanRequest struct {
@@ -12,4 +13,5 @@ type UpdateRencanaSubKegiatanRequest struct {
 	SubKegiatanId     int    `json:"subKegiatanId"`
 	PaguSubKegiatan   int64  `json:"paguSubKegiatan"`
 	Tipe              string `json:"tipe"`
+	Tahun             string `json:"tahun"`
 }

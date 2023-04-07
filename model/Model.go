@@ -45,6 +45,7 @@ type RencanaProgram struct {
 	Program     Program
 	PaguProgram int64     `gorm:"column:paguProgram;not null"`
 	Tipe        string    `gorm:"column:tipe;not null"`
+	Tahun       string    `gorm:"column:tahun;not null"`
 	CreatedAt   time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt   time.Time `gorm:"column:updatedAt;not null"`
 }
@@ -60,18 +61,18 @@ type InstansiOnProgram struct {
 }
 
 type Sasaran struct {
-	Id          int `gorm:"column:id;primaryKey;not null;autoIncrement"`
-	ProgramId   int `gorm:"column:programId;not null"`
-	Program     Program
-	NamaSasaran string    `gorm:"column:namaSasaran;not null"`
-	CreatedAt   time.Time `gorm:"column:createdAt;not null"`
-	UpdatedAt   time.Time `gorm:"column:updatedAt;not null"`
+	Id               int `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	RencanaProgramId int `gorm:"column:rencanaProgramId;not null"`
+	RencanaProgram   RencanaProgram
+	NamaSasaran      string    `gorm:"column:namaSasaran;not null"`
+	CreatedAt        time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt        time.Time `gorm:"column:updatedAt;not null"`
 }
 
 type IndikatorSasaran struct {
 	Id                   int `gorm:"column:id;primaryKey;not null;autoIncrement"`
-	ProgramId            int `gorm:"column:programId;not null"`
-	Program              Program
+	RencanaProgramId     int `gorm:"column:rencanaProgramId;not null"`
+	RencanaProgram       RencanaProgram
 	NamaIndikatorSasaran string    `gorm:"column:namaIndikatorSasaran;not null"`
 	CreatedAt            time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt            time.Time `gorm:"column:updatedAt;not null"`
@@ -94,6 +95,7 @@ type RencanaKegiatan struct {
 	Kegiatan         Kegiatan
 	PaguKegiatan     int64     `gorm:"column:paguKegiatan;not null"`
 	Tipe             string    `gorm:"column:tipe;not null"`
+	Tahun            string    `gorm:"column:tahun;not null"`
 	CreatedAt        time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt        time.Time `gorm:"column:updatedAt;not null"`
 }
@@ -118,12 +120,12 @@ type SubKegiatan struct {
 }
 
 type Kebijakan struct {
-	Id            int `gorm:"column:id;primaryKey;not null;autoIncrement"`
-	ProgramId     int `gorm:"column:programId;not null"`
-	Program       Program
-	NamaKebijakan string    `gorm:"column:namaKebijakan;not null"`
-	CreatedAt     time.Time `gorm:"column:createdAt;not null"`
-	UpdatedAt     time.Time `gorm:"column:updatedAt;not null"`
+	Id               int `gorm:"column:id;primaryKey;not null;autoIncrement"`
+	RencanaProgramId int `gorm:"column:rencanaProgramId;not null"`
+	RencanaProgram   RencanaProgram
+	NamaKebijakan    string    `gorm:"column:namaKebijakan;not null"`
+	CreatedAt        time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt        time.Time `gorm:"column:updatedAt;not null"`
 }
 
 type RencanaSubKegiatan struct {
@@ -134,6 +136,7 @@ type RencanaSubKegiatan struct {
 	SubKegiatan       SubKegiatan
 	PaguSubKegiatan   int64     `gorm:"column:paguSubKegiatan;not null"`
 	Tipe              string    `gorm:"column:tipe;not null"`
+	Tahun             string    `gorm:"column:tahun;not null"`
 	CreatedAt         time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt         time.Time `gorm:"column:updatedAt;not null"`
 }
@@ -158,6 +161,7 @@ type FokusBelanja struct {
 	Satuan               string    `gorm:"column:satuan;not null"`
 	PaguFokusBelanja     int64     `gorm:"column:paguFokusBelanja;not null"`
 	Keterangan           string    `gorm:"column:keterangan;not null"`
+	Tahun                string    `gorm:"column:tahun;not null"`
 	CreatedAt            time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt            time.Time `gorm:"column:updatedAt;not null"`
 }

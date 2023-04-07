@@ -1,11 +1,11 @@
 package request
 
 type CreateSasaranRequest struct {
-	ProgramId   int    `json:"programId" binding:"required"`
-	NamaSasaran string `json:"namaSasaran" binding:"required"`
+	RencanaProgramId int    `json:"rencanaProgramId" binding:"required"`
+	NamaSasaran      string `json:"namaSasaran" binding:"required"`
 }
 
 type UpdateSasaranRequest struct {
-	ProgramId   int    `json:"programId"`
-	NamaSasaran string `json:"namaSasaran"`
+	RencanaProgramId int    `json:"rencanaProgramId"`
+	NamaSasaran      string `json:"namaSasaran"`
 }

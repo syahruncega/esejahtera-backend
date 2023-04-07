@@ -43,8 +43,8 @@ func (s *sasaranService) FindByProgramId(programId int) ([]model.Sasaran, error)
 
 func (s *sasaranService) Create(sasaranRequest request.CreateSasaranRequest) (model.Sasaran, error) {
 	var sasaran = model.Sasaran{
-		ProgramId:   sasaranRequest.ProgramId,
-		NamaSasaran: sasaranRequest.NamaSasaran,
+		RencanaProgramId: sasaranRequest.RencanaProgramId,
+		NamaSasaran:      sasaranRequest.NamaSasaran,
 	}
 
 	newSasaran, err := s.sasaranRepository.Create(sasaran)
@@ -55,7 +55,7 @@ func (s *sasaranService) Create(sasaranRequest request.CreateSasaranRequest) (mo
 func (s *sasaranService) Update(id int, sasaranRequest request.UpdateSasaranRequest) (model.Sasaran, error) {
 	var sasaran, err = s.sasaranRepository.FindById(id)
 
-	sasaran.ProgramId = sasaranRequest.ProgramId
+	sasaran.RencanaProgramId = sasaranRequest.RencanaProgramId
 	sasaran.NamaSasaran = sasaranRequest.NamaSasaran
 
 	updatedSasaran, err := s.sasaranRepository.Update(sasaran)

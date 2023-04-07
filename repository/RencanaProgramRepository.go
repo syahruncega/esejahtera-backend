@@ -59,6 +59,7 @@ func (r *rencanaProgramRepository) Update(rencanaProgram model.RencanaProgram) (
 		ProgramId:   rencanaProgram.ProgramId,
 		PaguProgram: rencanaProgram.PaguProgram,
 		Tipe:        rencanaProgram.Tipe,
+		Tahun:       rencanaProgram.Tahun,
 	}).Error
 
 	return rencanaProgram, err

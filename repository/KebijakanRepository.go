@@ -55,8 +55,8 @@ func (r *kebijakanRepository) Create(kebijakan model.Kebijakan) (model.Kebijakan
 
 func (r *kebijakanRepository) Update(kebijakan model.Kebijakan) (model.Kebijakan, error) {
 	var err = r.db.Model(&kebijakan).Updates(model.Kebijakan{
-		ProgramId:     kebijakan.ProgramId,
-		NamaKebijakan: kebijakan.NamaKebijakan,
+		RencanaProgramId: kebijakan.RencanaProgramId,
+		NamaKebijakan:    kebijakan.NamaKebijakan,
 	}).Error
 
 	return kebijakan, err

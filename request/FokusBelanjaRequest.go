@@ -8,6 +8,7 @@ type CreateFokusBelanjaRequest struct {
 	Satuan               string  `json:"satuan" binding:"required"`
 	PaguFokusBelanja     int64   `json:"paguFokusBelanja" binding:"required"`
 	Keterangan           string  `json:"keterangan" binding:"required"`
+	Tahun                string  `json:"tahun" binding:"required"`
 }
 
 type UpdateFokusBelanjaRequest struct {
@@ -19,4 +20,5 @@ type UpdateFokusBelanjaRequest struct {
 	Satuan               string  `json:"satuan"`
 	PaguFokusBelanja     int64   `json:"paguFokusBelanja"`
 	Keterangan           string  `json:"keterangan"`
+	Tahun                string  `json:"tahun"`
 }

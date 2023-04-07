@@ -43,7 +43,7 @@ func (s *indikatorSasaranService) FindByProgramId(programId int) ([]model.Indika
 
 func (s *indikatorSasaranService) Create(indikatorSasaranRequest request.CreateIndikatorSasaranRequest) (model.IndikatorSasaran, error) {
 	var indikatorSasaran = model.IndikatorSasaran{
-		ProgramId:            indikatorSasaranRequest.ProgramId,
+		RencanaProgramId:     indikatorSasaranRequest.RencanaProgramId,
 		NamaIndikatorSasaran: indikatorSasaranRequest.NamaIndikatorSasaran,
 	}
 
@@ -55,7 +55,7 @@ func (s *indikatorSasaranService) Create(indikatorSasaranRequest request.CreateI
 func (s *indikatorSasaranService) Update(id int, indikatorSasaranRequest request.UpdateIndikatorSasaranRequest) (model.IndikatorSasaran, error) {
 	var indikatorSasaran, err = s.indikatorSasaranRepository.FindById(id)
 
-	indikatorSasaran.ProgramId = indikatorSasaranRequest.ProgramId
+	indikatorSasaran.RencanaProgramId = indikatorSasaranRequest.RencanaProgramId
 	indikatorSasaran.NamaIndikatorSasaran = indikatorSasaranRequest.NamaIndikatorSasaran
 
 	updatedIndikatorSasaran, err := s.indikatorSasaranRepository.Update(indikatorSasaran)

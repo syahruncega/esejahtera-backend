@@ -55,8 +55,8 @@ func (r *sasaranRepository) Create(sasaran model.Sasaran) (model.Sasaran, error)
 
 func (r *sasaranRepository) Update(sasaran model.Sasaran) (model.Sasaran, error) {
 	var err = r.db.Model(&sasaran).Updates(model.Sasaran{
-		ProgramId:   sasaran.ProgramId,
-		NamaSasaran: sasaran.NamaSasaran,
+		RencanaProgramId: sasaran.RencanaProgramId,
+		NamaSasaran:      sasaran.NamaSasaran,
 	}).Error
 
 	return sasaran, err

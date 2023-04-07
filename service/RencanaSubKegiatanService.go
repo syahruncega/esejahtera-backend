@@ -50,6 +50,7 @@ func (s *rencanaSubKegiatanService) Create(rencanaSubKegiatanRequest request.Cre
 		SubKegiatanId:     rencanaSubKegiatanRequest.SubKegiatanId,
 		PaguSubKegiatan:   rencanaSubKegiatanRequest.PaguSubKegiatan,
 		Tipe:              rencanaSubKegiatanRequest.Tipe,
+		Tahun:             rencanaSubKegiatanRequest.Tahun,
 	}
 
 	var rencanaKegiatan, _ = s.rencanaKegiatanRepository.FindById(rencanaSubKegiatan.RencanaKegiatanId)
@@ -74,6 +75,7 @@ func (s *rencanaSubKegiatanService) Update(id int, rencanaSubKegiatanRequest req
 	rencanaSubKegiatan.SubKegiatanId = rencanaSubKegiatanRequest.SubKegiatanId
 	rencanaSubKegiatan.PaguSubKegiatan = rencanaSubKegiatanRequest.PaguSubKegiatan
 	rencanaSubKegiatan.Tipe = rencanaSubKegiatanRequest.Tipe
+	rencanaSubKegiatan.Tahun = rencanaSubKegiatanRequest.Tahun
 
 	var rencanaKegiatan, _ = s.rencanaKegiatanRepository.FindById(rencanaSubKegiatan.RencanaKegiatanId)
 
