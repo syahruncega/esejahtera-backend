@@ -52,6 +52,7 @@ func ConvertToBidangUrusanOnInstansiResponse(b model.BidangUrusanOnInstansi) res
 func ConvertToProgramResponse(p model.Program) responses.ProgramResponse {
 	return responses.ProgramResponse{
 		Id:          p.Id,
+		Tahun:       p.Tahun,
 		KodeProgram: p.KodeProgram,
 		NamaProgram: p.NamaProgram,
 		CreatedAt:   p.CreatedAt,
@@ -238,6 +239,7 @@ func ConvertToSasaranResponse(s model.Sasaran) responses.SasaranResponse {
 func ConvertToSubKegiatanResponse(s model.SubKegiatan) responses.SubKegiatanResponse {
 	return responses.SubKegiatanResponse{
 		Id:              s.Id,
+		Tahun:           s.Tahun,
 		KodeSubKegiatan: s.KodeSubKegiatan,
 		NamaSubKegiatan: s.NamaSubKegiatan,
 		CreatedAt:       s.CreatedAt,
