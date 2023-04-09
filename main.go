@@ -193,6 +193,7 @@ func main() {
 
 	server.GET("/bidangurusanoninstansi", bidangUrusanOnInstansiController.GetBidangUrusanOnInstansis)
 	server.GET("/bidangurusanoninstansi/:id", bidangUrusanOnInstansiController.GetBidangUrusanOnInstansi)
+	server.GET("/bidangurusanoninstansi/search", bidangUrusanOnInstansiController.GetBidangUrusanOnInstansiBySearch)
 	server.POST("/bidangurusanoninstansi", bidangUrusanOnInstansiController.CreateBidangUrusanOnInstansi)
 	server.PATCH("/bidangurusanoninstansi/:id", bidangUrusanOnInstansiController.UpdateBidangUrusanOnInstansi)
 	server.DELETE("/bidangurusanoninstansi/:id", bidangUrusanOnInstansiController.DeleteBidangUrusanOnInstansi)
@@ -212,6 +213,7 @@ func main() {
 
 	server.GET("/instansionprogram", instansiOnProgramController.GetInstansiOnPrograms)
 	server.GET("/instansionprogram/:id", instansiOnProgramController.GetInstansiOnProgram)
+	server.GET("/instansionprogram/search", instansiOnProgramController.GetInstansiOnProgramBySearch)
 	server.POST("/instansionprogram", instansiOnProgramController.CreateInstansiOnProgram)
 	server.PATCH("/instansionprogram/:id", instansiOnProgramController.UpdateInstansiOnProgram)
 	server.DELETE("/instansionprogram/:id", instansiOnProgramController.DeleteInstansiOnProgram)
@@ -249,6 +251,7 @@ func main() {
 
 	server.GET("/programonkegiatan", programOnKegiatanController.GetProgramOnKegiatans)
 	server.GET("/programonkegiatan/:id", programOnKegiatanController.GetProgramOnKegiatan)
+	server.GET("/programonkegiatan/search", programOnKegiatanController.GetProgramOnKegiatanBySearch)
 	server.POST("/programonkegiatan", programOnKegiatanController.CreateProgramOnKegiatan)
 	server.PATCH("/programonkegiatan/:id", programOnKegiatanController.UpdateProgramOnKegiatan)
 	server.DELETE("/programonkegiatan/:id", programOnKegiatanController.DeleteProgramOnKegiatan)
@@ -268,6 +271,7 @@ func main() {
 
 	server.GET("/kegiatanonsubkegiatan", kegiatanOnSubKegiatanController.GetKegiatanOnSubKegiatans)
 	server.GET("/kegiatanonsubkegiatan/:id", kegiatanOnSubKegiatanController.GetKegiatanOnSubKegiatan)
+	server.GET("/kegiatanonsubkegiatan/search", kegiatanOnSubKegiatanController.GetKegiatanOnSubKegiatanBySearch)
 	server.POST("/kegiatanonsubkegiatan", kegiatanOnSubKegiatanController.CreateKegiatanOnSubKegiatan)
 	server.PATCH("/kegiatanonsubkegiatan/:id", kegiatanOnSubKegiatanController.UpdateKegiatanOnSubKegiatan)
 	server.DELETE("/kegiatanonsubkegiatan/:id", kegiatanOnSubKegiatanController.DeleteKegiatanOnSubKegiatan)

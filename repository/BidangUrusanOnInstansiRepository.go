@@ -10,6 +10,7 @@ type BidangUrusanOnInstansiRepository interface {
 	FindAll() ([]model.BidangUrusanOnInstansi, error)
 	FindById(id int) (model.BidangUrusanOnInstansi, error)
 	FindByInstansiId(instansiId int) ([]model.BidangUrusanOnInstansi, error)
+	FindBySearch(whereClause map[string]interface{}) ([]model.BidangUrusanOnInstansi, error)
 	Create(bidangUrusanOnInstansi model.BidangUrusanOnInstansi) (model.BidangUrusanOnInstansi, error)
 	Update(bidangUrusanOnInstansi model.BidangUrusanOnInstansi) (model.BidangUrusanOnInstansi, error)
 	Delete(bidangUrusanOnInstansi model.BidangUrusanOnInstansi) (model.BidangUrusanOnInstansi, error)
@@ -43,6 +44,14 @@ func (r *bidangUrusanOnInstansiRepository) FindByInstansiId(instansiId int) ([]m
 	var bidangUrusanOnInstansis []model.BidangUrusanOnInstansi
 
 	var err = r.db.Where("instansiId = ?", instansiId).Model(&bidangUrusanOnInstansis).Preload("Instansi").Preload("BidangUrusan").Find(&bidangUrusanOnInstansis).Error
+
+	return bidangUrusanOnInstansis, err
+}
+
+func (r *bidangUrusanOnInstansiRepository) FindBySearch(whereClause map[string]interface{}) ([]model.BidangUrusanOnInstansi, error) {
+	var bidangUrusanOnInstansis []model.BidangUrusanOnInstansi
+
+	var err = r.db.Where(whereClause).Model(&bidangUrusanOnInstansis).Preload("Instansi").Preload("BidangUrusan").Find(&bidangUrusanOnInstansis).Error
 
 	return bidangUrusanOnInstansis, err
 }

@@ -10,6 +10,7 @@ type InstansiOnProgramRepository interface {
 	FindAll() ([]model.InstansiOnProgram, error)
 	FindById(id int) (model.InstansiOnProgram, error)
 	FindByInstansiId(instansiId int) ([]model.InstansiOnProgram, error)
+	FindBySearch(whereClause map[string]interface{}, tahun string) ([]model.InstansiOnProgram, error)
 	Create(instansiOnProgram model.InstansiOnProgram) (model.InstansiOnProgram, error)
 	Update(instansiOnProgram model.InstansiOnProgram) (model.InstansiOnProgram, error)
 	Delete(instansiOnProgram model.InstansiOnProgram) (model.InstansiOnProgram, error)
@@ -43,6 +44,23 @@ func (r *instansiOnProgramRepository) FindByInstansiId(instansiId int) ([]model.
 	var instansiOnPrograms []model.InstansiOnProgram
 
 	var err = r.db.Where("instansiId = ?", instansiId).Model(&instansiOnPrograms).Preload("Instansi").Preload("Program").Find(&instansiOnPrograms).Error
+
+	return instansiOnPrograms, err
+}
+
+func (r *instansiOnProgramRepository) FindBySearch(whereClause map[string]interface{}, tahun string) ([]model.InstansiOnProgram, error) {
+	var instansiOnPrograms []model.InstansiOnProgram
+	var err error
+
+	if tahun != "" {
+		err = r.db.Where(whereClause).Model(&instansiOnPrograms).Preload("Instansi").Preload("Program", "tahun = ?", tahun).Find(&instansiOnPrograms).Error
+	} else {
+		err = r.db.Where(whereClause).Model(&instansiOnPrograms).Preload("Instansi").Preload("Program").Find(&instansiOnPrograms).Error
+	}
+
+	if len(instansiOnPrograms) == 0 {
+		return instansiOnPrograms, gorm.ErrRecordNotFound
+	}
 
 	return instansiOnPrograms, err
 }

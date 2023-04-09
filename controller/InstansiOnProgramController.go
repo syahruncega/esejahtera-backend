@@ -12,6 +12,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"gorm.io/gorm"
 )
 
 type instansiOnProgramController struct {
@@ -67,6 +68,50 @@ func (c *instansiOnProgramController) GetInstansiOnProgram(cntx *gin.Context) {
 	var instansiOnProgramResponse = helper.ConvertToInstansiOnProgramResponse(instansiOnProgram)
 
 	cntx.JSON(http.StatusOK, instansiOnProgramResponse)
+}
+
+func (c *instansiOnProgramController) GetInstansiOnProgramBySearch(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+
+	var whereClauseString = cntx.Request.URL.Query()
+	var whereClauseInterface = make(map[string]interface{})
+
+	for k, v := range whereClauseString {
+		if k == "tahun" {
+			continue
+		}
+
+		interfaceKey := k
+		interfaceVal := v
+
+		whereClauseInterface[interfaceKey] = interfaceVal
+	}
+
+	var instansiOnPrograms, err = c.instansiOnProgramService.FindBySearch(whereClauseInterface, tahun)
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			cntx.JSON(http.StatusNotFound, cntx.Error(err))
+		} else {
+			cntx.JSON(http.StatusBadRequest, cntx.Error(err))
+		}
+		return
+	}
+
+	var instansiOnProgramsResponse []responses.InstansiOnProgramResponse
+
+	for _, instansiOnProgram := range instansiOnPrograms {
+		if tahun != "" {
+			if instansiOnProgram.Program.Tahun == tahun {
+				var instansiOnProgramResponse = helper.ConvertToInstansiOnProgramResponse(instansiOnProgram)
+				instansiOnProgramsResponse = append(instansiOnProgramsResponse, instansiOnProgramResponse)
+			}
+		} else {
+			var instansiOnProgramResponse = helper.ConvertToInstansiOnProgramResponse(instansiOnProgram)
+			instansiOnProgramsResponse = append(instansiOnProgramsResponse, instansiOnProgramResponse)
+		}
+	}
+
+	cntx.JSON(http.StatusOK, instansiOnProgramsResponse)
 }
 
 func (c *instansiOnProgramController) CreateInstansiOnProgram(cntx *gin.Context) {

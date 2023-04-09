@@ -10,6 +10,7 @@ type KegiatanOnSubKegiatanRepository interface {
 	FindAll() ([]model.KegiatanOnSubKegiatan, error)
 	FindById(id int) (model.KegiatanOnSubKegiatan, error)
 	FindByKegiatanId(kegiatanId int) ([]model.KegiatanOnSubKegiatan, error)
+	FindBySearch(whereClause map[string]interface{}, tahun string) ([]model.KegiatanOnSubKegiatan, error)
 	Create(kegiatanOnSubKegiatan model.KegiatanOnSubKegiatan) (model.KegiatanOnSubKegiatan, error)
 	Update(kegiatanOnSubKegiatan model.KegiatanOnSubKegiatan) (model.KegiatanOnSubKegiatan, error)
 	Delete(kegiatanOnSubKegiatan model.KegiatanOnSubKegiatan) (model.KegiatanOnSubKegiatan, error)
@@ -43,6 +44,23 @@ func (r *kegiatanOnSubKegiatanRepository) FindByKegiatanId(kegiatanId int) ([]mo
 	var kegiatanOnSubKegiatans []model.KegiatanOnSubKegiatan
 
 	var err = r.db.Where("kegiatanId = ?", kegiatanId).Model(&kegiatanOnSubKegiatans).Preload("Kegiatan").Preload("SubKegiatan").Find(&kegiatanOnSubKegiatans).Error
+
+	return kegiatanOnSubKegiatans, err
+}
+
+func (r *kegiatanOnSubKegiatanRepository) FindBySearch(whereClause map[string]interface{}, tahun string) ([]model.KegiatanOnSubKegiatan, error) {
+	var kegiatanOnSubKegiatans []model.KegiatanOnSubKegiatan
+	var err error
+
+	if tahun != "" {
+		err = r.db.Where(whereClause).Model(&kegiatanOnSubKegiatans).Preload("Kegiatan").Preload("SubKegiatan", "tahun = ?", tahun).Find(&kegiatanOnSubKegiatans).Error
+	} else {
+		err = r.db.Where(whereClause).Model(&kegiatanOnSubKegiatans).Preload("Kegiatan").Preload("SubKegiatan").Find(&kegiatanOnSubKegiatans).Error
+	}
+
+	if len(kegiatanOnSubKegiatans) == 0 {
+		return kegiatanOnSubKegiatans, gorm.ErrRecordNotFound
+	}
 
 	return kegiatanOnSubKegiatans, err
 }

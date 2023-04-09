@@ -10,6 +10,7 @@ type InstansiOnProgramService interface {
 	FindAll() ([]model.InstansiOnProgram, error)
 	FindById(id int) (model.InstansiOnProgram, error)
 	FindByInstansiId(instansiId int) ([]model.InstansiOnProgram, error)
+	FindBySearch(whereClause map[string]interface{}, tahun string) ([]model.InstansiOnProgram, error)
 	Create(instansiOnProgramRequest request.CreateInstansiOnProgramRequest) (model.InstansiOnProgram, error)
 	Update(id int, instansiOnProgramRequest request.UpdateInstansiOnProgramRequest) (model.InstansiOnProgram, error)
 	Delete(id int) (model.InstansiOnProgram, error)
@@ -37,6 +38,12 @@ func (s *instansiOnProgramService) FindById(id int) (model.InstansiOnProgram, er
 
 func (s *instansiOnProgramService) FindByInstansiId(instansiId int) ([]model.InstansiOnProgram, error) {
 	var instansiOnPrograms, err = s.instansiOnProgramRepository.FindByInstansiId(instansiId)
+
+	return instansiOnPrograms, err
+}
+
+func (s *instansiOnProgramService) FindBySearch(whereClause map[string]interface{}, tahun string) ([]model.InstansiOnProgram, error) {
+	var instansiOnPrograms, err = s.instansiOnProgramRepository.FindBySearch(whereClause, tahun)
 
 	return instansiOnPrograms, err
 }

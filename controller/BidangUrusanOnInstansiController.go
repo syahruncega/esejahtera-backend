@@ -68,6 +68,34 @@ func (c *bidangUrusanOnInstansiController) GetBidangUrusanOnInstansi(cntx *gin.C
 	cntx.JSON(http.StatusOK, bidangUrusanOnInstansiResponse)
 }
 
+func (c *bidangUrusanOnInstansiController) GetBidangUrusanOnInstansiBySearch(cntx *gin.Context) {
+	var whereClauseString = cntx.Request.URL.Query()
+	var whereClauseInterface = make(map[string]interface{})
+
+	for k, v := range whereClauseString {
+		interfaceKey := k
+		interfaceVal := v
+
+		whereClauseInterface[interfaceKey] = interfaceVal
+	}
+
+	var bidangUrusanOnInstansis, err = c.bidangUrusanOnInstansiService.FindBySearch(whereClauseInterface)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	var bidangUrusanOnInstansisResponse []responses.BidangUrusanOnInstansiResponse
+
+	for _, bidangUrusanOnInstansi := range bidangUrusanOnInstansis {
+		var bidangUrusanOnInstansiResponse = helper.ConvertToBidangUrusanOnInstansiResponse(bidangUrusanOnInstansi)
+		bidangUrusanOnInstansisResponse = append(bidangUrusanOnInstansisResponse, bidangUrusanOnInstansiResponse)
+	}
+
+	cntx.JSON(http.StatusOK, bidangUrusanOnInstansisResponse)
+}
+
 func (c *bidangUrusanOnInstansiController) CreateBidangUrusanOnInstansi(cntx *gin.Context) {
 	var bidangUrusanOnInstansiRequest request.CreateBidangUrusanOnInstansiRequest
 

@@ -93,7 +93,7 @@ func ConvertToInstansiOnProgramResponse(i model.InstansiOnProgram) responses.Ins
 		Id:         i.Id,
 		InstansiId: i.InstansiId,
 		Instansi: responses.InstansiResponse{
-			Id:           i.Id,
+			Id:           i.Instansi.Id,
 			KodeInstansi: i.Instansi.KodeInstansi,
 			NamaInstansi: i.Instansi.NamaInstansi,
 			CreatedAt:    i.Instansi.CreatedAt,
@@ -204,7 +204,7 @@ func ConvertToProgramOnKegiatanResponse(p model.ProgramOnKegiatan) responses.Pro
 		},
 		KegiatanId: p.KegiatanId,
 		Kegiatan: responses.KegiatanResponse{
-			Id:           p.KegiatanId,
+			Id:           p.Kegiatan.Id,
 			Tahun:        p.Kegiatan.Tahun,
 			KodeKegiatan: p.Kegiatan.KodeKegiatan,
 			NamaKegiatan: p.Kegiatan.NamaKegiatan,

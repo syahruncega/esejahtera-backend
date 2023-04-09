@@ -12,6 +12,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"gorm.io/gorm"
 )
 
 type programOnKegiatanController struct {
@@ -39,6 +40,7 @@ func (c *programOnKegiatanController) GetProgramOnKegiatans(cntx *gin.Context) {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),
 		})
+		return
 	}
 
 	var programOnKegiatansResponse []responses.ProgramOnKegiatanResponse
@@ -66,6 +68,51 @@ func (c *programOnKegiatanController) GetProgramOnKegiatan(cntx *gin.Context) {
 	var programOnKegiatanResponse = helper.ConvertToProgramOnKegiatanResponse(programOnKegiatan)
 
 	cntx.JSON(http.StatusOK, programOnKegiatanResponse)
+}
+
+func (c *programOnKegiatanController) GetProgramOnKegiatanBySearch(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+
+	var whereClauseString = cntx.Request.URL.Query()
+	var whereClauseInterface = make(map[string]interface{})
+
+	for k, v := range whereClauseString {
+		if k == "tahun" {
+			continue
+		}
+
+		interfaceKey := k
+		interfaceVal := v
+
+		whereClauseInterface[interfaceKey] = interfaceVal
+	}
+
+	var programOnKegiatans, err = c.programOnKegiatanService.FindBySearch(whereClauseInterface, tahun)
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			cntx.JSON(http.StatusNotFound, cntx.Error(err))
+		} else {
+			cntx.JSON(http.StatusBadRequest, cntx.Error(err))
+		}
+		return
+	}
+
+	var programOnKegiatansResponse []responses.ProgramOnKegiatanResponse
+
+	for _, programOnKegiatan := range programOnKegiatans {
+		if tahun != "" {
+			if programOnKegiatan.Kegiatan.Tahun == tahun {
+				var programOnKegiatanResponse = helper.ConvertToProgramOnKegiatanResponse(programOnKegiatan)
+				programOnKegiatansResponse = append(programOnKegiatansResponse, programOnKegiatanResponse)
+			}
+		} else {
+			var programOnKegiatanResponse = helper.ConvertToProgramOnKegiatanResponse(programOnKegiatan)
+			programOnKegiatansResponse = append(programOnKegiatansResponse, programOnKegiatanResponse)
+		}
+	}
+
+	cntx.JSON(http.StatusOK, programOnKegiatansResponse)
+
 }
 
 func (c *programOnKegiatanController) CreateProgramOnKegiatan(cntx *gin.Context) {

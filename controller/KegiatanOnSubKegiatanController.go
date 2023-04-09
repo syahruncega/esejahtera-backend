@@ -12,6 +12,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"gorm.io/gorm"
 )
 
 type kegiatanOnSubKegiatanController struct {
@@ -67,6 +68,50 @@ func (c *kegiatanOnSubKegiatanController) GetKegiatanOnSubKegiatan(cntx *gin.Con
 	var kegiatanOnSubKegiatanResponse = helper.ConvertToKegiatanOnSubKegiatanResponse(kegiatanOnSubKegiatan)
 
 	cntx.JSON(http.StatusOK, kegiatanOnSubKegiatanResponse)
+}
+
+func (c *kegiatanOnSubKegiatanController) GetKegiatanOnSubKegiatanBySearch(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+
+	var whereClauseString = cntx.Request.URL.Query()
+	var whereClauseInterface = make(map[string]interface{})
+
+	for k, v := range whereClauseString {
+		if k == "tahun" {
+			continue
+		}
+
+		interfaceKey := k
+		interfaceVal := v
+
+		whereClauseInterface[interfaceKey] = interfaceVal
+	}
+
+	var kegiatanOnSubKegiatans, err = c.kegiatanOnSubKegiatanService.FindBySearch(whereClauseInterface, tahun)
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			cntx.JSON(http.StatusNotFound, cntx.Error(err))
+		} else {
+			cntx.JSON(http.StatusBadRequest, cntx.Error(err))
+		}
+		return
+	}
+
+	var kegiatanOnSubKegiatansResponse []responses.KegiatanOnSubKegiatanResponse
+
+	for _, kegiatanOnSubKegiatan := range kegiatanOnSubKegiatans {
+		if tahun != "" {
+			if kegiatanOnSubKegiatan.SubKegiatan.Tahun == tahun {
+				var kegiatanOnSubKegiatanResponse = helper.ConvertToKegiatanOnSubKegiatanResponse(kegiatanOnSubKegiatan)
+				kegiatanOnSubKegiatansResponse = append(kegiatanOnSubKegiatansResponse, kegiatanOnSubKegiatanResponse)
+			}
+		} else {
+			var kegiatanOnSubKegiatanResponse = helper.ConvertToKegiatanOnSubKegiatanResponse(kegiatanOnSubKegiatan)
+			kegiatanOnSubKegiatansResponse = append(kegiatanOnSubKegiatansResponse, kegiatanOnSubKegiatanResponse)
+		}
+	}
+
+	cntx.JSON(http.StatusOK, kegiatanOnSubKegiatansResponse)
 }
 
 func (c *kegiatanOnSubKegiatanController) CreateKegiatanOnSubKegiatan(cntx *gin.Context) {

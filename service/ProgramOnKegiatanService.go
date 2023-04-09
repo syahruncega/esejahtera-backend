@@ -10,6 +10,7 @@ type ProgramOnKegiatanService interface {
 	FindAll() ([]model.ProgramOnKegiatan, error)
 	FindById(id int) (model.ProgramOnKegiatan, error)
 	FindByProgramId(programId int) ([]model.ProgramOnKegiatan, error)
+	FindBySearch(whereClause map[string]interface{}, tahun string) ([]model.ProgramOnKegiatan, error)
 	Create(programOnKegiatanRequest request.CreateProgramOnKegiatanRequest) (model.ProgramOnKegiatan, error)
 	Update(id int, programOnKegiatanRequest request.UpdateProgramOnKegiatanRequest) (model.ProgramOnKegiatan, error)
 	Delete(id int) (model.ProgramOnKegiatan, error)
@@ -37,6 +38,12 @@ func (s *programOnKegiatanService) FindById(id int) (model.ProgramOnKegiatan, er
 
 func (s *programOnKegiatanService) FindByProgramId(programId int) ([]model.ProgramOnKegiatan, error) {
 	var programOnKegiatans, err = s.programOnKegiatanRepository.FindByProgramId(programId)
+
+	return programOnKegiatans, err
+}
+
+func (s *programOnKegiatanService) FindBySearch(whereClause map[string]interface{}, tahun string) ([]model.ProgramOnKegiatan, error) {
+	var programOnKegiatans, err = s.programOnKegiatanRepository.FindBySearch(whereClause, tahun)
 
 	return programOnKegiatans, err
 }

@@ -10,6 +10,7 @@ type BidangUrusanOnInstansiService interface {
 	FindAll() ([]model.BidangUrusanOnInstansi, error)
 	FindById(id int) (model.BidangUrusanOnInstansi, error)
 	FindByInstansiId(instansiId int) ([]model.BidangUrusanOnInstansi, error)
+	FindBySearch(whereClause map[string]interface{}) ([]model.BidangUrusanOnInstansi, error)
 	Create(bidangUrusanOnInstansiRequest request.CreateBidangUrusanOnInstansiRequest) (model.BidangUrusanOnInstansi, error)
 	Update(id int, bidangUrusanOnInstansiRequest request.UpdateBidangUrusanOnInstansiRequest) (model.BidangUrusanOnInstansi, error)
 	Delete(id int) (model.BidangUrusanOnInstansi, error)
@@ -37,6 +38,12 @@ func (s *bidangUrusanOnInstansiService) FindById(id int) (model.BidangUrusanOnIn
 
 func (s *bidangUrusanOnInstansiService) FindByInstansiId(instansiId int) ([]model.BidangUrusanOnInstansi, error) {
 	var bidangUrusanOnInstansis, err = s.bidangUrusanOnInstansiRepository.FindByInstansiId(instansiId)
+
+	return bidangUrusanOnInstansis, err
+}
+
+func (s *bidangUrusanOnInstansiService) FindBySearch(whereClause map[string]interface{}) ([]model.BidangUrusanOnInstansi, error) {
+	var bidangUrusanOnInstansis, err = s.bidangUrusanOnInstansiRepository.FindBySearch(whereClause)
 
 	return bidangUrusanOnInstansis, err
 }

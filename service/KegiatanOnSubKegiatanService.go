@@ -10,6 +10,7 @@ type KegiatanOnSubKegiatanService interface {
 	FindAll() ([]model.KegiatanOnSubKegiatan, error)
 	FindById(id int) (model.KegiatanOnSubKegiatan, error)
 	FindByKegiatanId(kegiatanId int) ([]model.KegiatanOnSubKegiatan, error)
+	FindBySearch(whereClause map[string]interface{}, tahun string) ([]model.KegiatanOnSubKegiatan, error)
 	Create(kegiatanOnSubKegiatanRequest request.CreateKegiatanOnSubKegiatanRequest) (model.KegiatanOnSubKegiatan, error)
 	Update(id int, kegiatanOnSubKegiatanRequest request.UpdateKegiatanOnSubKegiatanRequest) (model.KegiatanOnSubKegiatan, error)
 	Delete(id int) (model.KegiatanOnSubKegiatan, error)
@@ -37,6 +38,12 @@ func (s *kegiatanOnSubKegiatanService) FindById(id int) (model.KegiatanOnSubKegi
 
 func (s *kegiatanOnSubKegiatanService) FindByKegiatanId(kegiatanId int) ([]model.KegiatanOnSubKegiatan, error) {
 	var kegiatanOnSubKegiatans, err = s.kegiatanOnSubKegiatanRepository.FindByKegiatanId(kegiatanId)
+
+	return kegiatanOnSubKegiatans, err
+}
+
+func (s *kegiatanOnSubKegiatanService) FindBySearch(whereClause map[string]interface{}, tahun string) ([]model.KegiatanOnSubKegiatan, error) {
+	var kegiatanOnSubKegiatans, err = s.kegiatanOnSubKegiatanRepository.FindBySearch(whereClause, tahun)
 
 	return kegiatanOnSubKegiatans, err
 }
