@@ -67,7 +67,7 @@ func (r *fokusBelanjaRepository) Create(fokusBelanja model.FokusBelanja) (model.
 }
 
 func (r *fokusBelanjaRepository) Update(fokusBelanja model.FokusBelanja) (model.FokusBelanja, error) {
-	var err = r.db.Model(&fokusBelanja).Select("RencanaSubKegiatanId", "NamaFokusBelanja", "Indikator", "Target", "Satuan", "PaguFokusBelanja", "Keterangan").Updates(model.FokusBelanja{
+	var err = r.db.Model(&fokusBelanja).Select("RencanaSubKegiatanId", "NamaFokusBelanja", "Indikator", "Target", "Satuan", "PaguFokusBelanja", "Keterangan", "Tahun").Updates(model.FokusBelanja{
 		RencanaSubKegiatanId: fokusBelanja.RencanaSubKegiatanId,
 		NamaFokusBelanja:     fokusBelanja.NamaFokusBelanja,
 		Indikator:            fokusBelanja.Indikator,
@@ -75,6 +75,7 @@ func (r *fokusBelanjaRepository) Update(fokusBelanja model.FokusBelanja) (model.
 		Satuan:               fokusBelanja.Satuan,
 		PaguFokusBelanja:     fokusBelanja.PaguFokusBelanja,
 		Keterangan:           fokusBelanja.Keterangan,
+		Tahun:                fokusBelanja.Tahun,
 	}).Error
 
 	return fokusBelanja, err

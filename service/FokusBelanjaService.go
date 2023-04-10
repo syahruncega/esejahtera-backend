@@ -52,6 +52,7 @@ func (s *fokusBelanjaService) Create(fokusBelanjaRequest request.CreateFokusBela
 		Satuan:               fokusBelanjaRequest.Satuan,
 		PaguFokusBelanja:     fokusBelanjaRequest.PaguFokusBelanja,
 		Keterangan:           fokusBelanjaRequest.Keterangan,
+		Tahun:                fokusBelanjaRequest.Tahun,
 	}
 
 	var rencanaSubKegiatan, _ = s.rencanaSubKegiatanRepository.FindById(fokusBelanja.RencanaSubKegiatanId)
@@ -80,6 +81,7 @@ func (s *fokusBelanjaService) Update(id int, fokusBelanjaRequest request.UpdateF
 	fokusBelanja.Satuan = fokusBelanjaRequest.Satuan
 	fokusBelanja.PaguFokusBelanja = fokusBelanjaRequest.PaguFokusBelanja
 	fokusBelanja.Keterangan = fokusBelanjaRequest.Keterangan
+	fokusBelanja.Tahun = fokusBelanjaRequest.Tahun
 
 	var rencanaSubKegiatan, _ = s.rencanaSubKegiatanRepository.FindById(fokusBelanja.RencanaSubKegiatanId)
 
