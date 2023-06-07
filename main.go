@@ -278,6 +278,7 @@ func main() {
 
 	server.GET("/fokusbelanja", fokusBelanjaController.GetFokusBelanjas)
 	server.GET("/fokusbelanja/:id", fokusBelanjaController.GetFokusBelanja)
+	server.GET("/fokusbelanja/search", fokusBelanjaController.GetFokusBelanjaBySearch)
 	server.POST("/fokusbelanja", fokusBelanjaController.CreateFokusBelanja)
 	server.PATCH("/fokusbelanja/:id", fokusBelanjaController.UpdateFokusBelanja)
 	server.DELETE("/fokusbelanja/:id", fokusBelanjaController.DeleteFokusBelanja)
