@@ -68,6 +68,34 @@ func (c *fokusBelanjaController) GetFokusBelanja(cntx *gin.Context) {
 	cntx.JSON(http.StatusOK, fokusBelanjaResponse)
 }
 
+func (c *fokusBelanjaController) GetFokusBelanjaBySearch(cntx *gin.Context) {
+	var whereClauseString = cntx.Request.URL.Query()
+	var whereClauseInterface = make(map[string]interface{})
+
+	for k, v := range whereClauseString {
+		interfaceKey := k
+		interfaceVal := v
+
+		whereClauseInterface[interfaceKey] = interfaceVal
+	}
+
+	fokusBelanjas, err := c.fokusBelanjaService.FindBySearch(whereClauseInterface)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	var fokusBelanjasResponse []responses.FokusBelanjaResponse
+
+	for _, fokusBelanja := range fokusBelanjas {
+		var fokusBelanjaResponse = helper.ConvertToFokusBelanjaResponse(fokusBelanja)
+		fokusBelanjasResponse = append(fokusBelanjasResponse, fokusBelanjaResponse)
+	}
+
+	cntx.JSON(http.StatusOK, fokusBelanjasResponse)
+}
+
 func (c *fokusBelanjaController) CreateFokusBelanja(cntx *gin.Context) {
 	var fokusBelanjaRequest request.CreateFokusBelanjaRequest
 

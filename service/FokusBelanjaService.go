@@ -11,6 +11,7 @@ type FokusBelanjaService interface {
 	FindAll() ([]model.FokusBelanja, error)
 	FindById(id int) (model.FokusBelanja, error)
 	FindByRencanaSubKegiatanId(rencanaSubKegiatanId int) ([]model.FokusBelanja, error)
+	FindBySearch(whereClause map[string]interface{}) ([]model.FokusBelanja, error)
 	Create(fokusBelanjaRequest request.CreateFokusBelanjaRequest) (model.FokusBelanja, error)
 	Update(id int, fokusBelanjaRequest request.UpdateFokusBelanjaRequest) (model.FokusBelanja, error)
 	Delete(id int) (model.FokusBelanja, error)
@@ -39,6 +40,12 @@ func (s *fokusBelanjaService) FindById(id int) (model.FokusBelanja, error) {
 
 func (s *fokusBelanjaService) FindByRencanaSubKegiatanId(rencanaSubKegiatanId int) ([]model.FokusBelanja, error) {
 	var fokusBelanjas, err = s.fokusBelanjaRepository.FindByRencanaSubKegiatanId(rencanaSubKegiatanId)
+
+	return fokusBelanjas, err
+}
+
+func (s *fokusBelanjaService) FindBySearch(whereClause map[string]interface{}) ([]model.FokusBelanja, error) {
+	var fokusBelanjas, err = s.fokusBelanjaRepository.FindBySearch(whereClause)
 
 	return fokusBelanjas, err
 }
