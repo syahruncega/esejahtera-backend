@@ -47,6 +47,7 @@ func (s *detailLokasiService) Create(detailLokasiRequest request.CreateDetail_Lo
 		KabupatenKotaId: detailLokasiRequest.KabupatenKotaId,
 		KecamatanId:     detailLokasiRequest.KecamatanId,
 		KelurahanId:     detailLokasiRequest.KelurahanId,
+		TipePenerima:    detailLokasiRequest.TipePenerima,
 	}
 
 	var newDetailLokasi, err = s.detailLokasiRepository.Create(detailLokasi)
@@ -61,6 +62,7 @@ func (s *detailLokasiService) Update(id int, detailLokasiRequest request.UpdateD
 	detailLokasi.KecamatanId = detailLokasiRequest.KecamatanId
 	detailLokasi.KelurahanId = detailLokasiRequest.KelurahanId
 	detailLokasi.FokusBelanjaId = detailLokasiRequest.FokusBelanjaId
+	detailLokasi.TipePenerima = detailLokasiRequest.TipePenerima
 
 	updatedDetailLokasi, err := s.detailLokasiRepository.Update(detailLokasi)
 

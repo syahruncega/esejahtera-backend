@@ -176,6 +176,7 @@ type Detail_Lokasi struct {
 	Kecamatan       Kecamatan
 	KelurahanId     string `gorm:"column:kelurahanId;not null"`
 	Kelurahan       Kelurahan
+	TipePenerima    string    `gorm:"column:tipePenerima;not null"`
 	CreatedAt       time.Time `gorm:"column:createdAt;not null"`
 	UpdatedAt       time.Time `gorm:"column:updatedAt;not null"`
 }

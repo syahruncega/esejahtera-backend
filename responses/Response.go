@@ -176,6 +176,7 @@ type Detail_LokasiResponse struct {
 	Kecamatan       KecamatanResponse      `json:"kecamatan"`
 	KelurahanId     string                 `json:"kelurahanId"`
 	Kelurahan       KelurahanResponse      `json:"kelurahan"`
+	TipePenerima    string                 `json:"tipePenerima"`
 	CreatedAt       time.Time              `json:"createdAt"`
 	UpdatedAt       time.Time              `json:"updatedAt"`
 }

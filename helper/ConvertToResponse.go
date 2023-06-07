@@ -417,8 +417,9 @@ func ConvertToDetailLokasiResponse(d model.Detail_Lokasi) responses.Detail_Lokas
 			KecamatanId: d.Kelurahan.KecamatanId,
 			Nama:        d.Kelurahan.Nama,
 		},
-		CreatedAt: d.CreatedAt,
-		UpdatedAt: d.UpdatedAt,
+		TipePenerima: d.TipePenerima,
+		CreatedAt:    d.CreatedAt,
+		UpdatedAt:    d.UpdatedAt,
 	}
 }
 
