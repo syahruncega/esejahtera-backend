@@ -479,6 +479,26 @@ type IndividuVerifikasi struct {
 	UpdatedAt          time.Time `gorm:"column:updatedAt;not null"`
 }
 
+type TagIndividu struct {
+	Id             int `gorm:"column:id;primaryKey;not null"`
+	FokusBelanjaId int `gorm:"column:fokusBelanjaId;not null"`
+	FokusBelanja   FokusBelanja
+	IndividuId     int `gorm:"column:individuId;not null"`
+	Individu       Individu
+	CreatedAt      time.Time `gorm:"column:createdAt"`
+	UpdatedAt      time.Time `gorm:"column:updatedAt"`
+}
+
+type TagKeluarga struct {
+	Id             int `gorm:"column:id;primaryKey;not null"`
+	FokusBelanjaId int `gorm:"column:fokusBelanjaId;not null"`
+	FokusBelanja   FokusBelanja
+	KeluargaId     int `gorm:"column:keluargaId;not null"`
+	Keluarga       Keluarga
+	CreatedAt      time.Time `gorm:"column:createdAt"`
+	UpdatedAt      time.Time `gorm:"column:updatedAt"`
+}
+
 type DistinctKabupatenKota struct {
 	KabupatenKotaId string `gorm:"column:kabupatenKotaId"`
 	Nama            string `gorm:"column:nama"`

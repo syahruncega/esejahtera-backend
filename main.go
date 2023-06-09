@@ -170,6 +170,14 @@ func main() {
 
 	var statistikController = controller.NewStatistikController(keluargaService, individuService)
 
+	var tagIndividuRepository = repository.NewTagIndividuRepository(config.DB)
+	var tagIndividuService = service.NewTagIndividuService(tagIndividuRepository)
+	var tagIndividuController = controller.NewTagIndividuController(tagIndividuService)
+
+	var tagKeluargaRepository = repository.NewTagKeluargaRepository(config.DB)
+	var tagKeluargaService = service.NewTagKeluargaService(tagKeluargaRepository)
+	var tagKeluargaController = controller.NewTagKeluargaController(tagKeluargaService)
+
 	var server = gin.Default()
 
 	server.Use(cors.New(cors.Config{
@@ -405,6 +413,20 @@ func main() {
 	server.GET("/statistik/kecamatan", statistikController.StatistikKecamatan)
 	server.GET("/statistik/kelurahan", statistikController.StatistikKelurahan)
 	server.GET("/statistik/hitung", statistikController.StatistikSearch)
+
+	server.GET("/tagindividu", tagIndividuController.GetTagIndividus)
+	server.GET("/tagindividu/:id", tagIndividuController.GetTagIndividu)
+	server.GET("/tagindividu/search", tagIndividuController.GetTagIndividuBySearch)
+	server.POST("/tagindividu", tagIndividuController.CreateTagIndividu)
+	server.PATCH("/tagindividu/:id", tagIndividuController.UpdateTagIndividu)
+	server.DELETE("/tagindividu/:id", tagIndividuController.DeleteTagIndividu)
+
+	server.GET("/tagkeluarga", tagKeluargaController.GetTagKeluargas)
+	server.GET("/tagkeluarga/:id", tagKeluargaController.GetTagKeluarga)
+	server.GET("/tagkeluarga/search", tagKeluargaController.GetTagKeluargaBySearch)
+	server.POST("/tagkeluarga", tagKeluargaController.CreateTagKeluarga)
+	server.PATCH("/tagkeluarga/:id", tagKeluargaController.UpdateTagKeluarga)
+	server.DELETE("/tagkeluarga/:id", tagKeluargaController.DeleteTagKeluarga)
 
 	server.Run(":" + appConfig.AppPort)
 }

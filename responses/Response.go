@@ -181,6 +181,26 @@ type Detail_LokasiResponse struct {
 	UpdatedAt       time.Time              `json:"updatedAt"`
 }
 
+type TagIndividuResponse struct {
+	Id             int                  `json:"id"`
+	FokusBelanjaId int                  `json:"fokusBelanjaId"`
+	FokusBelanja   FokusBelanjaResponse `json:"fokusBelanja"`
+	IndividuId     int                  `json:"individuId"`
+	Individu       IndividuResponse     `json:"individu"`
+	CreatedAt      time.Time            `json:"createdAt"`
+	UpdatedAt      time.Time            `json:"updatedAt"`
+}
+
+type TagKeluargaResponse struct {
+	Id             int                  `json:"id"`
+	FokusBelanjaId int                  `json:"fokusBelanjaId"`
+	FokusBelanja   FokusBelanjaResponse `json:"fokusBelanja"`
+	KeluargaId     int                  `json:"keluargaId"`
+	Keluarga       KeluargaResponse     `json:"keluarga"`
+	CreatedAt      time.Time            `json:"createdAt"`
+	UpdatedAt      time.Time            `json:"updatedAt"`
+}
+
 type ProvinsiResponse struct {
 	Id   string `json:"id"`
 	Nama string `json:"nama"`

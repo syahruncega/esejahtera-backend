@@ -1052,7 +1052,7 @@ func ConvertToIndividuResponse(i model.Individu) responses.IndividuResponse {
 			NoHp:      i.User.NoHp,
 			Role:      i.User.Role,
 			CreatedAt: i.User.CreatedAt,
-			UpdatedAt: i.Mahasiswa.UpdatedAt,
+			UpdatedAt: i.User.UpdatedAt,
 		},
 
 		MahasiswaId: i.MahasiswaId,
@@ -1157,5 +1157,213 @@ func ConvertToIndividuVerifikasiResponse(i model.IndividuVerifikasi) responses.I
 
 		CreatedAt: i.CreatedAt,
 		UpdatedAt: i.UpdatedAt,
+	}
+}
+
+func ConvertToTagIndividuResponse(t model.TagIndividu) responses.TagIndividuResponse {
+	return responses.TagIndividuResponse{
+		Id:             t.Id,
+		FokusBelanjaId: t.FokusBelanjaId,
+		FokusBelanja: responses.FokusBelanjaResponse{
+			Id:                   t.FokusBelanja.Id,
+			RencanaSubKegiatanId: t.FokusBelanja.RencanaSubKegiatanId,
+			NamaFokusBelanja:     t.FokusBelanja.NamaFokusBelanja,
+			Indikator:            t.FokusBelanja.Indikator,
+			Target:               t.FokusBelanja.Target,
+			Satuan:               t.FokusBelanja.Satuan,
+			PaguFokusBelanja:     t.FokusBelanja.PaguFokusBelanja,
+			Keterangan:           t.FokusBelanja.Keterangan,
+			Tahun:                t.FokusBelanja.Tahun,
+			CreatedAt:            t.FokusBelanja.CreatedAt,
+			UpdatedAt:            t.FokusBelanja.UpdatedAt,
+		},
+		IndividuId: t.IndividuId,
+		Individu: responses.IndividuResponse{
+			Id:         t.Individu.Id,
+			IdKeluarga: t.Individu.IdKeluarga,
+
+			ProvinsiId: t.Individu.ProvinsiId,
+			Provinsi: responses.ProvinsiResponse{
+				Id:   t.Individu.Provinsi.Id,
+				Nama: t.Individu.Provinsi.Nama,
+			},
+
+			KabupatenKotaId: t.Individu.KabupatenKotaId,
+			Kabupaten_Kota: responses.Kabupaten_KotaResponse{
+				Id:         t.Individu.KabupatenKota.Id,
+				ProvinsiId: t.Individu.KabupatenKota.ProvinsiId,
+				Nama:       t.Individu.KabupatenKota.Nama,
+			},
+
+			KecamatanId: t.Individu.KecamatanId,
+			Kecamatan: responses.KecamatanResponse{
+				Id:              t.Individu.Kecamatan.Id,
+				KabupatenKotaId: t.Individu.Kecamatan.KabupatenKotaId,
+				Nama:            t.Individu.Kecamatan.Nama,
+			},
+
+			KelurahanId: t.Individu.KelurahanId,
+			Kelurahan: responses.KelurahanResponse{
+				Id:          t.Individu.Kelurahan.Id,
+				KecamatanId: t.Individu.Kelurahan.KecamatanId,
+				Nama:        t.Individu.Kelurahan.Nama,
+			},
+
+			DesilKesejahteraan: t.Individu.DesilKesejahteraan,
+			Alamat:             t.Individu.Alamat,
+			IdIndividu:         t.Individu.IdIndividu,
+			Nama:               t.Individu.Nama,
+			Nik:                t.Individu.Nik,
+			PadanDukcapil:      t.Individu.PadanDukcapil,
+			JenisKelamin:       t.Individu.JenisKelamin,
+			Hubungan:           t.Individu.Hubungan,
+			TanggalLahir:       t.Individu.TanggalLahir,
+			StatusKawin:        t.Individu.StatusKawin,
+			Pekerjaan:          t.Individu.Pekerjaan,
+			Pendidikan:         t.Individu.Pendidikan,
+			KategoriUsia:       t.Individu.KategoriUsia,
+			PenerimaBPNT:       t.Individu.PenerimaBPNT,
+			PenerimaBPUM:       t.Individu.PenerimaBPUM,
+			PenerimaBST:        t.Individu.PenerimaBST,
+			PenerimaPKH:        t.Individu.PenerimaPKH,
+			PenerimaSembako:    t.Individu.PenerimaSembako,
+
+			UserId: t.Individu.UserId,
+			User: responses.UserResponse{
+				Id:        t.Individu.User.Id,
+				Username:  t.Individu.User.Username,
+				Password:  t.Individu.User.Password,
+				Email:     t.Individu.User.Email,
+				NoHp:      t.Individu.User.NoHp,
+				Role:      t.Individu.User.Role,
+				CreatedAt: t.Individu.User.CreatedAt,
+				UpdatedAt: t.Individu.User.UpdatedAt,
+			},
+
+			MahasiswaId: t.Individu.MahasiswaId,
+			Mahasiswa: responses.MahasiswaResponse{
+				Id:              t.Individu.Mahasiswa.Id,
+				UserId:          t.Individu.Mahasiswa.UserId,
+				NamaLengkap:     t.Individu.Mahasiswa.NamaLengkap,
+				Universitas:     t.Individu.Mahasiswa.Universitas,
+				JenisKelamin:    t.Individu.Mahasiswa.JenisKelamin,
+				TanggalLahir:    t.Individu.Mahasiswa.TanggalLahir,
+				KabupatenKotaId: t.Individu.Mahasiswa.KabupatenKotaId,
+				KecamatanId:     t.Individu.Mahasiswa.KecamatanId,
+				KelurahanId:     t.Individu.Mahasiswa.KelurahanId,
+				CreatedAt:       t.Individu.Mahasiswa.CreatedAt,
+				UpdatedAt:       t.Individu.Mahasiswa.UpdatedAt,
+			},
+
+			StatusVerifikasi: t.Individu.StatusVerifikasi,
+		},
+
+		CreatedAt: t.CreatedAt,
+		UpdatedAt: t.UpdatedAt,
+	}
+}
+
+func ConvertToTagKeluargaResponse(t model.TagKeluarga) responses.TagKeluargaResponse {
+	return responses.TagKeluargaResponse{
+		Id:             t.Id,
+		FokusBelanjaId: t.FokusBelanjaId,
+		FokusBelanja: responses.FokusBelanjaResponse{
+			Id:                   t.FokusBelanja.Id,
+			RencanaSubKegiatanId: t.FokusBelanja.RencanaSubKegiatanId,
+			NamaFokusBelanja:     t.FokusBelanja.NamaFokusBelanja,
+			Indikator:            t.FokusBelanja.Indikator,
+			Target:               t.FokusBelanja.Target,
+			Satuan:               t.FokusBelanja.Satuan,
+			PaguFokusBelanja:     t.FokusBelanja.PaguFokusBelanja,
+			Keterangan:           t.FokusBelanja.Keterangan,
+			Tahun:                t.FokusBelanja.Tahun,
+			CreatedAt:            t.FokusBelanja.CreatedAt,
+			UpdatedAt:            t.FokusBelanja.UpdatedAt,
+		},
+		KeluargaId: t.KeluargaId,
+		Keluarga: responses.KeluargaResponse{
+			Id:         t.Keluarga.Id,
+			IdKeluarga: t.Keluarga.IdKeluarga,
+			ProvinsiId: t.Keluarga.ProvinsiId,
+			Provinsi: responses.ProvinsiResponse{
+				Id:   t.Keluarga.Provinsi.Id,
+				Nama: t.Keluarga.Provinsi.Nama,
+			},
+
+			KabupatenKotaId: t.Keluarga.KabupatenKotaId,
+			KabupatenKota: responses.Kabupaten_KotaResponse{
+				Id:         t.Keluarga.KabupatenKota.Id,
+				ProvinsiId: t.Keluarga.KabupatenKota.ProvinsiId,
+				Nama:       t.Keluarga.KabupatenKota.Nama,
+			},
+
+			KecamatanId: t.Keluarga.KecamatanId,
+			Kecamatan: responses.KecamatanResponse{
+				Id:              t.Keluarga.Kecamatan.Id,
+				KabupatenKotaId: t.Keluarga.Kecamatan.KabupatenKotaId,
+				Nama:            t.Keluarga.Kecamatan.Nama,
+			},
+
+			KelurahanId: t.Keluarga.KelurahanId,
+			Kelurahan: responses.KelurahanResponse{
+				Id:          t.Keluarga.Kelurahan.Id,
+				KecamatanId: t.Keluarga.Kelurahan.KecamatanId,
+				Nama:        t.Keluarga.Kelurahan.Nama,
+			},
+
+			DesilKesejahteraan:     t.Keluarga.DesilKesejahteraan,
+			Alamat:                 t.Keluarga.Alamat,
+			KepalaKeluarga:         t.Keluarga.KepalaKeluarga,
+			Nik:                    t.Keluarga.Nik,
+			PadanDukcapil:          t.Keluarga.PadanDukcapil,
+			JenisKelamin:           t.Keluarga.JenisKelamin,
+			TanggalLahir:           t.Keluarga.TanggalLahir,
+			Pekerjaan:              t.Keluarga.Pekerjaan,
+			Pendidikan:             t.Keluarga.Pendidikan,
+			KepemilikanRumah:       t.Keluarga.KepemilikanRumah,
+			Simpanan:               t.Keluarga.Simpanan,
+			JenisAtap:              t.Keluarga.JenisAtap,
+			JenisDinding:           t.Keluarga.JenisDinding,
+			JenisLantai:            t.Keluarga.JenisLantai,
+			SumberPenerangan:       t.Keluarga.SumberPenerangan,
+			BahanBakarMemasak:      t.Keluarga.BahanBakarMemasak,
+			SumberAirMinum:         t.Keluarga.SumberAirMinum,
+			FasilitasBuangAirBesar: t.Keluarga.FasilitasBuangAirBesar,
+			PenerimaBPNT:           t.Keluarga.PenerimaBPNT,
+			PenerimaBPUM:           t.Keluarga.PenerimaBPUM,
+			PenerimaBST:            t.Keluarga.PenerimaBST,
+			PenerimaPKH:            t.Keluarga.PenerimaPKH,
+			PenerimaSembako:        t.Keluarga.PenerimaSembako,
+
+			UserId: t.Keluarga.UserId,
+			User: responses.UserResponse{
+				Id:        t.Keluarga.User.Id,
+				Username:  t.Keluarga.User.Username,
+				Password:  t.Keluarga.User.Password,
+				Email:     t.Keluarga.User.Email,
+				NoHp:      t.Keluarga.User.NoHp,
+				Role:      t.Keluarga.User.Role,
+				CreatedAt: t.Keluarga.User.CreatedAt,
+				UpdatedAt: t.Keluarga.User.UpdatedAt,
+			},
+
+			MahasiswaId: t.Keluarga.MahasiswaId,
+			Mahasiswa: responses.MahasiswaResponse{
+				Id:           t.Keluarga.Mahasiswa.Id,
+				UserId:       t.Keluarga.Mahasiswa.UserId,
+				NamaLengkap:  t.Keluarga.Mahasiswa.NamaLengkap,
+				Universitas:  t.Keluarga.Mahasiswa.Universitas,
+				JenisKelamin: t.Keluarga.Mahasiswa.JenisKelamin,
+				TanggalLahir: t.Keluarga.Mahasiswa.TanggalLahir,
+				KelurahanId:  t.Keluarga.Mahasiswa.KelurahanId,
+				CreatedAt:    t.Keluarga.Mahasiswa.CreatedAt,
+				UpdatedAt:    t.Keluarga.Mahasiswa.UpdatedAt,
+			},
+
+			StatusVerifikasi: t.Keluarga.StatusVerifikasi,
+		},
+
+		CreatedAt: t.CreatedAt,
+		UpdatedAt: t.UpdatedAt,
 	}
 }
