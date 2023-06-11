@@ -594,3 +594,9 @@ type IndividuVerifikasiResponse struct {
 	CreatedAt          time.Time              `json:"createdAt"`
 	UpdatedAt          time.Time              `json:"updatedAt"`
 }
+
+type StatistikProgramAllInstansiResponse struct {
+	InstansiId    int    `json:"instansiId"`
+	NamaInstansi  string `json:"namaInstansi"`
+	JumlahProgram int64  `json:"jumlahProgram"`
+}

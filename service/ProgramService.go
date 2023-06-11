@@ -9,6 +9,7 @@ import (
 type ProgramService interface {
 	FindAll() ([]model.Program, error)
 	FindById(id int) (model.Program, error)
+	CountJumlahProgram(tahun string) (int64, error)
 	Create(programRequest request.CreateProgramRequest) (model.Program, error)
 	Update(id int, programRequest request.UpdateProgramRequest) (model.Program, error)
 	Delete(id int) (model.Program, error)
@@ -32,6 +33,12 @@ func (s *programService) FindById(id int) (model.Program, error) {
 	var program, err = s.programRepository.FindById(id)
 
 	return program, err
+}
+
+func (s *programService) CountJumlahProgram(tahun string) (int64, error) {
+	var jumlah, err = s.programRepository.CountJumlahProgram(tahun)
+
+	return jumlah, err
 }
 
 func (s *programService) Create(programRequest request.CreateProgramRequest) (model.Program, error) {

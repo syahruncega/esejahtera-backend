@@ -168,8 +168,6 @@ func main() {
 	var userService = service.NewUserService(userRepository)
 	var userController = controller.NewUserController(userService, adminService, pusbangService, dosenService, analisService, mahasiswaService, adminOpdService)
 
-	var statistikController = controller.NewStatistikController(keluargaService, individuService)
-
 	var tagIndividuRepository = repository.NewTagIndividuRepository(config.DB)
 	var tagIndividuService = service.NewTagIndividuService(tagIndividuRepository)
 	var tagIndividuController = controller.NewTagIndividuController(tagIndividuService)
@@ -177,6 +175,8 @@ func main() {
 	var tagKeluargaRepository = repository.NewTagKeluargaRepository(config.DB)
 	var tagKeluargaService = service.NewTagKeluargaService(tagKeluargaRepository)
 	var tagKeluargaController = controller.NewTagKeluargaController(tagKeluargaService)
+
+	var statistikController = controller.NewStatistikController(keluargaService, individuService, instansiService, instansiOnProgramService, programService)
 
 	var server = gin.Default()
 
@@ -413,6 +413,8 @@ func main() {
 	server.GET("/statistik/kecamatan", statistikController.StatistikKecamatan)
 	server.GET("/statistik/kelurahan", statistikController.StatistikKelurahan)
 	server.GET("/statistik/hitung", statistikController.StatistikSearch)
+	server.GET("/statistik/hitung/program", statistikController.StatistikProgram)
+	server.GET("/statistik/hitung/program/opd", statistikController.StatistikProgramAllInstansi)
 
 	server.GET("/tagindividu", tagIndividuController.GetTagIndividus)
 	server.GET("/tagindividu/:id", tagIndividuController.GetTagIndividu)

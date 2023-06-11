@@ -1367,3 +1367,10 @@ func ConvertToTagKeluargaResponse(t model.TagKeluarga) responses.TagKeluargaResp
 		UpdatedAt: t.UpdatedAt,
 	}
 }
+
+func ConvertToStatistikProgramAllInstansiResponse(i model.Instansi, hasil []int64) responses.StatistikProgramAllInstansiResponse {
+	return responses.StatistikProgramAllInstansiResponse{
+		InstansiId:   i.Id,
+		NamaInstansi: i.NamaInstansi,
+	}
+}

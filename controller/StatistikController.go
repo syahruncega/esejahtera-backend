@@ -8,14 +8,20 @@ import (
 )
 
 type statistikController struct {
-	keluargaService service.KeluargaService
-	individuService service.IndividuService
+	keluargaService          service.KeluargaService
+	individuService          service.IndividuService
+	instansiService          service.InstansiService
+	instansiOnProgramService service.InstansiOnProgramService
+	programService           service.ProgramService
 }
 
-func NewStatistikController(keluargaService service.KeluargaService, individuService service.IndividuService) *statistikController {
+func NewStatistikController(keluargaService service.KeluargaService, individuService service.IndividuService, instansiService service.InstansiService, instansiOnProgramService service.InstansiOnProgramService, programService service.ProgramService) *statistikController {
 	return &statistikController{
 		keluargaService,
 		individuService,
+		instansiService,
+		instansiOnProgramService,
+		programService,
 	}
 }
 
@@ -1528,4 +1534,45 @@ func (c *statistikController) StatistikSearch(cntx *gin.Context) {
 		"keluarga": jumlahDataKeluarga,
 		"individu": jumlahDataIndividu,
 	})
+}
+
+func (c *statistikController) StatistikProgram(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+
+	var jumlahDataProgram, err = c.programService.CountJumlahProgram(tahun)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	cntx.JSON(http.StatusOK, gin.H{
+		"jumlahDataProgram": jumlahDataProgram,
+	})
+}
+
+func (c *statistikController) StatistikProgramAllInstansi(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+
+	var instansis, err = c.instansiService.FindAll()
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	var hasil = c.instansiOnProgramService.CountJumlahProgramAllInstansi(tahun, instansis)
+
+	var resultResponse = make(map[string]interface{})
+	var fixedResponse = make([]map[string]interface{}, 0)
+
+	for i := 0; i < len(instansis); i++ {
+		resultResponse["instansiId"] = instansis[i].Id
+		resultResponse["namaInstansi"] = instansis[i].NamaInstansi
+		resultResponse["jumlahProgram"] = hasil[i]
+
+		fixedResponse = append(fixedResponse, resultResponse)
+	}
+
+	cntx.JSON(http.StatusOK, fixedResponse)
 }
