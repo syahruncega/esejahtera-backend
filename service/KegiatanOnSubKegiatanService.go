@@ -11,6 +11,8 @@ type KegiatanOnSubKegiatanService interface {
 	FindById(id int) (model.KegiatanOnSubKegiatan, error)
 	FindByKegiatanId(kegiatanId int) ([]model.KegiatanOnSubKegiatan, error)
 	FindBySearch(whereClause map[string]interface{}, tahun string) ([]model.KegiatanOnSubKegiatan, error)
+	CountJumlahSubKegiatanAllInstansi(tahun string, instansis []model.Instansi) []int64
+	CountJumlahSubKegiatanByInstansiId(tahun string, instansi model.Instansi) int64
 	Create(kegiatanOnSubKegiatanRequest request.CreateKegiatanOnSubKegiatanRequest) (model.KegiatanOnSubKegiatan, error)
 	Update(id int, kegiatanOnSubKegiatanRequest request.UpdateKegiatanOnSubKegiatanRequest) (model.KegiatanOnSubKegiatan, error)
 	Delete(id int) (model.KegiatanOnSubKegiatan, error)
@@ -46,6 +48,18 @@ func (s *kegiatanOnSubKegiatanService) FindBySearch(whereClause map[string]inter
 	var kegiatanOnSubKegiatans, err = s.kegiatanOnSubKegiatanRepository.FindBySearch(whereClause, tahun)
 
 	return kegiatanOnSubKegiatans, err
+}
+
+func (s *kegiatanOnSubKegiatanService) CountJumlahSubKegiatanAllInstansi(tahun string, instansis []model.Instansi) []int64 {
+	var jumlahSubKegiatanAllInstansi = s.kegiatanOnSubKegiatanRepository.CountJumlahSubKegiatanAllInstansi(tahun, instansis)
+
+	return jumlahSubKegiatanAllInstansi
+}
+
+func (s *kegiatanOnSubKegiatanService) CountJumlahSubKegiatanByInstansiId(tahun string, instansi model.Instansi) int64 {
+	var jumlahSubKegiatan = s.kegiatanOnSubKegiatanRepository.CountJumlahSubKegiatanByInstansiId(tahun, instansi)
+
+	return jumlahSubKegiatan
 }
 
 func (s *kegiatanOnSubKegiatanService) Create(kegiatanOnSubKegiatanRequest request.CreateKegiatanOnSubKegiatanRequest) (model.KegiatanOnSubKegiatan, error) {

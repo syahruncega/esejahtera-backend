@@ -9,6 +9,7 @@ import (
 type KegiatanRepository interface {
 	FindAll() ([]model.Kegiatan, error)
 	FindById(id int) (model.Kegiatan, error)
+	CountJumlahKegiatan(tahun string) (int64, error)
 	Create(kegiatan model.Kegiatan) (model.Kegiatan, error)
 	Update(kegiatan model.Kegiatan) (model.Kegiatan, error)
 	Delete(kegiatan model.Kegiatan) (model.Kegiatan, error)
@@ -36,6 +37,14 @@ func (r *kegiatanRepository) FindById(id int) (model.Kegiatan, error) {
 	var err = r.db.Take(&kegiatan, id).Error
 
 	return kegiatan, err
+}
+
+func (r *kegiatanRepository) CountJumlahKegiatan(tahun string) (int64, error) {
+	var count int64
+
+	var err = r.db.Where("tahun = ?", tahun).Table("kegiatans").Select("count(*)").Count(&count).Error
+
+	return count, err
 }
 
 func (r *kegiatanRepository) Create(kegiatan model.Kegiatan) (model.Kegiatan, error) {

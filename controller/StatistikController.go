@@ -1,27 +1,40 @@
 package controller
 
 import (
+	"kemiskinan/helper"
+	"kemiskinan/responses"
 	"kemiskinan/service"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
 type statistikController struct {
-	keluargaService          service.KeluargaService
-	individuService          service.IndividuService
-	instansiService          service.InstansiService
-	instansiOnProgramService service.InstansiOnProgramService
-	programService           service.ProgramService
+	keluargaService              service.KeluargaService
+	individuService              service.IndividuService
+	instansiService              service.InstansiService
+	programService               service.ProgramService
+	kegiatanService              service.KegiatanService
+	subKegiatanService           service.SubKegiatanService
+	fokusBelanjaService          service.FokusBelanjaService
+	programOnKegiatanService     service.ProgramOnKegiatanService
+	instansiOnProgramService     service.InstansiOnProgramService
+	kegiatanOnSubKegiatanService service.KegiatanOnSubKegiatanService
 }
 
-func NewStatistikController(keluargaService service.KeluargaService, individuService service.IndividuService, instansiService service.InstansiService, instansiOnProgramService service.InstansiOnProgramService, programService service.ProgramService) *statistikController {
+func NewStatistikController(keluargaService service.KeluargaService, individuService service.IndividuService, instansiService service.InstansiService, instansiOnProgramService service.InstansiOnProgramService, programOnKegiatanService service.ProgramOnKegiatanService, programService service.ProgramService, kegiatanService service.KegiatanService, subKegiatanService service.SubKegiatanService, kegiatanOnSubKegiatanService service.KegiatanOnSubKegiatanService, fokusBelanjaService service.FokusBelanjaService) *statistikController {
 	return &statistikController{
 		keluargaService,
 		individuService,
 		instansiService,
-		instansiOnProgramService,
 		programService,
+		kegiatanService,
+		subKegiatanService,
+		fokusBelanjaService,
+		programOnKegiatanService,
+		instansiOnProgramService,
+		kegiatanOnSubKegiatanService,
 	}
 }
 
@@ -1553,26 +1566,171 @@ func (c *statistikController) StatistikProgram(cntx *gin.Context) {
 
 func (c *statistikController) StatistikProgramAllInstansi(cntx *gin.Context) {
 	var tahun = cntx.Query("tahun")
+	var instansiIdString = cntx.Query("instansiId")
+	var instansiId, _ = strconv.Atoi(instansiIdString)
 
-	var instansis, err = c.instansiService.FindAll()
+	if instansiIdString != "" {
+
+		var instansi, err = c.instansiService.FindById(instansiId)
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		var hasil = c.instansiOnProgramService.CountJumlahProgramByInstansiId(tahun, instansi)
+
+		var hasilResponse = helper.ConvertToStatistikProgramInstansiResponse(instansi, hasil)
+
+		cntx.JSON(http.StatusOK, hasilResponse)
+
+	} else {
+
+		var instansis, err = c.instansiService.FindAll()
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		var hasil = c.instansiOnProgramService.CountJumlahProgramAllInstansi(tahun, instansis)
+
+		var statistikProgramAllInstansiResponse []responses.StatistikProgramInstansiResponse
+
+		for i := 0; i < len(instansis); i++ {
+			var tempResponse = helper.ConvertToStatistikProgramInstansiResponse(instansis[i], hasil[i])
+			statistikProgramAllInstansiResponse = append(statistikProgramAllInstansiResponse, tempResponse)
+		}
+
+		cntx.JSON(http.StatusOK, statistikProgramAllInstansiResponse)
+	}
+}
+
+func (c *statistikController) StatistikKegiatan(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+
+	var jumlahDataKegiatan, err = c.kegiatanService.CountJumlahKegiatan(tahun)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),
 		})
 	}
 
-	var hasil = c.instansiOnProgramService.CountJumlahProgramAllInstansi(tahun, instansis)
+	cntx.JSON(http.StatusOK, gin.H{
+		"jumlahDataKegiatan": jumlahDataKegiatan,
+	})
+}
 
-	var resultResponse = make(map[string]interface{})
-	var fixedResponse = make([]map[string]interface{}, 0)
+func (c *statistikController) StatistikKegiatanAllInstansi(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+	var instansiIdString = cntx.Query("instansiId")
+	var instansiId, _ = strconv.Atoi(instansiIdString)
 
-	for i := 0; i < len(instansis); i++ {
-		resultResponse["instansiId"] = instansis[i].Id
-		resultResponse["namaInstansi"] = instansis[i].NamaInstansi
-		resultResponse["jumlahProgram"] = hasil[i]
+	if instansiIdString != "" {
 
-		fixedResponse = append(fixedResponse, resultResponse)
+		var instansi, err = c.instansiService.FindById(instansiId)
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		var hasil = c.programOnKegiatanService.CountJumlahKegiatanByInstansiId(tahun, instansi)
+
+		var hasilResponse = helper.ConvertToStatistikKegiatanInstansiResponse(instansi, hasil)
+
+		cntx.JSON(http.StatusOK, hasilResponse)
+
+	} else {
+
+		var instansis, err = c.instansiService.FindAll()
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		var hasil = c.programOnKegiatanService.CountJumlahKegiatanAllInstansi(tahun, instansis)
+
+		var statistikKegiatanAllInstansiResponse []responses.StatistikKegiatanInstansiResponse
+
+		for i := 0; i < len(instansis); i++ {
+			var tempResponse = helper.ConvertToStatistikKegiatanInstansiResponse(instansis[i], hasil[i])
+			statistikKegiatanAllInstansiResponse = append(statistikKegiatanAllInstansiResponse, tempResponse)
+		}
+
+		cntx.JSON(http.StatusOK, statistikKegiatanAllInstansiResponse)
+	}
+}
+
+func (c *statistikController) StatistikSubKegiatan(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+
+	var jumlahDataSubKegiatan, err = c.subKegiatanService.CountJumlahSubKegiatan(tahun)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
 	}
 
-	cntx.JSON(http.StatusOK, fixedResponse)
+	cntx.JSON(http.StatusOK, gin.H{
+		"jumlahDataSubKegiatan": jumlahDataSubKegiatan,
+	})
+}
+
+func (c *statistikController) StatistikSubKegiatanAllInstansi(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+	var instansiIdString = cntx.Query("instansiId")
+	var instansiId, _ = strconv.Atoi(instansiIdString)
+
+	if instansiIdString != "" {
+
+		var instansi, err = c.instansiService.FindById(instansiId)
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		var hasil = c.kegiatanOnSubKegiatanService.CountJumlahSubKegiatanByInstansiId(tahun, instansi)
+
+		var jumlahSubKegiatanResponse = helper.ConvertToStatistikSubKegiatanInstansiResponse(instansi, hasil)
+
+		cntx.JSON(http.StatusOK, jumlahSubKegiatanResponse)
+
+	} else {
+
+		var instansis, err = c.instansiService.FindAll()
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		var hasil = c.kegiatanOnSubKegiatanService.CountJumlahSubKegiatanAllInstansi(tahun, instansis)
+
+		var statistikSubKegiatanAllInstansiResponse []responses.StatistikSubKegiatanInstansiResponse
+
+		for i := 0; i < len(instansis); i++ {
+			var tempResponse = helper.ConvertToStatistikSubKegiatanInstansiResponse(instansis[i], hasil[i])
+			statistikSubKegiatanAllInstansiResponse = append(statistikSubKegiatanAllInstansiResponse, tempResponse)
+		}
+
+		cntx.JSON(http.StatusOK, statistikSubKegiatanAllInstansiResponse)
+	}
+}
+
+func (c *statistikController) StatistikFokusBelanja(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+
+	var jumlahFokusBelanja, err = c.fokusBelanjaService.CountJumlahFokusBelanja(tahun)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	cntx.JSON(http.StatusOK, gin.H{
+		"jumlahFokusBelanja": jumlahFokusBelanja,
+	})
 }

@@ -12,6 +12,7 @@ type InstansiOnProgramRepository interface {
 	FindByInstansiId(instansiId int) ([]model.InstansiOnProgram, error)
 	FindBySearch(whereClause map[string]interface{}, tahun string) ([]model.InstansiOnProgram, error)
 	CountJumlahProgramAllInstansi(tahun string, instansis []model.Instansi) []int64
+	CountJumlahProgramByInstansiId(tahun string, instansis model.Instansi) int64
 	Create(instansiOnProgram model.InstansiOnProgram) (model.InstansiOnProgram, error)
 	Update(instansiOnProgram model.InstansiOnProgram) (model.InstansiOnProgram, error)
 	Delete(instansiOnProgram model.InstansiOnProgram) (model.InstansiOnProgram, error)
@@ -77,6 +78,14 @@ func (r *instansiOnProgramRepository) CountJumlahProgramAllInstansi(tahun string
 	}
 
 	return hasil
+}
+
+func (r *instansiOnProgramRepository) CountJumlahProgramByInstansiId(tahun string, instansis model.Instansi) int64 {
+	var count int64
+
+	var _ = r.db.Select("count(*)").Table("instansis as i").Joins("inner join instansi_on_programs as iop on i.id = iop.instansiId").Joins("inner join programs as p on p.id = iop.programId").Where("p.tahun = ? and iop.instansiId = ?", tahun, instansis.Id).Scan(&count)
+
+	return count
 }
 
 func (r *instansiOnProgramRepository) Create(instansiOnProgram model.InstansiOnProgram) (model.InstansiOnProgram, error) {

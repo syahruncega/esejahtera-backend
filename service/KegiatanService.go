@@ -10,6 +10,7 @@ type KegiatanService interface {
 	FindAll() ([]model.Kegiatan, error)
 	FindById(id int) (model.Kegiatan, error)
 	Create(kegiatanRequest request.CreateKegiatanRequest) (model.Kegiatan, error)
+	CountJumlahKegiatan(tahun string) (int64, error)
 	Update(id int, kegiatanRequest request.UpdateKegiatanRequest) (model.Kegiatan, error)
 	Delete(id int) (model.Kegiatan, error)
 }
@@ -32,6 +33,12 @@ func (s *kegiatanService) FindById(id int) (model.Kegiatan, error) {
 	var kegiatan, err = s.kegiatanRepository.FindById(id)
 
 	return kegiatan, err
+}
+
+func (s *kegiatanService) CountJumlahKegiatan(tahun string) (int64, error) {
+	var jumlah, err = s.kegiatanRepository.CountJumlahKegiatan(tahun)
+
+	return jumlah, err
 }
 
 func (s *kegiatanService) Create(kegiatanRequest request.CreateKegiatanRequest) (model.Kegiatan, error) {

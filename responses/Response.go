@@ -595,8 +595,20 @@ type IndividuVerifikasiResponse struct {
 	UpdatedAt          time.Time              `json:"updatedAt"`
 }
 
-type StatistikProgramAllInstansiResponse struct {
+type StatistikProgramInstansiResponse struct {
 	InstansiId    int    `json:"instansiId"`
 	NamaInstansi  string `json:"namaInstansi"`
 	JumlahProgram int64  `json:"jumlahProgram"`
+}
+
+type StatistikKegiatanInstansiResponse struct {
+	InstansiId     int    `json:"instansiId"`
+	NamaInstansi   string `json:"namaInstansi"`
+	JumlahKegiatan int64  `json:"jumlahKegiatan"`
+}
+
+type StatistikSubKegiatanInstansiResponse struct {
+	InstansiId        int    `json:"instansiId"`
+	NamaInstansi      string `json:"namaInstansi"`
+	JumlahSubKegiatan int64  `json:"jumlahSubKegiatan"`
 }

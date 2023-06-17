@@ -12,6 +12,7 @@ type FokusBelanjaRepository interface {
 	FindByRencanaSubKegiatanId(rencanaSubKegiatanId int) ([]model.FokusBelanja, error)
 	SumPaguFokusBelanja(rencanaSubKegiatanId int) (int64, error)
 	FindBySearch(whereClause map[string]interface{}) ([]model.FokusBelanja, error)
+	CountJumlahFokusBelanja(tahun string) (int64, error)
 	Create(detailSubKegiatan model.FokusBelanja) (model.FokusBelanja, error)
 	Update(detailSubKegiatan model.FokusBelanja) (model.FokusBelanja, error)
 	Delete(detailSubKegiatan model.FokusBelanja) (model.FokusBelanja, error)
@@ -67,6 +68,14 @@ func (r *fokusBelanjaRepository) FindBySearch(whereClause map[string]interface{}
 	var err = r.db.Where(whereClause).Model(&fokusBelanjas).Preload("RencanaSubKegiatan").Find(&fokusBelanjas).Error
 
 	return fokusBelanjas, err
+}
+
+func (r *fokusBelanjaRepository) CountJumlahFokusBelanja(tahun string) (int64, error) {
+	var count int64
+
+	var err = r.db.Where("tahun = ?", tahun).Table("fokus_belanjas").Select("count(*)").Count(&count).Error
+
+	return count, err
 }
 
 func (r *fokusBelanjaRepository) Create(fokusBelanja model.FokusBelanja) (model.FokusBelanja, error) {

@@ -11,6 +11,8 @@ type KegiatanOnSubKegiatanRepository interface {
 	FindById(id int) (model.KegiatanOnSubKegiatan, error)
 	FindByKegiatanId(kegiatanId int) ([]model.KegiatanOnSubKegiatan, error)
 	FindBySearch(whereClause map[string]interface{}, tahun string) ([]model.KegiatanOnSubKegiatan, error)
+	CountJumlahSubKegiatanAllInstansi(tahun string, instansis []model.Instansi) []int64
+	CountJumlahSubKegiatanByInstansiId(tahun string, instansi model.Instansi) int64
 	Create(kegiatanOnSubKegiatan model.KegiatanOnSubKegiatan) (model.KegiatanOnSubKegiatan, error)
 	Update(kegiatanOnSubKegiatan model.KegiatanOnSubKegiatan) (model.KegiatanOnSubKegiatan, error)
 	Delete(kegiatanOnSubKegiatan model.KegiatanOnSubKegiatan) (model.KegiatanOnSubKegiatan, error)
@@ -63,6 +65,27 @@ func (r *kegiatanOnSubKegiatanRepository) FindBySearch(whereClause map[string]in
 	}
 
 	return kegiatanOnSubKegiatans, err
+}
+
+func (r *kegiatanOnSubKegiatanRepository) CountJumlahSubKegiatanAllInstansi(tahun string, instansis []model.Instansi) []int64 {
+	var count int64
+	var hasil []int64
+
+	for i := 0; i < len(instansis); i++ {
+		var _ = r.db.Select("count(*)").Table("instansis as i").Joins("inner join instansi_on_programs as iop on i.id = iop.instansiId").Joins("inner join programs as p on p.id = iop.programId").Joins("inner join program_on_kegiatans as pok on pok.programId = p.id").Joins("inner join kegiatans as k on pok.kegiatanId = k.id").Joins("inner join kegiatan_on_sub_kegiatans as kosk on kosk.kegiatanId = k.id").Where("p.tahun = ? and i.id = ?", tahun, instansis[i].Id).Scan(&count)
+
+		hasil = append(hasil, count)
+	}
+
+	return hasil
+}
+
+func (r *kegiatanOnSubKegiatanRepository) CountJumlahSubKegiatanByInstansiId(tahun string, instansi model.Instansi) int64 {
+	var count int64
+
+	var _ = r.db.Select("count(*)").Table("instansis as i").Joins("inner join instansi_on_programs as iop on i.id = iop.instansiId").Joins("inner join programs as p on p.id = iop.programId").Joins("inner join program_on_kegiatans as pok on pok.programId = p.id").Joins("inner join kegiatans as k on pok.kegiatanId = k.id").Joins("inner join kegiatan_on_sub_kegiatans as kosk on kosk.kegiatanId = k.id").Where("p.tahun = ? and i.id = ?", tahun, instansi.Id).Scan(&count)
+
+	return count
 }
 
 func (r *kegiatanOnSubKegiatanRepository) Create(kegiatanOnSubKegiatan model.KegiatanOnSubKegiatan) (model.KegiatanOnSubKegiatan, error) {

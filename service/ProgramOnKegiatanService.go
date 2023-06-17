@@ -11,6 +11,8 @@ type ProgramOnKegiatanService interface {
 	FindById(id int) (model.ProgramOnKegiatan, error)
 	FindByProgramId(programId int) ([]model.ProgramOnKegiatan, error)
 	FindBySearch(whereClause map[string]interface{}, tahun string) ([]model.ProgramOnKegiatan, error)
+	CountJumlahKegiatanAllInstansi(tahun string, instansis []model.Instansi) []int64
+	CountJumlahKegiatanByInstansiId(tahun string, instansi model.Instansi) int64
 	Create(programOnKegiatanRequest request.CreateProgramOnKegiatanRequest) (model.ProgramOnKegiatan, error)
 	Update(id int, programOnKegiatanRequest request.UpdateProgramOnKegiatanRequest) (model.ProgramOnKegiatan, error)
 	Delete(id int) (model.ProgramOnKegiatan, error)
@@ -46,6 +48,18 @@ func (s *programOnKegiatanService) FindBySearch(whereClause map[string]interface
 	var programOnKegiatans, err = s.programOnKegiatanRepository.FindBySearch(whereClause, tahun)
 
 	return programOnKegiatans, err
+}
+
+func (s *programOnKegiatanService) CountJumlahKegiatanAllInstansi(tahun string, instansis []model.Instansi) []int64 {
+	var jumlahKegiatanAllInstansi = s.programOnKegiatanRepository.CountJumlahKegiatanAllIntansi(tahun, instansis)
+
+	return jumlahKegiatanAllInstansi
+}
+
+func (s *programOnKegiatanService) CountJumlahKegiatanByInstansiId(tahun string, instansi model.Instansi) int64 {
+	var jumlahKegiatanByInstansi = s.programOnKegiatanRepository.CountJumlahKegiatanByInstansiId(tahun, instansi)
+
+	return jumlahKegiatanByInstansi
 }
 
 func (s *programOnKegiatanService) Create(programOnKegiatanRequest request.CreateProgramOnKegiatanRequest) (model.ProgramOnKegiatan, error) {

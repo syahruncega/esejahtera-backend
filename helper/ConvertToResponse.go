@@ -1368,9 +1368,26 @@ func ConvertToTagKeluargaResponse(t model.TagKeluarga) responses.TagKeluargaResp
 	}
 }
 
-func ConvertToStatistikProgramAllInstansiResponse(i model.Instansi, hasil []int64) responses.StatistikProgramAllInstansiResponse {
-	return responses.StatistikProgramAllInstansiResponse{
-		InstansiId:   i.Id,
-		NamaInstansi: i.NamaInstansi,
+func ConvertToStatistikProgramInstansiResponse(i model.Instansi, hasil int64) responses.StatistikProgramInstansiResponse {
+	return responses.StatistikProgramInstansiResponse{
+		InstansiId:    i.Id,
+		NamaInstansi:  i.NamaInstansi,
+		JumlahProgram: hasil,
+	}
+}
+
+func ConvertToStatistikKegiatanInstansiResponse(i model.Instansi, hasil int64) responses.StatistikKegiatanInstansiResponse {
+	return responses.StatistikKegiatanInstansiResponse{
+		InstansiId:     i.Id,
+		NamaInstansi:   i.NamaInstansi,
+		JumlahKegiatan: hasil,
+	}
+}
+
+func ConvertToStatistikSubKegiatanInstansiResponse(i model.Instansi, hasil int64) responses.StatistikSubKegiatanInstansiResponse {
+	return responses.StatistikSubKegiatanInstansiResponse{
+		InstansiId:        i.Id,
+		NamaInstansi:      i.NamaInstansi,
+		JumlahSubKegiatan: hasil,
 	}
 }

@@ -11,6 +11,8 @@ type ProgramOnKegiatanRepository interface {
 	FindById(id int) (model.ProgramOnKegiatan, error)
 	FindByProgramId(programId int) ([]model.ProgramOnKegiatan, error)
 	FindBySearch(whereClause map[string]interface{}, tahun string) ([]model.ProgramOnKegiatan, error)
+	CountJumlahKegiatanAllIntansi(tahun string, instansis []model.Instansi) []int64
+	CountJumlahKegiatanByInstansiId(tahun string, instansi model.Instansi) int64
 	Create(programOnKegiatan model.ProgramOnKegiatan) (model.ProgramOnKegiatan, error)
 	Update(programOnKegiatan model.ProgramOnKegiatan) (model.ProgramOnKegiatan, error)
 	Delete(programOnKegiatan model.ProgramOnKegiatan) (model.ProgramOnKegiatan, error)
@@ -64,6 +66,27 @@ func (r *programOnKegiatanRepository) FindBySearch(whereClause map[string]interf
 
 	return programOnKegiatans, err
 
+}
+
+func (r *programOnKegiatanRepository) CountJumlahKegiatanAllIntansi(tahun string, instansis []model.Instansi) []int64 {
+	var count int64
+	var hasil []int64
+
+	for i := 0; i < len(instansis); i++ {
+		var _ = r.db.Select("count(*)").Table("instansis as i").Joins("inner join instansi_on_programs as iop on i.id = iop.instansiId").Joins("inner join programs as p on p.id = iop.programId").Joins("inner join program_on_kegiatans as pok on pok.programId = p.id").Joins("inner join kegiatans as k on pok.kegiatanId = k.id").Where("p.tahun = ? and i.id = ?", tahun, instansis[i].Id).Scan(&count)
+
+		hasil = append(hasil, count)
+	}
+
+	return hasil
+}
+
+func (r *programOnKegiatanRepository) CountJumlahKegiatanByInstansiId(tahun string, instansi model.Instansi) int64 {
+	var count int64
+
+	var _ = r.db.Select("count(*)").Table("instansis as i").Joins("inner join instansi_on_programs as iop on i.id = iop.instansiId").Joins("inner join programs as p on p.id = iop.programId").Joins("inner join program_on_kegiatans as pok on pok.programId = p.id").Joins("inner join kegiatans as k on pok.kegiatanId = k.id").Where("p.tahun = ? and i.id = ?", tahun, instansi.Id).Scan(&count)
+
+	return count
 }
 
 func (r *programOnKegiatanRepository) Create(programOnKegiatan model.ProgramOnKegiatan) (model.ProgramOnKegiatan, error) {
