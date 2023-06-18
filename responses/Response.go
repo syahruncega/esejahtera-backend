@@ -612,3 +612,27 @@ type StatistikSubKegiatanInstansiResponse struct {
 	NamaInstansi      string `json:"namaInstansi"`
 	JumlahSubKegiatan int64  `json:"jumlahSubKegiatan"`
 }
+
+type StatistikRencanaProgramInstansiResponse struct {
+	InstansiId           int    `json:"instansiId"`
+	NamaInstansi         string `json:"namaInstansi"`
+	JumlahRencanaProgram int64  `json:"jumlahRencanaProgram"`
+}
+
+type StatistikRencanaKegiatanInstansiResponse struct {
+	InstansiId            int    `json:"instansiId"`
+	NamaInstansi          string `json:"namaInstansi"`
+	JumlahRencanaKegiatan int64  `json:"jumlahRencanaKegiatan"`
+}
+
+type StatistikRencanaSubKegiatanInstansiResponse struct {
+	InstansiId               int    `json:"instansiId"`
+	NamaInstansi             string `json:"namaInstansi"`
+	JumlahRencanaSubKegiatan int64  `json:"jumlahRencanaSubKegiatan"`
+}
+
+type StatistikFokusBelanjaInstansiResponse struct {
+	InstansiId         int    `json:"instansiId"`
+	NamaInstansi       string `json:"namaInstansi"`
+	JumlahFokusBelanja int64  `json:"jumlahFokusBelanja"`
+}

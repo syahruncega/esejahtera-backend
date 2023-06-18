@@ -1391,3 +1391,35 @@ func ConvertToStatistikSubKegiatanInstansiResponse(i model.Instansi, hasil int64
 		JumlahSubKegiatan: hasil,
 	}
 }
+
+func ConvertToStatistikRencanaProgramInstansiResponse(i model.Instansi, hasil int64) responses.StatistikRencanaProgramInstansiResponse {
+	return responses.StatistikRencanaProgramInstansiResponse{
+		InstansiId:           i.Id,
+		NamaInstansi:         i.NamaInstansi,
+		JumlahRencanaProgram: hasil,
+	}
+}
+
+func ConvertToStatistikRencanaKegiatanInstansiResponse(i model.Instansi, hasil int64) responses.StatistikRencanaKegiatanInstansiResponse {
+	return responses.StatistikRencanaKegiatanInstansiResponse{
+		InstansiId:            i.Id,
+		NamaInstansi:          i.NamaInstansi,
+		JumlahRencanaKegiatan: hasil,
+	}
+}
+
+func ConvertToStatistikRencanaSubKegiatanInstansiResponse(i model.Instansi, hasil int64) responses.StatistikRencanaSubKegiatanInstansiResponse {
+	return responses.StatistikRencanaSubKegiatanInstansiResponse{
+		InstansiId:               i.Id,
+		NamaInstansi:             i.NamaInstansi,
+		JumlahRencanaSubKegiatan: hasil,
+	}
+}
+
+func ConvertToStatistikFokusBelanjaInstansiResponse(i model.Instansi, hasil int64) responses.StatistikFokusBelanjaInstansiResponse {
+	return responses.StatistikFokusBelanjaInstansiResponse{
+		InstansiId:         i.Id,
+		NamaInstansi:       i.NamaInstansi,
+		JumlahFokusBelanja: hasil,
+	}
+}

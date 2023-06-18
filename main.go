@@ -176,7 +176,7 @@ func main() {
 	var tagKeluargaService = service.NewTagKeluargaService(tagKeluargaRepository)
 	var tagKeluargaController = controller.NewTagKeluargaController(tagKeluargaService)
 
-	var statistikController = controller.NewStatistikController(keluargaService, individuService, instansiService, instansiOnProgramService, programOnKegiatanService, programService, kegiatanService, subKegiatanService, kegiatanOnSubKegiatanService, fokusBelanjaService)
+	var statistikController = controller.NewStatistikController(keluargaService, individuService, instansiService, instansiOnProgramService, programOnKegiatanService, programService, kegiatanService, subKegiatanService, kegiatanOnSubKegiatanService, fokusBelanjaService, rencanaProgramService, rencanaKegiatanService, rencanaSubKegiatanService)
 
 	var server = gin.Default()
 
@@ -419,7 +419,14 @@ func main() {
 	server.GET("/statistik/hitung/kegiatan/opd", middleware.CheckAuth, statistikController.StatistikKegiatanAllInstansi)
 	server.GET("/statistik/hitung/subkegiatan", middleware.CheckAuth, statistikController.StatistikSubKegiatan)
 	server.GET("/statistik/hitung/subkegiatan/opd", middleware.CheckAuth, statistikController.StatistikSubKegiatanAllInstansi)
+	server.GET("/statistik/hitung/rencanaprogram", middleware.CheckAuth, statistikController.StatistikRencanaProgram)
+	server.GET("/statistik/hitung/rencanaprogram/opd", middleware.CheckAuth, statistikController.StatistikRencanaProgramByInstansi)
+	server.GET("/statistik/hitung/rencanakegiatan", middleware.CheckAuth, statistikController.StatistikRencanaKegiatan)
+	server.GET("/statistik/hitung/rencanakegiatan/opd", middleware.CheckAuth, statistikController.StatistikRencanaKegiatanByInstansi)
+	server.GET("/statistik/hitung/rencanasubkegiatan", middleware.CheckAuth, statistikController.StatistikRencanaSubKegiatan)
+	server.GET("/statistik/hitung/rencanasubkegiatan/opd", middleware.CheckAuth, statistikController.StatistikRencanaSubKegiatanByInstansi)
 	server.GET("/statistik/hitung/fokusbelanja", middleware.CheckAuth, statistikController.StatistikFokusBelanja)
+	server.GET("/statistik/hitung/fokusbelanja/opd", middleware.CheckAuth, statistikController.StatistikFokusBelanjaByInstansi)
 
 	server.GET("/tagindividu", middleware.CheckAuth, tagIndividuController.GetTagIndividus)
 	server.GET("/tagindividu/:id", middleware.CheckAuth, tagIndividuController.GetTagIndividu)

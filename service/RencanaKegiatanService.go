@@ -11,6 +11,8 @@ type RencanaKegiatanService interface {
 	FindAll() ([]model.RencanaKegiatan, error)
 	FindById(id int) (model.RencanaKegiatan, error)
 	FindBySearch(whereClause map[string]interface{}) ([]model.RencanaKegiatan, error)
+	CountJumlahRencanaKegiatan(tahun string, tipe string) (int64, error)
+	CountJumlahRencanaKegiatanAllInstansi(tahun string, tipe string, instansis []model.Instansi) []int64
 	Create(rencanaKegiatanRequest request.CreateRencanaKegiatanRequest) (model.RencanaKegiatan, error)
 	Update(id int, rencanaKegiatanRequest request.UpdateRencanaKegiatanRequest) (model.RencanaKegiatan, error)
 	Delete(id int) (model.RencanaKegiatan, error)
@@ -42,6 +44,18 @@ func (s *rencanaKegiatanService) FindBySearch(whereClause map[string]interface{}
 	var rencanaKegiatans, err = s.rencanaKegiatanRepository.FindBySearch(whereClause)
 
 	return rencanaKegiatans, err
+}
+
+func (s *rencanaKegiatanService) CountJumlahRencanaKegiatan(tahun string, tipe string) (int64, error) {
+	var jumlahRencanaKegiatan, err = s.rencanaKegiatanRepository.CountJumlahRencanaKegiatan(tahun, tipe)
+
+	return jumlahRencanaKegiatan, err
+}
+
+func (s *rencanaKegiatanService) CountJumlahRencanaKegiatanAllInstansi(tahun string, tipe string, instansis []model.Instansi) []int64 {
+	var jumlahRencanaKegiatan = s.rencanaKegiatanRepository.CountJumlahRencanaKegiatanAllInstansi(tahun, tipe, instansis)
+
+	return jumlahRencanaKegiatan
 }
 
 func (s *rencanaKegiatanService) Create(rencanaKegiatanRequest request.CreateRencanaKegiatanRequest) (model.RencanaKegiatan, error) {

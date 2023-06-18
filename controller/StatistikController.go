@@ -2,6 +2,7 @@ package controller
 
 import (
 	"kemiskinan/helper"
+	"kemiskinan/model"
 	"kemiskinan/responses"
 	"kemiskinan/service"
 	"net/http"
@@ -21,9 +22,12 @@ type statistikController struct {
 	programOnKegiatanService     service.ProgramOnKegiatanService
 	instansiOnProgramService     service.InstansiOnProgramService
 	kegiatanOnSubKegiatanService service.KegiatanOnSubKegiatanService
+	rencanaProgramService        service.RencanaProgramService
+	rencanaKegiatanService       service.RencanaKegiatanService
+	rencanaSubKegiatanService    service.RencanaSubKegiatanService
 }
 
-func NewStatistikController(keluargaService service.KeluargaService, individuService service.IndividuService, instansiService service.InstansiService, instansiOnProgramService service.InstansiOnProgramService, programOnKegiatanService service.ProgramOnKegiatanService, programService service.ProgramService, kegiatanService service.KegiatanService, subKegiatanService service.SubKegiatanService, kegiatanOnSubKegiatanService service.KegiatanOnSubKegiatanService, fokusBelanjaService service.FokusBelanjaService) *statistikController {
+func NewStatistikController(keluargaService service.KeluargaService, individuService service.IndividuService, instansiService service.InstansiService, instansiOnProgramService service.InstansiOnProgramService, programOnKegiatanService service.ProgramOnKegiatanService, programService service.ProgramService, kegiatanService service.KegiatanService, subKegiatanService service.SubKegiatanService, kegiatanOnSubKegiatanService service.KegiatanOnSubKegiatanService, fokusBelanjaService service.FokusBelanjaService, rencanaProgramService service.RencanaProgramService, rencanaKegiatanService service.RencanaKegiatanService, rencanaSubKegiatanService service.RencanaSubKegiatanService) *statistikController {
 	return &statistikController{
 		keluargaService,
 		individuService,
@@ -35,6 +39,9 @@ func NewStatistikController(keluargaService service.KeluargaService, individuSer
 		programOnKegiatanService,
 		instansiOnProgramService,
 		kegiatanOnSubKegiatanService,
+		rencanaProgramService,
+		rencanaKegiatanService,
+		rencanaSubKegiatanService,
 	}
 }
 
@@ -1720,6 +1727,193 @@ func (c *statistikController) StatistikSubKegiatanAllInstansi(cntx *gin.Context)
 	}
 }
 
+func (c *statistikController) StatistikRencanaProgram(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+	var tipe = cntx.Query("tipe")
+
+	var jumlahRencanaProgram, err = c.rencanaProgramService.CountJumlahRencanaProgram(tahun, tipe)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	cntx.JSON(http.StatusOK, gin.H{
+		"jumlahRencanaProgram": jumlahRencanaProgram,
+	})
+}
+
+func (c *statistikController) StatistikRencanaProgramByInstansi(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+	var tipe = cntx.Query("tipe")
+	var instansiIdString = cntx.Query("instansiId")
+	var instansiId, _ = strconv.Atoi(instansiIdString)
+
+	if instansiIdString != "" {
+
+		var instansis []model.Instansi
+
+		var instansi, err = c.instansiService.FindById(instansiId)
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		instansis = append(instansis, instansi)
+
+		var jumlahRencanaProgram = c.rencanaProgramService.CountJumlahRencanaProgramByIntansi(tahun, tipe, instansis)
+
+		var jumlahRencanaProgramResponse = helper.ConvertToStatistikRencanaProgramInstansiResponse(instansis[0], jumlahRencanaProgram[0])
+
+		cntx.JSON(http.StatusOK, jumlahRencanaProgramResponse)
+
+	} else {
+
+		var instansis, err = c.instansiService.FindAll()
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		var jumlahRencanaProgram = c.rencanaProgramService.CountJumlahRencanaProgramByIntansi(tahun, tipe, instansis)
+
+		var jumlahRencanaProgramResponse []responses.StatistikRencanaProgramInstansiResponse
+
+		for i := 0; i < len(instansis); i++ {
+			var tempResponse = helper.ConvertToStatistikRencanaProgramInstansiResponse(instansis[i], jumlahRencanaProgram[i])
+			jumlahRencanaProgramResponse = append(jumlahRencanaProgramResponse, tempResponse)
+		}
+
+		cntx.JSON(http.StatusOK, jumlahRencanaProgramResponse)
+	}
+}
+
+func (c *statistikController) StatistikRencanaKegiatan(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+	var tipe = cntx.Query("tipe")
+
+	var jumlahRencanaKegiatan, err = c.rencanaKegiatanService.CountJumlahRencanaKegiatan(tahun, tipe)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	cntx.JSON(http.StatusOK, gin.H{
+		"jumlahRencanaKegiatan": jumlahRencanaKegiatan,
+	})
+}
+
+func (c *statistikController) StatistikRencanaKegiatanByInstansi(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+	var tipe = cntx.Query("tipe")
+	var instansiIdString = cntx.Query("instansiId")
+	var instansiId, _ = strconv.Atoi(instansiIdString)
+
+	if instansiIdString != "" {
+
+		var instansis []model.Instansi
+
+		var instansi, err = c.instansiService.FindById(instansiId)
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		instansis = append(instansis, instansi)
+
+		var jumlahRencanaKegiatan = c.rencanaKegiatanService.CountJumlahRencanaKegiatanAllInstansi(tahun, tipe, instansis)
+
+		var jumlahDataResponse = helper.ConvertToStatistikRencanaKegiatanInstansiResponse(instansis[0], jumlahRencanaKegiatan[0])
+
+		cntx.JSON(http.StatusOK, jumlahDataResponse)
+	} else {
+
+		var instansis, err = c.instansiService.FindAll()
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		var jumlahRencanaKegiatan = c.rencanaKegiatanService.CountJumlahRencanaKegiatanAllInstansi(tahun, tipe, instansis)
+
+		var jumlahRencanaKegiatanResponse []responses.StatistikRencanaKegiatanInstansiResponse
+
+		for i := 0; i < len(instansis); i++ {
+			var tempResponse = helper.ConvertToStatistikRencanaKegiatanInstansiResponse(instansis[i], jumlahRencanaKegiatan[i])
+			jumlahRencanaKegiatanResponse = append(jumlahRencanaKegiatanResponse, tempResponse)
+		}
+
+		cntx.JSON(http.StatusOK, jumlahRencanaKegiatanResponse)
+	}
+}
+
+func (c *statistikController) StatistikRencanaSubKegiatan(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+	var tipe = cntx.Query("tipe")
+
+	var jumlahRencanaSubKegiatan, err = c.rencanaSubKegiatanService.CountJumlahRencanaSubKegiatan(tahun, tipe)
+	if err != nil {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": cntx.Error(err),
+		})
+	}
+
+	cntx.JSON(http.StatusOK, gin.H{
+		"jumlahRencanaSubKegiatan": jumlahRencanaSubKegiatan,
+	})
+}
+
+func (c *statistikController) StatistikRencanaSubKegiatanByInstansi(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+	var tipe = cntx.Query("tipe")
+	var instansiIdString = cntx.Query("instansiId")
+	var instansiId, _ = strconv.Atoi(instansiIdString)
+
+	if instansiIdString != "" {
+
+		var instansis []model.Instansi
+
+		var instansi, err = c.instansiService.FindById(instansiId)
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		instansis = append(instansis, instansi)
+
+		var jumlahRencanaSubKegiatan = c.rencanaSubKegiatanService.CountJumlahRencanaSubKegiatanByInstansi(tahun, tipe, instansis)
+
+		var jumlahRencanaSubKegiatanResponse = helper.ConvertToStatistikRencanaSubKegiatanInstansiResponse(instansis[0], jumlahRencanaSubKegiatan[0])
+
+		cntx.JSON(http.StatusOK, jumlahRencanaSubKegiatanResponse)
+	} else {
+
+		var instansis, err = c.instansiService.FindAll()
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		var jumlahRencanaSubKegiatan = c.rencanaSubKegiatanService.CountJumlahRencanaSubKegiatanByInstansi(tahun, tipe, instansis)
+
+		var jumlahRencanaSubKegiatanResponse []responses.StatistikRencanaSubKegiatanInstansiResponse
+
+		for i := 0; i < len(instansis); i++ {
+			var tempResponse = helper.ConvertToStatistikRencanaSubKegiatanInstansiResponse(instansis[i], jumlahRencanaSubKegiatan[i])
+			jumlahRencanaSubKegiatanResponse = append(jumlahRencanaSubKegiatanResponse, tempResponse)
+		}
+
+		cntx.JSON(http.StatusOK, jumlahRencanaSubKegiatanResponse)
+	}
+}
+
 func (c *statistikController) StatistikFokusBelanja(cntx *gin.Context) {
 	var tahun = cntx.Query("tahun")
 
@@ -1733,4 +1927,50 @@ func (c *statistikController) StatistikFokusBelanja(cntx *gin.Context) {
 	cntx.JSON(http.StatusOK, gin.H{
 		"jumlahFokusBelanja": jumlahFokusBelanja,
 	})
+}
+
+func (c *statistikController) StatistikFokusBelanjaByInstansi(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+	var tipe = cntx.Query("tipe")
+	var instansiIdString = cntx.Query("instansiId")
+	var instansiId, _ = strconv.Atoi(instansiIdString)
+
+	if instansiIdString != "" {
+
+		var instansis []model.Instansi
+
+		var instansi, err = c.instansiService.FindById(instansiId)
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		instansis = append(instansis, instansi)
+
+		var jumlahFokusBelanja = c.fokusBelanjaService.CountJumlahFokusBelanjaByInstansi(tahun, tipe, instansis)
+
+		var jumlahFokusBelanjaResponse = helper.ConvertToStatistikFokusBelanjaInstansiResponse(instansis[0], jumlahFokusBelanja[0])
+
+		cntx.JSON(http.StatusOK, jumlahFokusBelanjaResponse)
+	} else {
+
+		var instansis, err = c.instansiService.FindAll()
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		var jumlahFokusBelanja = c.fokusBelanjaService.CountJumlahFokusBelanjaByInstansi(tahun, tipe, instansis)
+
+		var jumlahFokusBelanjaResponse []responses.StatistikFokusBelanjaInstansiResponse
+
+		for i := 0; i < len(instansis); i++ {
+			var tempResponse = helper.ConvertToStatistikFokusBelanjaInstansiResponse(instansis[i], jumlahFokusBelanja[i])
+			jumlahFokusBelanjaResponse = append(jumlahFokusBelanjaResponse, tempResponse)
+		}
+
+		cntx.JSON(http.StatusOK, jumlahFokusBelanjaResponse)
+	}
 }
