@@ -636,3 +636,27 @@ type StatistikFokusBelanjaInstansiResponse struct {
 	NamaInstansi       string `json:"namaInstansi"`
 	JumlahFokusBelanja int64  `json:"jumlahFokusBelanja"`
 }
+
+type StatistikSumPaguRencanaProgramResponse struct {
+	InstansiId       int    `json:"instansiId"`
+	NamaInstansi     string `json:"namaInstansi"`
+	TotalPaguProgram int64  `json:"totalPaguProgram"`
+}
+
+type StatistikSumPaguRencanaKegiatanResponse struct {
+	InstansiId        int    `json:"instansiId"`
+	NamaInstansi      string `json:"namaInstansi"`
+	TotalPaguKegiatan int64  `json:"totalPaguKegiatan"`
+}
+
+type StatistikSumPaguRencanaSubKegiatanResponse struct {
+	InstansiId                  int    `json:"instansiId"`
+	NamaInstansi                string `json:"namaInstansi"`
+	TotalPaguRencanaSubKegiatan int64  `json:"totalPaguSubKegiatan"`
+}
+
+type StatistikSumPaguFokusBelanjaResponse struct {
+	InstansiId            int    `json:"instansiId"`
+	NamaInstansi          string `json:"namaInstansi"`
+	TotalPaguFokusBelanja int64  `json:"totalPaguFokusBelanja"`
+}

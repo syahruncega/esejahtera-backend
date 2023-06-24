@@ -1423,3 +1423,35 @@ func ConvertToStatistikFokusBelanjaInstansiResponse(i model.Instansi, hasil int6
 		JumlahFokusBelanja: hasil,
 	}
 }
+
+func ConvertToStatistikSumPaguRencanaProgramResponse(i model.Instansi, total int64) responses.StatistikSumPaguRencanaProgramResponse {
+	return responses.StatistikSumPaguRencanaProgramResponse{
+		InstansiId:       i.Id,
+		NamaInstansi:     i.NamaInstansi,
+		TotalPaguProgram: total,
+	}
+}
+
+func ConvertToStatistikSumPaguRencanaKegiatanResponse(i model.Instansi, total int64) responses.StatistikSumPaguRencanaKegiatanResponse {
+	return responses.StatistikSumPaguRencanaKegiatanResponse{
+		InstansiId:        i.Id,
+		NamaInstansi:      i.NamaInstansi,
+		TotalPaguKegiatan: total,
+	}
+}
+
+func ConvertToStatistikSumPaguRencanaSubKegiatanResponse(i model.Instansi, total int64) responses.StatistikSumPaguRencanaSubKegiatanResponse {
+	return responses.StatistikSumPaguRencanaSubKegiatanResponse{
+		InstansiId:                  i.Id,
+		NamaInstansi:                i.NamaInstansi,
+		TotalPaguRencanaSubKegiatan: total,
+	}
+}
+
+func ConvertToStatistikSumPaguFokusBelanjaResponse(i model.Instansi, total int64) responses.StatistikSumPaguFokusBelanjaResponse {
+	return responses.StatistikSumPaguFokusBelanjaResponse{
+		InstansiId:            i.Id,
+		NamaInstansi:          i.NamaInstansi,
+		TotalPaguFokusBelanja: total,
+	}
+}

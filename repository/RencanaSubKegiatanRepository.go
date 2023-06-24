@@ -12,6 +12,8 @@ type RencanaSubKegiatanRepository interface {
 	FindById(id int) (model.RencanaSubKegiatan, error)
 	FindBySearch(whereClause map[string]interface{}) ([]model.RencanaSubKegiatan, error)
 	SumPaguRencanaSubKegiatan(rencanaKegiatanId int) (int64, error)
+	SumAllPaguRencanaSubKegiatan(tahun, tipe string) int64
+	SumPaguRencanaSubKegiatanByInstansi(tahun, tipe string, instansis []model.Instansi) []int64
 	CountJumlahRencanaSubKegiatan(tahun string, tipe string) (int64, error)
 	CountJumlahRencanaSubKegiatanByInstansi(tahun string, tipe string, instansis []model.Instansi) []int64
 	Create(rencanaSubKegiatan model.RencanaSubKegiatan) (model.RencanaSubKegiatan, error)
@@ -61,6 +63,36 @@ func (r *rencanaSubKegiatanRepository) SumPaguRencanaSubKegiatan(rencanaKegiatan
 	}
 
 	return totalPaguRencanaSubKegiatan, err
+}
+
+func (r *rencanaSubKegiatanRepository) SumAllPaguRencanaSubKegiatan(tahun, tipe string) int64 {
+	var totalPaguRencanaSubKegiatan int64
+
+	var rows, _ = r.db.Table("rencana_sub_kegiatans").Where("tahun = ? and tipe = ?", tahun, tipe).Select("sum(paguSubKegiatan) as totalPaguRencanaSubKegiatan").Rows()
+
+	for rows.Next() {
+		rows.Scan(&totalPaguRencanaSubKegiatan)
+	}
+
+	return totalPaguRencanaSubKegiatan
+}
+
+func (r *rencanaSubKegiatanRepository) SumPaguRencanaSubKegiatanByInstansi(tahun, tipe string, instansis []model.Instansi) []int64 {
+	var sumPaguRencanaSubKegiatan int64
+	var totalPaguRencanaSubKegiatan []int64
+
+	for i := 0; i < len(instansis); i++ {
+
+		var rows, _ = r.db.Table("rencana_programs as rp").Select("sum(paguSubKegiatan) as sumPaguRencanaSubKegiatan").Joins("inner join rencana_kegiatans as rk on rp.id = rk.rencanaProgramId").Joins("inner join rencana_sub_kegiatans as rsk on rsk.rencanaKegiatanId = rk.id").Where("rp.tahun = ? and rp.tipe = ? and rp.instansiId = ?", tahun, tipe, instansis[i].Id).Rows()
+
+		for rows.Next() {
+			rows.Scan(&sumPaguRencanaSubKegiatan)
+		}
+
+		totalPaguRencanaSubKegiatan = append(totalPaguRencanaSubKegiatan, sumPaguRencanaSubKegiatan)
+	}
+
+	return totalPaguRencanaSubKegiatan
 }
 
 func (r *rencanaSubKegiatanRepository) CountJumlahRencanaSubKegiatan(tahun string, tipe string) (int64, error) {

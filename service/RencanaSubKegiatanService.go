@@ -11,6 +11,8 @@ type RencanaSubKegiatanService interface {
 	FindAll() ([]model.RencanaSubKegiatan, error)
 	FindById(id int) (model.RencanaSubKegiatan, error)
 	FindBySearch(whereClase map[string]interface{}) ([]model.RencanaSubKegiatan, error)
+	SumAllPaguRencanaSubKegiatan(tahun, tipe string) int64
+	SumPaguRencanaSubKegiatanByInstansi(tahun, tipe string, instansis []model.Instansi) []int64
 	CountJumlahRencanaSubKegiatan(tahun string, tipe string) (int64, error)
 	CountJumlahRencanaSubKegiatanByInstansi(tahun string, tipe string, instansis []model.Instansi) []int64
 	Create(rencanaSubKegiatanRequest request.CreateRencanaSubKegiatanRequest) (model.RencanaSubKegiatan, error)
@@ -44,6 +46,18 @@ func (s *rencanaSubKegiatanService) FindBySearch(whereClause map[string]interfac
 	var rencanaSubKegiatans, err = s.rencanaSubKegiatanRepository.FindBySearch(whereClause)
 
 	return rencanaSubKegiatans, err
+}
+
+func (s *rencanaSubKegiatanService) SumAllPaguRencanaSubKegiatan(tahun, tipe string) int64 {
+	var totalPaguRencanaSubKegiatan = s.rencanaSubKegiatanRepository.SumAllPaguRencanaSubKegiatan(tahun, tipe)
+
+	return totalPaguRencanaSubKegiatan
+}
+
+func (s *rencanaSubKegiatanService) SumPaguRencanaSubKegiatanByInstansi(tahun, tipe string, instansis []model.Instansi) []int64 {
+	var totalPaguRencanaSubKegiatan = s.rencanaSubKegiatanRepository.SumPaguRencanaSubKegiatanByInstansi(tahun, tipe, instansis)
+
+	return totalPaguRencanaSubKegiatan
 }
 
 func (s *rencanaSubKegiatanService) CountJumlahRencanaSubKegiatan(tahun string, tipe string) (int64, error) {

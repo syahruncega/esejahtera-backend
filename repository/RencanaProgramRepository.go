@@ -10,6 +10,8 @@ type RencanaProgramRepository interface {
 	FindAll() ([]model.RencanaProgram, error)
 	FindById(id int) (model.RencanaProgram, error)
 	FindBySearch(whereClause map[string]interface{}) ([]model.RencanaProgram, error)
+	SumAllPaguRencanaProgram(tahun, tipe string) int64
+	SumPaguRencanaProgramByInstansi(tahun, tipe string, instansis []model.Instansi) []int64
 	CountJumlahRencanaProgram(tahun string, tipe string) (int64, error)
 	CountJumlahRencanaProgramByIntansi(tahun string, tipe string, instansis []model.Instansi) []int64
 	Create(rencanaProgram model.RencanaProgram) (model.RencanaProgram, error)
@@ -47,6 +49,36 @@ func (r *rencanaProgramRepository) FindBySearch(whereClause map[string]interface
 	var err = r.db.Where(whereClause).Model(&rencanaPrograms).Preload("Instansi").Preload("Program").Find(&rencanaPrograms).Error
 
 	return rencanaPrograms, err
+}
+
+func (r *rencanaProgramRepository) SumAllPaguRencanaProgram(tahun, tipe string) int64 {
+	var totalPaguRencanaProgram int64
+
+	var rows, _ = r.db.Table("rencana_programs").Where("tahun = ? and tipe = ?").Select("sum(paguProgram) as totalPaguRencanaProgram").Rows()
+
+	for rows.Next() {
+		rows.Scan(&totalPaguRencanaProgram)
+	}
+
+	return totalPaguRencanaProgram
+}
+
+func (r *rencanaProgramRepository) SumPaguRencanaProgramByInstansi(tahun string, tipe string, instansis []model.Instansi) []int64 {
+	var sumPaguRencanaProgram int64
+	var totalPaguRencanaProgram []int64
+
+	for i := 0; i < len(instansis); i++ {
+
+		var rows, _ = r.db.Table("rencana_programs").Where("tahun = ? and tipe = ? and instansiId = ?", tahun, tipe, instansis[i].Id).Select("sum(paguProgram) as sumPaguRencanaProgram").Rows()
+
+		for rows.Next() {
+			rows.Scan(&sumPaguRencanaProgram)
+		}
+
+		totalPaguRencanaProgram = append(totalPaguRencanaProgram, sumPaguRencanaProgram)
+	}
+
+	return totalPaguRencanaProgram
 }
 
 func (r *rencanaProgramRepository) CountJumlahRencanaProgram(tahun string, tipe string) (int64, error) {

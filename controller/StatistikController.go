@@ -1974,3 +1974,283 @@ func (c *statistikController) StatistikFokusBelanjaByInstansi(cntx *gin.Context)
 		cntx.JSON(http.StatusOK, jumlahFokusBelanjaResponse)
 	}
 }
+
+func (c *statistikController) SumAllPaguRencanaProgram(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+	var tipe = cntx.Query("tipe")
+
+	if tahun == "" || tipe == "" {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": "missing parameter tahun atau tipe",
+		})
+	}
+
+	var totalPaguRencanaProgram = c.rencanaProgramService.SumAllPaguRencanaProgram(tahun, tipe)
+
+	cntx.JSON(http.StatusOK, gin.H{
+		"totalPaguRencanaProgram": totalPaguRencanaProgram,
+	})
+}
+
+func (c *statistikController) SumPaguRencanaProgramByInstansi(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+	var tipe = cntx.Query("tipe")
+	var instansiIdString = cntx.Query("instansiId")
+	var instansiId, _ = strconv.Atoi(instansiIdString)
+
+	if instansiIdString != "" {
+
+		var instansis []model.Instansi
+
+		var instansi, err = c.instansiService.FindById(instansiId)
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		instansis = append(instansis, instansi)
+
+		var sumPagu = c.rencanaProgramService.SumPaguRencanaProgramByInstansi(tahun, tipe, instansis)
+
+		var sumPaguRencanaProgramResponse = helper.ConvertToStatistikSumPaguRencanaProgramResponse(instansis[0], sumPagu[0])
+
+		cntx.JSON(http.StatusOK, sumPaguRencanaProgramResponse)
+
+	} else {
+
+		var instansis, err = c.instansiService.FindAll()
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		var sumPagu = c.rencanaProgramService.SumPaguRencanaProgramByInstansi(tahun, tipe, instansis)
+
+		var sumPaguRencanaProgramResponse []responses.StatistikSumPaguRencanaProgramResponse
+
+		for i := 0; i < len(instansis); i++ {
+			var tempResponse = helper.ConvertToStatistikSumPaguRencanaProgramResponse(instansis[i], sumPagu[i])
+			sumPaguRencanaProgramResponse = append(sumPaguRencanaProgramResponse, tempResponse)
+		}
+
+		cntx.JSON(http.StatusOK, sumPaguRencanaProgramResponse)
+
+	}
+}
+
+func (c *statistikController) SumAllPaguRencanaKegiatan(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+	var tipe = cntx.Query("tipe")
+
+	if tahun == "" || tipe == "" {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": "missing parameter tahun atau tipe",
+		})
+		return
+	}
+
+	var totalPaguRencanaKegiatan = c.rencanaKegiatanService.SumAllPaguRencanaKegiatan(tahun, tipe)
+
+	cntx.JSON(http.StatusOK, gin.H{
+		"totalPaguRencanaKegiatan": totalPaguRencanaKegiatan,
+	})
+}
+
+func (c *statistikController) SumPagurencanaKegiatanByInstansi(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+	var tipe = cntx.Query("tipe")
+	var instansiIdString = cntx.Query("instansiId")
+	var instansiId, _ = strconv.Atoi(instansiIdString)
+
+	if tahun == "" || tipe == "" {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": "missing parameter tahun atau tipe",
+		})
+		return
+	}
+
+	if instansiIdString != "" {
+
+		var instansis []model.Instansi
+
+		var instansi, err = c.instansiService.FindById(instansiId)
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		instansis = append(instansis, instansi)
+
+		var totalPaguRencanaKegiatan = c.rencanaKegiatanService.SumPaguRencanaKegiatanByInstansi(tahun, tipe, instansis)
+
+		var totalPaguResponse = helper.ConvertToStatistikSumPaguRencanaKegiatanResponse(instansis[0], totalPaguRencanaKegiatan[0])
+
+		cntx.JSON(http.StatusOK, totalPaguResponse)
+	} else {
+
+		var instansis, err = c.instansiService.FindAll()
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		var totalPaguRencanaKegiatan = c.rencanaKegiatanService.SumPaguRencanaKegiatanByInstansi(tahun, tipe, instansis)
+
+		var totalPaguResponses []responses.StatistikSumPaguRencanaKegiatanResponse
+
+		for i := 0; i < len(instansis); i++ {
+			var tempResponse = helper.ConvertToStatistikSumPaguRencanaKegiatanResponse(instansis[i], totalPaguRencanaKegiatan[i])
+			totalPaguResponses = append(totalPaguResponses, tempResponse)
+		}
+
+		cntx.JSON(http.StatusOK, totalPaguResponses)
+	}
+}
+
+func (c *statistikController) SumAllPaguRencanaSubKegiatan(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+	var tipe = cntx.Query("tipe")
+
+	if tahun == "" || tipe == "" {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": "missing parameter tahun atau tipe",
+		})
+
+		return
+	}
+
+	var totalPaguRencanaSubKegiatan = c.rencanaSubKegiatanService.SumAllPaguRencanaSubKegiatan(tahun, tipe)
+
+	cntx.JSON(http.StatusOK, gin.H{
+		"totalPaguRencanaSubKegiatan": totalPaguRencanaSubKegiatan,
+	})
+}
+
+func (c *statistikController) SumPaguRencanaSubKegiatanByInstansi(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+	var tipe = cntx.Query("tipe")
+	var instansiIdString = cntx.Query("instansiId")
+	var instansiId, _ = strconv.Atoi(instansiIdString)
+
+	if tahun == "" || tipe == "" {
+		cntx.JSON(http.StatusOK, gin.H{
+			"error": "missing parameter tahun atau tipe",
+		})
+	}
+
+	if instansiIdString != "" {
+
+		var instansis []model.Instansi
+
+		var instansi, err = c.instansiService.FindById(instansiId)
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		instansis = append(instansis, instansi)
+
+		var jumlahPaguRencanaSubKegiatan = c.rencanaSubKegiatanService.SumPaguRencanaSubKegiatanByInstansi(tahun, tipe, instansis)
+
+		var jumlahPaguResponse = helper.ConvertToStatistikSumPaguRencanaSubKegiatanResponse(instansis[0], jumlahPaguRencanaSubKegiatan[0])
+
+		cntx.JSON(http.StatusOK, jumlahPaguResponse)
+
+	} else {
+
+		var instansis, err = c.instansiService.FindAll()
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		var jumlahPaguRencanaSubKegiatan = c.rencanaSubKegiatanService.SumPaguRencanaSubKegiatanByInstansi(tahun, tipe, instansis)
+
+		var jumlahPaguResponses []responses.StatistikSumPaguRencanaSubKegiatanResponse
+
+		for i := 0; i < len(instansis); i++ {
+			var tempResponse = helper.ConvertToStatistikSumPaguRencanaSubKegiatanResponse(instansis[i], jumlahPaguRencanaSubKegiatan[i])
+			jumlahPaguResponses = append(jumlahPaguResponses, tempResponse)
+		}
+
+		cntx.JSON(http.StatusOK, jumlahPaguResponses)
+	}
+}
+
+func (c *statistikController) SumAllPaguFokusBelanja(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+	var tipe = cntx.Query("tipe")
+
+	if tahun == "" || tipe == "" {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": "missing parameter tahun atau tipe",
+		})
+		return
+	}
+
+	var jumlahPaguFokusBelanja = c.fokusBelanjaService.SumAllPaguFokusBelanja(tahun, tipe)
+
+	cntx.JSON(http.StatusOK, gin.H{
+		"jumlahPaguFokusBelanja": jumlahPaguFokusBelanja,
+	})
+}
+
+func (c *statistikController) SumPaguFokusBelanjaByInstansi(cntx *gin.Context) {
+	var tahun = cntx.Query("tahun")
+	var tipe = cntx.Query("tipe")
+	var instansiIdString = cntx.Query("instansiId")
+	var instansiId, _ = strconv.Atoi(instansiIdString)
+
+	if tahun == "" || tipe == "" {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": "missing parameter tahun atau tipe",
+		})
+		return
+	}
+
+	if instansiIdString != "" {
+
+		var instansis []model.Instansi
+
+		var instansi, err = c.instansiService.FindById(instansiId)
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		instansis = append(instansis, instansi)
+
+		var jumlahPaguFokusBelanja = c.fokusBelanjaService.SumPaguFokusBelanjaByInstansi(tahun, tipe, instansis)
+
+		var jumlahPaguFokusBelanjaResponse = helper.ConvertToStatistikSumPaguFokusBelanjaResponse(instansis[0], jumlahPaguFokusBelanja[0])
+
+		cntx.JSON(http.StatusOK, jumlahPaguFokusBelanjaResponse)
+
+	} else {
+
+		var instansis, err = c.instansiService.FindAll()
+		if err != nil {
+			cntx.JSON(http.StatusBadRequest, gin.H{
+				"error": cntx.Error(err),
+			})
+		}
+
+		var jumlahPaguFokusBelanja = c.fokusBelanjaService.SumPaguFokusBelanjaByInstansi(tahun, tipe, instansis)
+
+		var jumlahPaguFokusBelanjaResponses []responses.StatistikSumPaguFokusBelanjaResponse
+
+		for i := 0; i < len(instansis); i++ {
+			var tempResponse = helper.ConvertToStatistikSumPaguFokusBelanjaResponse(instansis[i], jumlahPaguFokusBelanja[i])
+			jumlahPaguFokusBelanjaResponses = append(jumlahPaguFokusBelanjaResponses, tempResponse)
+		}
+
+		cntx.JSON(http.StatusOK, jumlahPaguFokusBelanjaResponses)
+	}
+}

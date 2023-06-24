@@ -11,6 +11,8 @@ type FokusBelanjaRepository interface {
 	FindById(id int) (model.FokusBelanja, error)
 	FindByRencanaSubKegiatanId(rencanaSubKegiatanId int) ([]model.FokusBelanja, error)
 	SumPaguFokusBelanja(rencanaSubKegiatanId int) (int64, error)
+	SumAllPaguFokusBelanja(tahun, tipe string) int64
+	SumPaguFokusBelanjaByInstansi(tahun, tipe string, instansis []model.Instansi) []int64
 	FindBySearch(whereClause map[string]interface{}) ([]model.FokusBelanja, error)
 	CountJumlahFokusBelanja(tahun string) (int64, error)
 	CountJumlahFokusBelanjaByInstansi(tahun, tipe string, instansis []model.Instansi) []int64
@@ -61,6 +63,36 @@ func (r *fokusBelanjaRepository) SumPaguFokusBelanja(rencanaSubKegiatanId int) (
 	}
 
 	return totalPaguFokusBelanja, err
+}
+
+func (r *fokusBelanjaRepository) SumAllPaguFokusBelanja(tahun, tipe string) int64 {
+	var jumlahPaguFokusBelanja int64
+
+	var rows, _ = r.db.Table("fokus_belanjas as fb").Select("sum(paguFokusBelanja) as jumlahPaguFokusBelanja").Joins("inner join rencana_sub_kegiatans as rsk on rsk.id = fb.rencanaSubKegiatanId").Where("fb.tahun = ? and rsk.tipe = ?", tahun, tipe).Rows()
+
+	for rows.Next() {
+		rows.Scan(&jumlahPaguFokusBelanja)
+	}
+
+	return jumlahPaguFokusBelanja
+}
+
+func (r *fokusBelanjaRepository) SumPaguFokusBelanjaByInstansi(tahun, tipe string, instansis []model.Instansi) []int64 {
+	var sumPaguFokusBelanja int64
+	var jumlahPaguFokusBelanja []int64
+
+	for i := 0; i < len(instansis); i++ {
+
+		var rows, _ = r.db.Table("rencana_programs as rp").Select("sum(paguFokusBelanja) as sumPaguRencanaSubKegiatan").Joins("inner join rencana_kegiatans as rk on rp.id = rk.rencanaProgramId").Joins("inner join rencana_sub_kegiatans as rsk on rsk.rencanaKegiatanId = rk.id").Joins("inner join fokus_belanjas as fb on fb.rencanaSubKegiatanId = rsk.id").Where("rp.tahun = ? and rp.tipe = ? and rp.instansiId = ?", tahun, tipe, instansis[i].Id).Rows()
+
+		for rows.Next() {
+			rows.Scan(&sumPaguFokusBelanja)
+		}
+
+		jumlahPaguFokusBelanja = append(jumlahPaguFokusBelanja, sumPaguFokusBelanja)
+	}
+
+	return jumlahPaguFokusBelanja
 }
 
 func (r *fokusBelanjaRepository) FindBySearch(whereClause map[string]interface{}) ([]model.FokusBelanja, error) {
