@@ -54,11 +54,7 @@ func (r *rencanaProgramRepository) FindBySearch(whereClause map[string]interface
 func (r *rencanaProgramRepository) SumAllPaguRencanaProgram(tahun, tipe string) int64 {
 	var totalPaguRencanaProgram int64
 
-	var rows, _ = r.db.Table("rencana_programs").Where("tahun = ? and tipe = ?").Select("sum(paguProgram) as totalPaguRencanaProgram").Rows()
-
-	for rows.Next() {
-		rows.Scan(&totalPaguRencanaProgram)
-	}
+	var _ = r.db.Table("rencana_programs").Select("sum(paguProgram) as totalPaguRencanaProgram").Where("tahun = ? and tipe = ?", tahun, tipe).Scan(&totalPaguRencanaProgram)
 
 	return totalPaguRencanaProgram
 }
