@@ -1916,8 +1916,16 @@ func (c *statistikController) StatistikRencanaSubKegiatanByInstansi(cntx *gin.Co
 
 func (c *statistikController) StatistikFokusBelanja(cntx *gin.Context) {
 	var tahun = cntx.Query("tahun")
+	var tipe = cntx.Query("tipe")
 
-	var jumlahFokusBelanja, err = c.fokusBelanjaService.CountJumlahFokusBelanja(tahun)
+	if tahun == "" || tipe == "" {
+		cntx.JSON(http.StatusBadRequest, gin.H{
+			"error": "missing parameter tahun atau tipe",
+		})
+		return
+	}
+
+	var jumlahFokusBelanja, err = c.fokusBelanjaService.CountJumlahFokusBelanja(tahun, tipe)
 	if err != nil {
 		cntx.JSON(http.StatusBadRequest, gin.H{
 			"error": cntx.Error(err),
@@ -2197,7 +2205,7 @@ func (c *statistikController) SumAllPaguFokusBelanja(cntx *gin.Context) {
 	var jumlahPaguFokusBelanja = c.fokusBelanjaService.SumAllPaguFokusBelanja(tahun, tipe)
 
 	cntx.JSON(http.StatusOK, gin.H{
-		"jumlahPaguFokusBelanja": jumlahPaguFokusBelanja,
+		"totalPaguFokusBelanja": jumlahPaguFokusBelanja,
 	})
 }
 

@@ -14,7 +14,7 @@ type FokusBelanjaRepository interface {
 	SumAllPaguFokusBelanja(tahun, tipe string) int64
 	SumPaguFokusBelanjaByInstansi(tahun, tipe string, instansis []model.Instansi) []int64
 	FindBySearch(whereClause map[string]interface{}) ([]model.FokusBelanja, error)
-	CountJumlahFokusBelanja(tahun string) (int64, error)
+	CountJumlahFokusBelanja(tahun, tipe string) (int64, error)
 	CountJumlahFokusBelanjaByInstansi(tahun, tipe string, instansis []model.Instansi) []int64
 	Create(detailSubKegiatan model.FokusBelanja) (model.FokusBelanja, error)
 	Update(detailSubKegiatan model.FokusBelanja) (model.FokusBelanja, error)
@@ -68,11 +68,7 @@ func (r *fokusBelanjaRepository) SumPaguFokusBelanja(rencanaSubKegiatanId int) (
 func (r *fokusBelanjaRepository) SumAllPaguFokusBelanja(tahun, tipe string) int64 {
 	var jumlahPaguFokusBelanja int64
 
-	var rows, _ = r.db.Table("fokus_belanjas as fb").Select("sum(paguFokusBelanja) as jumlahPaguFokusBelanja").Joins("inner join rencana_sub_kegiatans as rsk on rsk.id = fb.rencanaSubKegiatanId").Where("fb.tahun = ? and rsk.tipe = ?", tahun, tipe).Rows()
-
-	for rows.Next() {
-		rows.Scan(&jumlahPaguFokusBelanja)
-	}
+	var _ = r.db.Table("fokus_belanjas as fb").Select("sum(paguFokusBelanja) as jumlahPaguFokusBelanja").Joins("inner join rencana_sub_kegiatans as rsk on rsk.id = fb.rencanaSubKegiatanId").Where("fb.tahun = ? and rsk.tipe = ?", tahun, tipe).Scan(&jumlahPaguFokusBelanja)
 
 	return jumlahPaguFokusBelanja
 }
@@ -83,11 +79,7 @@ func (r *fokusBelanjaRepository) SumPaguFokusBelanjaByInstansi(tahun, tipe strin
 
 	for i := 0; i < len(instansis); i++ {
 
-		var rows, _ = r.db.Table("rencana_programs as rp").Select("sum(paguFokusBelanja) as sumPaguRencanaSubKegiatan").Joins("inner join rencana_kegiatans as rk on rp.id = rk.rencanaProgramId").Joins("inner join rencana_sub_kegiatans as rsk on rsk.rencanaKegiatanId = rk.id").Joins("inner join fokus_belanjas as fb on fb.rencanaSubKegiatanId = rsk.id").Where("rp.tahun = ? and rp.tipe = ? and rp.instansiId = ?", tahun, tipe, instansis[i].Id).Rows()
-
-		for rows.Next() {
-			rows.Scan(&sumPaguFokusBelanja)
-		}
+		var _ = r.db.Table("rencana_programs as rp").Select("coalesce(sum(paguFokusBelanja),0) as sumPaguFokusBelanja").Joins("inner join rencana_kegiatans as rk on rp.id = rk.rencanaProgramId").Joins("inner join rencana_sub_kegiatans as rsk on rsk.rencanaKegiatanId = rk.id").Joins("inner join fokus_belanjas as fb on fb.rencanaSubKegiatanId = rsk.id").Where("rp.tahun = ? and rp.tipe = ? and rp.instansiId = ?", tahun, tipe, instansis[i].Id).Scan(&sumPaguFokusBelanja)
 
 		jumlahPaguFokusBelanja = append(jumlahPaguFokusBelanja, sumPaguFokusBelanja)
 	}
@@ -103,10 +95,10 @@ func (r *fokusBelanjaRepository) FindBySearch(whereClause map[string]interface{}
 	return fokusBelanjas, err
 }
 
-func (r *fokusBelanjaRepository) CountJumlahFokusBelanja(tahun string) (int64, error) {
+func (r *fokusBelanjaRepository) CountJumlahFokusBelanja(tahun, tipe string) (int64, error) {
 	var count int64
 
-	var err = r.db.Where("tahun = ?", tahun).Table("fokus_belanjas").Select("count(*)").Count(&count).Error
+	var err = r.db.Select("count(*)").Table("fokus_belanjas as fk").Joins("inner join rencana_sub_kegiatans as rsk on rsk.id = fk.rencanaSubKegiatanId").Where("fk.tahun = ? and rsk.tipe = ?", tahun, tipe).Count(&count).Error
 
 	return count, err
 }

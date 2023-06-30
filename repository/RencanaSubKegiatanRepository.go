@@ -83,7 +83,7 @@ func (r *rencanaSubKegiatanRepository) SumPaguRencanaSubKegiatanByInstansi(tahun
 
 	for i := 0; i < len(instansis); i++ {
 
-		var rows, _ = r.db.Table("rencana_programs as rp").Select("sum(paguSubKegiatan) as sumPaguRencanaSubKegiatan").Joins("inner join rencana_kegiatans as rk on rp.id = rk.rencanaProgramId").Joins("inner join rencana_sub_kegiatans as rsk on rsk.rencanaKegiatanId = rk.id").Where("rp.tahun = ? and rp.tipe = ? and rp.instansiId = ?", tahun, tipe, instansis[i].Id).Rows()
+		var rows, _ = r.db.Table("rencana_programs as rp").Select("coalesce(sum(paguSubKegiatan),0) as sumPaguRencanaSubKegiatan").Joins("inner join rencana_kegiatans as rk on rp.id = rk.rencanaProgramId").Joins("inner join rencana_sub_kegiatans as rsk on rsk.rencanaKegiatanId = rk.id").Where("rp.tahun = ? and rp.tipe = ? and rp.instansiId = ?", tahun, tipe, instansis[i].Id).Rows()
 
 		for rows.Next() {
 			rows.Scan(&sumPaguRencanaSubKegiatan)

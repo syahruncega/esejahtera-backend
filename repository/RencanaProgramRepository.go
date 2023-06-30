@@ -65,7 +65,7 @@ func (r *rencanaProgramRepository) SumPaguRencanaProgramByInstansi(tahun string,
 
 	for i := 0; i < len(instansis); i++ {
 
-		var rows, _ = r.db.Table("rencana_programs").Where("tahun = ? and tipe = ? and instansiId = ?", tahun, tipe, instansis[i].Id).Select("sum(paguProgram) as sumPaguRencanaProgram").Rows()
+		var rows, _ = r.db.Table("rencana_programs").Where("tahun = ? and tipe = ? and instansiId = ?", tahun, tipe, instansis[i].Id).Select("coalesce(sum(paguProgram),0) as sumPaguRencanaProgram").Rows()
 
 		for rows.Next() {
 			rows.Scan(&sumPaguRencanaProgram)

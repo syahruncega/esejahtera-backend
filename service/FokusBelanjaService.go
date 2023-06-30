@@ -14,7 +14,7 @@ type FokusBelanjaService interface {
 	FindBySearch(whereClause map[string]interface{}) ([]model.FokusBelanja, error)
 	SumAllPaguFokusBelanja(tahun, tipe string) int64
 	SumPaguFokusBelanjaByInstansi(tahun, tipe string, instansis []model.Instansi) []int64
-	CountJumlahFokusBelanja(tahun string) (int64, error)
+	CountJumlahFokusBelanja(tahun, tipe string) (int64, error)
 	CountJumlahFokusBelanjaByInstansi(tahun string, tipe string, instansis []model.Instansi) []int64
 	Create(fokusBelanjaRequest request.CreateFokusBelanjaRequest) (model.FokusBelanja, error)
 	Update(id int, fokusBelanjaRequest request.UpdateFokusBelanjaRequest) (model.FokusBelanja, error)
@@ -66,8 +66,8 @@ func (s *fokusBelanjaService) SumPaguFokusBelanjaByInstansi(tahun, tipe string, 
 	return jumlahPaguFokusBelanja
 }
 
-func (s *fokusBelanjaService) CountJumlahFokusBelanja(tahun string) (int64, error) {
-	var jumlahFokusBelanja, err = s.fokusBelanjaRepository.CountJumlahFokusBelanja(tahun)
+func (s *fokusBelanjaService) CountJumlahFokusBelanja(tahun, tipe string) (int64, error) {
+	var jumlahFokusBelanja, err = s.fokusBelanjaRepository.CountJumlahFokusBelanja(tahun, tipe)
 
 	return jumlahFokusBelanja, err
 }
