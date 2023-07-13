@@ -452,7 +452,7 @@ func main() {
 	server.PATCH("/tagkeluarga/:id", middleware.CheckAuth, tagKeluargaController.UpdateTagKeluarga)
 	server.DELETE("/tagkeluarga/:id", middleware.CheckAuth, tagKeluargaController.DeleteTagKeluarga)
 
-	server.GET("/rat", ratController.TestingRatController)
+	server.GET("/rat", middleware.CheckAuth, ratController.TestingRatController)
 
 	server.Run(":" + appConfig.AppPort)
 }
