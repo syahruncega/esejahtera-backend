@@ -4,6 +4,7 @@ import (
 	"kemiskinan/model"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type FokusBelanjaRepository interface {
@@ -90,7 +91,7 @@ func (r *fokusBelanjaRepository) SumPaguFokusBelanjaByInstansi(tahun, tipe strin
 func (r *fokusBelanjaRepository) FindBySearch(whereClause map[string]interface{}) ([]model.FokusBelanja, error) {
 	var fokusBelanjas []model.FokusBelanja
 
-	var err = r.db.Where(whereClause).Model(&fokusBelanjas).Preload("RencanaSubKegiatan").Find(&fokusBelanjas).Error
+	var err = r.db.Where(whereClause).Model(&fokusBelanjas).Preload(clause.Associations).Preload("RencanaSubKegiatan." + clause.Associations).Preload("RencanaSubKegiatan.RencanaKegiatan." + clause.Associations).Preload("RencanaSubKegiatan.RencanaKegiatan.RencanaProgram." + clause.Associations).Find(&fokusBelanjas).Error
 
 	return fokusBelanjas, err
 }

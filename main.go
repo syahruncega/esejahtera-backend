@@ -178,6 +178,8 @@ func main() {
 
 	var statistikController = controller.NewStatistikController(keluargaService, individuService, instansiService, instansiOnProgramService, programOnKegiatanService, programService, kegiatanService, subKegiatanService, kegiatanOnSubKegiatanService, fokusBelanjaService, rencanaProgramService, rencanaKegiatanService, rencanaSubKegiatanService)
 
+	var ratController = controller.NewRatController(rencanaProgramService, rencanaKegiatanService, rencanaSubKegiatanService, fokusBelanjaService, detailLokasiService)
+
 	var server = gin.Default()
 
 	server.Use(cors.New(cors.Config{
@@ -449,6 +451,8 @@ func main() {
 	server.POST("/tagkeluarga", middleware.CheckAuth, tagKeluargaController.CreateTagKeluarga)
 	server.PATCH("/tagkeluarga/:id", middleware.CheckAuth, tagKeluargaController.UpdateTagKeluarga)
 	server.DELETE("/tagkeluarga/:id", middleware.CheckAuth, tagKeluargaController.DeleteTagKeluarga)
+
+	server.GET("/rat", ratController.TestingRatController)
 
 	server.Run(":" + appConfig.AppPort)
 }

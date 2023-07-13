@@ -10,6 +10,7 @@ type RencanaProgramRepository interface {
 	FindAll() ([]model.RencanaProgram, error)
 	FindById(id int) (model.RencanaProgram, error)
 	FindBySearch(whereClause map[string]interface{}) ([]model.RencanaProgram, error)
+	FindRatRencanaProgram(tahun, tipe string, instansId int) ([]model.RencanaProgram, error)
 	SumAllPaguRencanaProgram(tahun, tipe string) int64
 	SumPaguRencanaProgramByInstansi(tahun, tipe string, instansis []model.Instansi) []int64
 	CountJumlahRencanaProgram(tahun string, tipe string) (int64, error)
@@ -47,6 +48,14 @@ func (r *rencanaProgramRepository) FindBySearch(whereClause map[string]interface
 	var rencanaPrograms []model.RencanaProgram
 
 	var err = r.db.Where(whereClause).Model(&rencanaPrograms).Preload("Instansi").Preload("Program").Find(&rencanaPrograms).Error
+
+	return rencanaPrograms, err
+}
+
+func (r *rencanaProgramRepository) FindRatRencanaProgram(tahun, tipe string, instansiId int) ([]model.RencanaProgram, error) {
+	var rencanaPrograms []model.RencanaProgram
+
+	var err = r.db.Where("tahun = ? and tipe = ? and instansiId = ?", tahun, tipe, instansiId).Model(&rencanaPrograms).Preload("Instansi").Preload("Program").Find(&rencanaPrograms).Error
 
 	return rencanaPrograms, err
 }

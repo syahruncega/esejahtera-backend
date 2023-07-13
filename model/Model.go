@@ -479,6 +479,8 @@ type IndividuVerifikasi struct {
 	UpdatedAt          time.Time `gorm:"column:updatedAt;not null"`
 }
 
+// ---------============================-----------------------
+
 type TagIndividu struct {
 	Id             int `gorm:"column:id;primaryKey;not null"`
 	FokusBelanjaId int `gorm:"column:fokusBelanjaId;not null"`

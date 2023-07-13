@@ -11,6 +11,7 @@ type RencanaProgramService interface {
 	FindAll() ([]model.RencanaProgram, error)
 	FindById(id int) (model.RencanaProgram, error)
 	FindBySearch(whereClause map[string]interface{}) ([]model.RencanaProgram, error)
+	FindRatRencanaProgram(tahun, tipe string, instansiId int) ([]model.RencanaProgram, error)
 	SumAllPaguRencanaProgram(tahun, tipe string) int64
 	SumPaguRencanaProgramByInstansi(tahun, tipe string, instansis []model.Instansi) []int64
 	CountJumlahRencanaProgram(tahun string, tipe string) (int64, error)
@@ -43,6 +44,12 @@ func (s *rencanaProgramService) FindById(id int) (model.RencanaProgram, error) {
 
 func (s *rencanaProgramService) FindBySearch(whereClause map[string]interface{}) ([]model.RencanaProgram, error) {
 	var rencanaPrograms, err = s.rencanaProgramRepository.FindBySearch(whereClause)
+
+	return rencanaPrograms, err
+}
+
+func (s *rencanaProgramService) FindRatRencanaProgram(tahun, tipe string, instansiId int) ([]model.RencanaProgram, error) {
+	var rencanaPrograms, err = s.rencanaProgramRepository.FindRatRencanaProgram(tahun, tipe, instansiId)
 
 	return rencanaPrograms, err
 }

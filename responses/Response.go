@@ -595,6 +595,48 @@ type IndividuVerifikasiResponse struct {
 	UpdatedAt          time.Time              `json:"updatedAt"`
 }
 
+// ========================= RAT RESPONSE ===================================
+
+type DetailLokasi struct {
+	KabupatenKota string `json:"kabupatenKota,omitempty"`
+	Kecamatan     string `json:"kecamatan,omitempty"`
+	KelurahanDesa string `json:"kelurahanDesa,omitempty"`
+	TipePenerima  string `json:"tipePenerima,omitempty"`
+}
+
+type FokusBelanja struct {
+	NamaFokusBelanja string         `json:"namaFokusBelanja,omitempty"`
+	PaguFokusBelanja int64          `json:"paguFokusBelanja,omitempty"`
+	Indikator        string         `json:"indikator,omitempty"`
+	Target           float32        `json:"target,omitempty"`
+	DetailLokasi     []DetailLokasi `json:"detailLokasi,omitempty"`
+}
+
+type SubKegiatan struct {
+	NamaSubKegiatan string         `json:"namaSubKegiatan,omitempty"`
+	PaguSubKegiatan int64          `json:"paguSubKegiatan,omitempty"`
+	FokusBelanja    []FokusBelanja `json:"fokusBelanja,omitempty"`
+}
+
+type Kegiatan struct {
+	NamaKegiatan string        `json:"namaKegiatan,omitempty"`
+	PaguKegiatan int64         `json:"paguKegiatan,omitempty"`
+	SubKegiatan  []SubKegiatan `json:"subKegiatan,omitempty"`
+}
+
+type Program struct {
+	NamaProgram string     `json:"namaProgram,omitempty"`
+	PaguProgram int64      `json:"paguProgram,omitempty"`
+	Kegiatan    []Kegiatan `json:"kegiatan,omitempty"`
+}
+
+type RatResponse struct {
+	NamaInstansi string    `json:"namaInstansi,omitempty"`
+	Program      []Program `json:"program,omitempty"`
+}
+
+// ========================= RAT RESPONSE ===================================
+
 type StatistikProgramInstansiResponse struct {
 	InstansiId    int    `json:"instansiId"`
 	NamaInstansi  string `json:"namaInstansi"`
