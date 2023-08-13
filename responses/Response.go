@@ -609,6 +609,8 @@ type FokusBelanja struct {
 	PaguFokusBelanja int64          `json:"paguFokusBelanja,omitempty"`
 	Indikator        string         `json:"indikator,omitempty"`
 	Target           float32        `json:"target,omitempty"`
+	Satuan           string         `json:"satuan,omitempty"`
+	Keterangan       string         `json:"keterangan,omitempty"`
 	DetailLokasi     []DetailLokasi `json:"detailLokasi,omitempty"`
 }
 
@@ -680,25 +682,29 @@ type StatistikFokusBelanjaInstansiResponse struct {
 }
 
 type StatistikSumPaguRencanaProgramResponse struct {
-	InstansiId       int    `json:"instansiId"`
-	NamaInstansi     string `json:"namaInstansi"`
-	TotalPaguProgram int64  `json:"totalPaguProgram"`
+	InstansiId              int    `json:"instansiId"`
+	NamaInstansi            string `json:"namaInstansi"`
+	JumlahRencanaProgram    int64  `json:"jumlahRencanaProgram"`
+	TotalPaguRencanaProgram int64  `json:"totalPaguRencanaProgram"`
 }
 
 type StatistikSumPaguRencanaKegiatanResponse struct {
-	InstansiId        int    `json:"instansiId"`
-	NamaInstansi      string `json:"namaInstansi"`
-	TotalPaguKegiatan int64  `json:"totalPaguKegiatan"`
+	InstansiId               int    `json:"instansiId"`
+	NamaInstansi             string `json:"namaInstansi"`
+	JumlahRencanaKegiatan    int64  `json:"jumlahRencanaKegiatan"`
+	TotalPaguRencanaKegiatan int64  `json:"totalPaguRencanaKegiatan"`
 }
 
 type StatistikSumPaguRencanaSubKegiatanResponse struct {
 	InstansiId                  int    `json:"instansiId"`
 	NamaInstansi                string `json:"namaInstansi"`
-	TotalPaguRencanaSubKegiatan int64  `json:"totalPaguSubKegiatan"`
+	JumlahRencanaSubKegiatan    int64  `json:"jumlahRencanaSubKegiatan"`
+	TotalPaguRencanaSubKegiatan int64  `json:"totalPaguRencanaSubKegiatan"`
 }
 
 type StatistikSumPaguFokusBelanjaResponse struct {
 	InstansiId            int    `json:"instansiId"`
 	NamaInstansi          string `json:"namaInstansi"`
+	JumlahFokusBelanja    int64  `json:"jumlahFokusBelanja"`
 	TotalPaguFokusBelanja int64  `json:"totalPaguFokusBelanja"`
 }

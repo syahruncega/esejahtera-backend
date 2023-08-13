@@ -1424,34 +1424,38 @@ func ConvertToStatistikFokusBelanjaInstansiResponse(i model.Instansi, hasil int6
 	}
 }
 
-func ConvertToStatistikSumPaguRencanaProgramResponse(i model.Instansi, total int64) responses.StatistikSumPaguRencanaProgramResponse {
+func ConvertToStatistikSumPaguRencanaProgramResponse(i model.Instansi, jumlahRencanaProgram, totalPaguRencanaProgram int64) responses.StatistikSumPaguRencanaProgramResponse {
 	return responses.StatistikSumPaguRencanaProgramResponse{
-		InstansiId:       i.Id,
-		NamaInstansi:     i.NamaInstansi,
-		TotalPaguProgram: total,
+		InstansiId:              i.Id,
+		NamaInstansi:            i.NamaInstansi,
+		JumlahRencanaProgram:    jumlahRencanaProgram,
+		TotalPaguRencanaProgram: totalPaguRencanaProgram,
 	}
 }
 
-func ConvertToStatistikSumPaguRencanaKegiatanResponse(i model.Instansi, total int64) responses.StatistikSumPaguRencanaKegiatanResponse {
+func ConvertToStatistikSumPaguRencanaKegiatanResponse(i model.Instansi, jumlahRencanaKegiatan, totalPaguRencanaKegiatan int64) responses.StatistikSumPaguRencanaKegiatanResponse {
 	return responses.StatistikSumPaguRencanaKegiatanResponse{
-		InstansiId:        i.Id,
-		NamaInstansi:      i.NamaInstansi,
-		TotalPaguKegiatan: total,
+		InstansiId:               i.Id,
+		NamaInstansi:             i.NamaInstansi,
+		JumlahRencanaKegiatan:    jumlahRencanaKegiatan,
+		TotalPaguRencanaKegiatan: totalPaguRencanaKegiatan,
 	}
 }
 
-func ConvertToStatistikSumPaguRencanaSubKegiatanResponse(i model.Instansi, total int64) responses.StatistikSumPaguRencanaSubKegiatanResponse {
+func ConvertToStatistikSumPaguRencanaSubKegiatanResponse(i model.Instansi, jumlahRencanaSubKegiatan, totalPaguRencanaSubKegiatan int64) responses.StatistikSumPaguRencanaSubKegiatanResponse {
 	return responses.StatistikSumPaguRencanaSubKegiatanResponse{
 		InstansiId:                  i.Id,
 		NamaInstansi:                i.NamaInstansi,
-		TotalPaguRencanaSubKegiatan: total,
+		JumlahRencanaSubKegiatan:    jumlahRencanaSubKegiatan,
+		TotalPaguRencanaSubKegiatan: totalPaguRencanaSubKegiatan,
 	}
 }
 
-func ConvertToStatistikSumPaguFokusBelanjaResponse(i model.Instansi, total int64) responses.StatistikSumPaguFokusBelanjaResponse {
+func ConvertToStatistikSumPaguFokusBelanjaResponse(i model.Instansi, jumlahFokusBelanja, totalPaguFokusBelanja int64) responses.StatistikSumPaguFokusBelanjaResponse {
 	return responses.StatistikSumPaguFokusBelanjaResponse{
 		InstansiId:            i.Id,
 		NamaInstansi:          i.NamaInstansi,
-		TotalPaguFokusBelanja: total,
+		JumlahFokusBelanja:    jumlahFokusBelanja,
+		TotalPaguFokusBelanja: totalPaguFokusBelanja,
 	}
 }

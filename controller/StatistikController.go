@@ -2019,9 +2019,11 @@ func (c *statistikController) SumPaguRencanaProgramByInstansi(cntx *gin.Context)
 
 		instansis = append(instansis, instansi)
 
+		var jumlahRencanaProgram = c.rencanaProgramService.CountJumlahRencanaProgramByIntansi(tahun, tipe, instansis)
+
 		var sumPagu = c.rencanaProgramService.SumPaguRencanaProgramByInstansi(tahun, tipe, instansis)
 
-		var sumPaguRencanaProgramResponse = helper.ConvertToStatistikSumPaguRencanaProgramResponse(instansis[0], sumPagu[0])
+		var sumPaguRencanaProgramResponse = helper.ConvertToStatistikSumPaguRencanaProgramResponse(instansis[0], jumlahRencanaProgram[0], sumPagu[0])
 
 		cntx.JSON(http.StatusOK, sumPaguRencanaProgramResponse)
 
@@ -2034,12 +2036,14 @@ func (c *statistikController) SumPaguRencanaProgramByInstansi(cntx *gin.Context)
 			})
 		}
 
+		var jumlahRencanaProgram = c.rencanaProgramService.CountJumlahRencanaProgramByIntansi(tahun, tipe, instansis)
+
 		var sumPagu = c.rencanaProgramService.SumPaguRencanaProgramByInstansi(tahun, tipe, instansis)
 
 		var sumPaguRencanaProgramResponse []responses.StatistikSumPaguRencanaProgramResponse
 
 		for i := 0; i < len(instansis); i++ {
-			var tempResponse = helper.ConvertToStatistikSumPaguRencanaProgramResponse(instansis[i], sumPagu[i])
+			var tempResponse = helper.ConvertToStatistikSumPaguRencanaProgramResponse(instansis[i], jumlahRencanaProgram[i], sumPagu[i])
 			sumPaguRencanaProgramResponse = append(sumPaguRencanaProgramResponse, tempResponse)
 		}
 
@@ -2092,9 +2096,11 @@ func (c *statistikController) SumPagurencanaKegiatanByInstansi(cntx *gin.Context
 
 		instansis = append(instansis, instansi)
 
+		var jumlahRencanaKegiatan = c.rencanaKegiatanService.CountJumlahRencanaKegiatanAllInstansi(tahun, tipe, instansis)
+
 		var totalPaguRencanaKegiatan = c.rencanaKegiatanService.SumPaguRencanaKegiatanByInstansi(tahun, tipe, instansis)
 
-		var totalPaguResponse = helper.ConvertToStatistikSumPaguRencanaKegiatanResponse(instansis[0], totalPaguRencanaKegiatan[0])
+		var totalPaguResponse = helper.ConvertToStatistikSumPaguRencanaKegiatanResponse(instansis[0], jumlahRencanaKegiatan[0], totalPaguRencanaKegiatan[0])
 
 		cntx.JSON(http.StatusOK, totalPaguResponse)
 	} else {
@@ -2106,12 +2112,14 @@ func (c *statistikController) SumPagurencanaKegiatanByInstansi(cntx *gin.Context
 			})
 		}
 
+		var jumlahRencanaKegiatan = c.rencanaKegiatanService.CountJumlahRencanaKegiatanAllInstansi(tahun, tipe, instansis)
+
 		var totalPaguRencanaKegiatan = c.rencanaKegiatanService.SumPaguRencanaKegiatanByInstansi(tahun, tipe, instansis)
 
 		var totalPaguResponses []responses.StatistikSumPaguRencanaKegiatanResponse
 
 		for i := 0; i < len(instansis); i++ {
-			var tempResponse = helper.ConvertToStatistikSumPaguRencanaKegiatanResponse(instansis[i], totalPaguRencanaKegiatan[i])
+			var tempResponse = helper.ConvertToStatistikSumPaguRencanaKegiatanResponse(instansis[i], jumlahRencanaKegiatan[i], totalPaguRencanaKegiatan[i])
 			totalPaguResponses = append(totalPaguResponses, tempResponse)
 		}
 
@@ -2163,9 +2171,11 @@ func (c *statistikController) SumPaguRencanaSubKegiatanByInstansi(cntx *gin.Cont
 
 		instansis = append(instansis, instansi)
 
+		var jumlahRencanaSubKegiatan = c.rencanaSubKegiatanService.CountJumlahRencanaSubKegiatanByInstansi(tahun, tipe, instansis)
+
 		var jumlahPaguRencanaSubKegiatan = c.rencanaSubKegiatanService.SumPaguRencanaSubKegiatanByInstansi(tahun, tipe, instansis)
 
-		var jumlahPaguResponse = helper.ConvertToStatistikSumPaguRencanaSubKegiatanResponse(instansis[0], jumlahPaguRencanaSubKegiatan[0])
+		var jumlahPaguResponse = helper.ConvertToStatistikSumPaguRencanaSubKegiatanResponse(instansis[0], jumlahRencanaSubKegiatan[0], jumlahPaguRencanaSubKegiatan[0])
 
 		cntx.JSON(http.StatusOK, jumlahPaguResponse)
 
@@ -2178,12 +2188,14 @@ func (c *statistikController) SumPaguRencanaSubKegiatanByInstansi(cntx *gin.Cont
 			})
 		}
 
+		var jumlahRencanaSubKegiatan = c.rencanaSubKegiatanService.CountJumlahRencanaSubKegiatanByInstansi(tahun, tipe, instansis)
+
 		var jumlahPaguRencanaSubKegiatan = c.rencanaSubKegiatanService.SumPaguRencanaSubKegiatanByInstansi(tahun, tipe, instansis)
 
 		var jumlahPaguResponses []responses.StatistikSumPaguRencanaSubKegiatanResponse
 
 		for i := 0; i < len(instansis); i++ {
-			var tempResponse = helper.ConvertToStatistikSumPaguRencanaSubKegiatanResponse(instansis[i], jumlahPaguRencanaSubKegiatan[i])
+			var tempResponse = helper.ConvertToStatistikSumPaguRencanaSubKegiatanResponse(instansis[i], jumlahRencanaSubKegiatan[i], jumlahPaguRencanaSubKegiatan[i])
 			jumlahPaguResponses = append(jumlahPaguResponses, tempResponse)
 		}
 
@@ -2235,9 +2247,11 @@ func (c *statistikController) SumPaguFokusBelanjaByInstansi(cntx *gin.Context) {
 
 		instansis = append(instansis, instansi)
 
+		var jumlahFokusBelanja = c.fokusBelanjaService.CountJumlahFokusBelanjaByInstansi(tahun, tipe, instansis)
+
 		var jumlahPaguFokusBelanja = c.fokusBelanjaService.SumPaguFokusBelanjaByInstansi(tahun, tipe, instansis)
 
-		var jumlahPaguFokusBelanjaResponse = helper.ConvertToStatistikSumPaguFokusBelanjaResponse(instansis[0], jumlahPaguFokusBelanja[0])
+		var jumlahPaguFokusBelanjaResponse = helper.ConvertToStatistikSumPaguFokusBelanjaResponse(instansis[0], jumlahFokusBelanja[0], jumlahPaguFokusBelanja[0])
 
 		cntx.JSON(http.StatusOK, jumlahPaguFokusBelanjaResponse)
 
@@ -2250,12 +2264,14 @@ func (c *statistikController) SumPaguFokusBelanjaByInstansi(cntx *gin.Context) {
 			})
 		}
 
+		var jumlahFokusBelanja = c.fokusBelanjaService.CountJumlahFokusBelanjaByInstansi(tahun, tipe, instansis)
+
 		var jumlahPaguFokusBelanja = c.fokusBelanjaService.SumPaguFokusBelanjaByInstansi(tahun, tipe, instansis)
 
 		var jumlahPaguFokusBelanjaResponses []responses.StatistikSumPaguFokusBelanjaResponse
 
 		for i := 0; i < len(instansis); i++ {
-			var tempResponse = helper.ConvertToStatistikSumPaguFokusBelanjaResponse(instansis[i], jumlahPaguFokusBelanja[i])
+			var tempResponse = helper.ConvertToStatistikSumPaguFokusBelanjaResponse(instansis[i], jumlahFokusBelanja[i], jumlahPaguFokusBelanja[i])
 			jumlahPaguFokusBelanjaResponses = append(jumlahPaguFokusBelanjaResponses, tempResponse)
 		}
 

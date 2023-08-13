@@ -17,6 +17,9 @@ type ratController struct {
 	detailLokasiService       service.DetailLokasiService
 }
 
+type EmptyStruct struct {
+}
+
 func NewRatController(rencanaProgramService service.RencanaProgramService, rencanaKegiatanService service.RencanaKegiatanService, rencanaSubKegiatanService service.RencanaSubKegiatanService, fokusBelanjaService service.FokusBelanjaService, detailLokasiService service.DetailLokasiService) *ratController {
 	return &ratController{
 		rencanaProgramService,
@@ -113,6 +116,10 @@ func (c *ratController) TestingRatController(cntx *gin.Context) {
 								for l := 0; l < len(fokusBelanjas); l++ {
 									ratResponse.Program[i].Kegiatan[j].SubKegiatan[k].FokusBelanja[l].NamaFokusBelanja = fokusBelanjas[l].NamaFokusBelanja
 									ratResponse.Program[i].Kegiatan[j].SubKegiatan[k].FokusBelanja[l].PaguFokusBelanja = fokusBelanjas[l].PaguFokusBelanja
+									ratResponse.Program[i].Kegiatan[j].SubKegiatan[k].FokusBelanja[l].Indikator = fokusBelanjas[l].Indikator
+									ratResponse.Program[i].Kegiatan[j].SubKegiatan[k].FokusBelanja[l].Target = fokusBelanjas[l].Target
+									ratResponse.Program[i].Kegiatan[j].SubKegiatan[k].FokusBelanja[l].Satuan = fokusBelanjas[l].Satuan
+									ratResponse.Program[i].Kegiatan[j].SubKegiatan[k].FokusBelanja[l].Keterangan = fokusBelanjas[l].Keterangan
 
 									detailLokasis, err := c.detailLokasiService.FindByFokusBelanjaId(fokusBelanjas[l].Id)
 									if err != nil {
