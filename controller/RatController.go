@@ -17,9 +17,6 @@ type ratController struct {
 	detailLokasiService       service.DetailLokasiService
 }
 
-type EmptyStruct struct {
-}
-
 func NewRatController(rencanaProgramService service.RencanaProgramService, rencanaKegiatanService service.RencanaKegiatanService, rencanaSubKegiatanService service.RencanaSubKegiatanService, fokusBelanjaService service.FokusBelanjaService, detailLokasiService service.DetailLokasiService) *ratController {
 	return &ratController{
 		rencanaProgramService,

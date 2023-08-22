@@ -382,6 +382,33 @@ func ConvertToFokusBelanjaResponse(f model.FokusBelanja) responses.FokusBelanjaR
 	}
 }
 
+func ConvertToRealisasiResponse(r model.Realisasi) responses.RealisasiResponse {
+	return responses.RealisasiResponse{
+		Id:             r.Id,
+		FokusBelanjaId: r.FokusBelanjaId,
+		FokusBelanja: responses.FokusBelanjaResponse{
+			Id:               r.FokusBelanja.Id,
+			NamaFokusBelanja: r.FokusBelanja.NamaFokusBelanja,
+			Indikator:        r.FokusBelanja.Indikator,
+			Target:           r.FokusBelanja.Target,
+			Satuan:           r.FokusBelanja.Satuan,
+			PaguFokusBelanja: r.FokusBelanja.PaguFokusBelanja,
+			Keterangan:       r.FokusBelanja.Keterangan,
+			Tahun:            r.FokusBelanja.Tahun,
+			CreatedAt:        r.FokusBelanja.CreatedAt,
+			UpdatedAt:        r.FokusBelanja.UpdatedAt,
+		},
+		Tanggal:         r.Tanggal,
+		NomorSp2d:       r.NomorSp2d,
+		RealisasiPagu:   r.RealisasiPagu,
+		RealisasiTarget: r.RealisasiTarget,
+		Bulan:           r.Bulan,
+		Keterangan:      r.Keterangan,
+		CreatedAt:       r.CreatedAt,
+		UpdatedAt:       r.UpdatedAt,
+	}
+}
+
 func ConvertToDetailLokasiResponse(d model.Detail_Lokasi) responses.Detail_LokasiResponse {
 	return responses.Detail_LokasiResponse{
 		Id:             d.Id,

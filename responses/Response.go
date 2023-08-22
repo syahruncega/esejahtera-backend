@@ -166,6 +166,20 @@ type FokusBelanjaResponse struct {
 	UpdatedAt            time.Time                  `json:"updatedAt"`
 }
 
+type RealisasiResponse struct {
+	Id              int                  `json:"id"`
+	FokusBelanjaId  int                  `json:"fokusBelanjaId"`
+	FokusBelanja    FokusBelanjaResponse `json:"fokusBelanja"`
+	Tanggal         string               `json:"tanggal"`
+	NomorSp2d       string               `json:"nomorSp2d"`
+	RealisasiPagu   int64                `json:"realisasiPagu"`
+	RealisasiTarget string               `json:"realisasiTarget"`
+	Bulan           string               `json:"bulan"`
+	Keterangan      string               `json:"keterangan"`
+	CreatedAt       time.Time            `json:"createdAt"`
+	UpdatedAt       time.Time            `json:"updatedAt"`
+}
+
 type Detail_LokasiResponse struct {
 	Id              int                    `json:"id"`
 	FokusBelanjaid  int                    `json:"fokusBelanjaId"`
@@ -604,6 +618,15 @@ type DetailLokasi struct {
 	TipePenerima  string `json:"tipePenerima,omitempty"`
 }
 
+type Realisasi struct {
+	Tanggal         string `json:"tanggal,omitempty"`
+	NomorSp2d       string `json:"nomorSp2d,omitempty"`
+	RealisasiPagu   int64  `json:"realisasiPagu,omitempty"`
+	RealisasiTarget string `json:"realisasiTarget,omitempty"`
+	Bulan           string `json:"bulan,omitempty"`
+	Keterangan      string `json:"keterangan,omitempty"`
+}
+
 type FokusBelanja struct {
 	NamaFokusBelanja string         `json:"namaFokusBelanja,omitempty"`
 	PaguFokusBelanja int64          `json:"paguFokusBelanja,omitempty"`
@@ -611,7 +634,9 @@ type FokusBelanja struct {
 	Target           float32        `json:"target,omitempty"`
 	Satuan           string         `json:"satuan,omitempty"`
 	Keterangan       string         `json:"keterangan,omitempty"`
+	Tahun            string         `json:"tahun,omitempty"`
 	DetailLokasi     []DetailLokasi `json:"detailLokasi,omitempty"`
+	Realisasi        []Realisasi    `json:"realisasi,omitempty"`
 }
 
 type SubKegiatan struct {

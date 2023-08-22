@@ -181,6 +181,20 @@ type Detail_Lokasi struct {
 	UpdatedAt       time.Time `gorm:"column:updatedAt;not null"`
 }
 
+type Realisasi struct {
+	Id              int `gorm:"column:id;primaryKey;not null"`
+	FokusBelanjaId  int `gorm:"column:fokusBelanjaId;not null"`
+	FokusBelanja    FokusBelanja
+	Tanggal         string    `gorm:"column:tanggal;not null"`
+	NomorSp2d       string    `gorm:"column:nomorSp2d;not null"`
+	RealisasiPagu   int64     `gorm:"column:realisasiPagu;not null"`
+	RealisasiTarget string    `gorm:"column:realisasiTarget; not null"`
+	Bulan           string    `gorm:"column:bulan"`
+	Keterangan      string    `gorm:"column:keterangan;not null"`
+	CreatedAt       time.Time `gorm:"column:createdAt;not null"`
+	UpdatedAt       time.Time `gorm:"column:updatedAt;not null"`
+}
+
 type Provinsi struct {
 	Id   string `gorm:"column:id;primaryKey;not null"`
 	Nama string `gorm:"column:nama;not null"`

@@ -100,6 +100,10 @@ func main() {
 	var detailLokasiService = service.NewDetailLokasiService(detailLokasiRepository)
 	var detailLokasiController = controller.NewDetailLokasiController(detailLokasiService)
 
+	var realisasiRepository = repository.NewRealisasiRepository(config.DB)
+	var realisasiService = service.NewRealisasiService(realisasiRepository)
+	var realisasiController = controller.NewRealisasiController(rencanaProgramService, rencanaKegiatanService, rencanaSubKegiatanService, fokusBelanjaService, detailLokasiService, realisasiService)
+
 	var provinsiRepository = repository.NewProvinsiRepository(config.DB)
 	var provinsiService = service.NewProvinsiService(provinsiRepository)
 	var provinsiController = controller.NewProvinsiController(provinsiService)
@@ -292,6 +296,14 @@ func main() {
 	server.POST("/fokusbelanja", middleware.CheckAuth, fokusBelanjaController.CreateFokusBelanja)
 	server.PATCH("/fokusbelanja/:id", middleware.CheckAuth, fokusBelanjaController.UpdateFokusBelanja)
 	server.DELETE("/fokusbelanja/:id", middleware.CheckAuth, fokusBelanjaController.DeleteFokusBelanja)
+
+	server.GET("/realisasi", middleware.CheckAuth, realisasiController.GetRealisasis)
+	server.GET("/realisasi/:id", middleware.CheckAuth, realisasiController.GetRealisasi)
+	server.GET("/realisasi/search", middleware.CheckAuth, realisasiController.GetRealisasiBySearch)
+	server.GET("/realisasi/cascading", middleware.CheckAuth, realisasiController.GetRealisasiCascading)
+	server.POST("/realisasi", middleware.CheckAuth, realisasiController.CreateRealiasasi)
+	server.PATCH("/realisasi/:id", middleware.CheckAuth, realisasiController.UpdateRealisasi)
+	server.DELETE("/realisasi/:id", middleware.CheckAuth, realisasiController.DeleteRealisasi)
 
 	server.GET("/detaillokasi", middleware.CheckAuth, detailLokasiController.GetDetailLokasis)
 	server.GET("/detaillokasi/:id", middleware.CheckAuth, detailLokasiController.GetDetailLokasi)
