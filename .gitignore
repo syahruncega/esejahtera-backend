@@ -1,3 +1,4 @@
 test.http
 .vscode
 Dockerfile
+.env
