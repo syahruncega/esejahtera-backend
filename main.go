@@ -467,4 +467,5 @@ func main() {
 	server.GET("/rat", middleware.CheckAuth, ratController.TestingRatController)
 
 	server.Run(":" + appConfig.AppPort)
+	//testtest
 }
