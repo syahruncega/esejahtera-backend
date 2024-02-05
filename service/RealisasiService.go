@@ -25,27 +25,32 @@ func NewRealisasiService(realisasiRepository repository.RealisasiRepository) *re
 	return &realisasiService{realisasiRepository}
 }
 
-func convertIsoStringToMonth(isoString string) (string, error) {
-	var isoDatetime = isoString
-
-	var parsedTime, err = time.Parse(time.RFC3339, isoDatetime)
-
-	var indonesianMonths = map[time.Month]string{
+func getIndonesianMonth(month time.Month) string {
+	var bulan = map[time.Month]string{
 		time.January:   "Januari",
 		time.February:  "Februari",
 		time.March:     "Maret",
 		time.April:     "April",
 		time.May:       "Mei",
-		time.June:      "June",
+		time.June:      "Juni",
 		time.July:      "Juli",
-		time.August:    "August",
+		time.August:    "Agustus",
 		time.September: "September",
 		time.October:   "Oktober",
 		time.November:  "November",
-		time.December:  "December",
+		time.December:  "Desember",
 	}
 
-	var bulan = indonesianMonths[parsedTime.Month()]
+	return bulan[month]
+}
+
+func convertDateToMonth(date string) (string, error) {
+
+	var parsedDate, err = time.Parse("2006/01/02", date)
+
+	var month = parsedDate.Month()
+
+	var bulan = getIndonesianMonth(month)
 
 	return bulan, err
 }
@@ -76,7 +81,7 @@ func (s *realisasiService) FindByFokusBelanjaId(fokusBelanjaId int) ([]model.Rea
 
 func (s *realisasiService) Create(realisasiRequest request.CreateRealisasiRequest) (model.Realisasi, error) {
 
-	var bulan, err = convertIsoStringToMonth(realisasiRequest.Tanggal)
+	var bulan, err = convertDateToMonth(realisasiRequest.Tanggal)
 
 	var realisasi = model.Realisasi{
 		FokusBelanjaId:  realisasiRequest.FokusBelanjaId,
@@ -94,7 +99,7 @@ func (s *realisasiService) Create(realisasiRequest request.CreateRealisasiReques
 }
 
 func (s *realisasiService) Update(id int, realisasiRequest request.UpdateRealisasiRequest) (model.Realisasi, error) {
-	var bulan, err = convertIsoStringToMonth(realisasiRequest.Tanggal)
+	var bulan, err = convertDateToMonth(realisasiRequest.Tanggal)
 
 	realisasi, _ := s.realisasiRepository.FindById(id)
 
